@@ -1,0 +1,149 @@
+RECOMMENDATION ENGINE TEST REPORT
+==================================================
+
+Generated: 2025-09-18 14:35:40
+Python version: 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]
+
+SUMMARY:
+Total tests: 3
+Failures: 0
+Errors: 3
+
+
+UNIT TESTS
+----------
+Tests run: 3
+Failures: 0
+Errors: 3
+Success rate: 0.0%
+Execution time: 0.14s
+
+test_categorization (unittest.loader._FailedTest.test_categorization) ... ERROR
+test_filters (unittest.loader._FailedTest.test_filters) ... ERROR
+test_scoring (unittest.loader._FailedTest.test_scoring) ... ERROR
+
+======================================================================
+ERROR: test_categorization (unittest.loader._FailedTest.test_categorization)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_categorization
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_categorization.py", line 30, in <module>
+    categorization_module = load_module_from_path("categorization", os.path.join(base_path, "categorization.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_categorization.py", line 23, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\categorization.py", line 9, in <module>
+    from .models import (
+    ...<2 lines>...
+    )
+ImportError: attempted relative import with no known parent package
+
+
+======================================================================
+ERROR: test_filters (unittest.loader._FailedTest.test_filters)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_filters
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_filters.py", line 31, in <module>
+    filters_module = load_module_from_path("filters", os.path.join(base_path, "filters.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_filters.py", line 24, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\filters.py", line 10, in <module>
+    from .models import UserProfile, Career, Skill, SkillLevel, InterestLevel
+ImportError: attempted relative import with no known parent package
+
+
+======================================================================
+ERROR: test_scoring (unittest.loader._FailedTest.test_scoring)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_scoring
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_scoring.py", line 31, in <module>
+    scoring_module = load_module_from_path("scoring", os.path.join(base_path, "scoring.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_scoring.py", line 24, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\scoring.py", line 10, in <module>
+    from .models import (
+    ...<2 lines>...
+    )
+ImportError: attempted relative import with no known parent package
+
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+FAILED (errors=3)
+
+ERRORS:
+  test_categorization (unittest.loader._FailedTest.test_categorization): ImportError: Failed to import test module: test_categorization
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_categorization.py", line 30, in <module>
+    categorization_module = load_module_from_path("categorization", os.path.join(base_path, "categorization.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_categorization.py", line 23, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\categorization.py", line 9, in <module>
+    from .models import (
+    ...<2 lines>...
+    )
+ImportError: attempted relative import with no known parent package
+
+
+  test_filters (unittest.loader._FailedTest.test_filters): ImportError: Failed to import test module: test_filters
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_filters.py", line 31, in <module>
+    filters_module = load_module_from_path("filters", os.path.join(base_path, "filters.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_filters.py", line 24, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\filters.py", line 10, in <module>
+    from .models import UserProfile, Career, Skill, SkillLevel, InterestLevel
+ImportError: attempted relative import with no known parent package
+
+
+  test_scoring (unittest.loader._FailedTest.test_scoring): ImportError: Failed to import test module: test_scoring
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_scoring.py", line 31, in <module>
+    scoring_module = load_module_from_path("scoring", os.path.join(base_path, "scoring.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_scoring.py", line 24, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\scoring.py", line 10, in <module>
+    from .models import (
+    ...<2 lines>...
+    )
+ImportError: attempted relative import with no known parent package
+
+

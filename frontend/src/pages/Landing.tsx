@@ -9,6 +9,7 @@ const Landing = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [isProfileComplete, setIsProfileComplete] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   // Check user state on component mount
   useEffect(() => {
@@ -47,11 +48,16 @@ const Landing = () => {
   }, []);
 
   // Smart navigation based on user state
-  const handleGetStarted = () => {
+  const handleGetStarted = async () => {
     try {
       console.log('🚀 Get Started clicked');
       console.log('👤 User exists:', !!user);
       console.log('✅ Profile complete:', isProfileComplete);
+      
+      setIsNavigating(true);
+      
+      // Add small delay for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 200));
       
       if (user) {
         if (isProfileComplete) {
@@ -69,13 +75,20 @@ const Landing = () => {
       console.error('❌ Error in handleGetStarted:', error);
       // Fallback navigation
       navigate('/auth');
+    } finally {
+      setIsNavigating(false);
     }
   };
 
-  const handleAssessmentClick = () => {
+  const handleAssessmentClick = async () => {
     try {
       console.log('📝 Assessment button clicked');
       console.log('👤 User exists:', !!user);
+      
+      setIsNavigating(true);
+      
+      // Add small delay for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 200));
       
       if (user) {
         console.log('➡️ Navigating to assessment (user logged in)');
@@ -87,19 +100,47 @@ const Landing = () => {
     } catch (error) {
       console.error('❌ Error in handleAssessmentClick:', error);
       navigate('/auth');
+    } finally {
+      setIsNavigating(false);
     }
   };
 
-  const handleDashboardClick = () => {
+  const handleDashboardClick = async () => {
     try {
       console.log('📊 Dashboard button clicked');
       console.log('👤 User exists:', !!user);
       console.log('✅ Profile complete:', isProfileComplete);
       console.log('➡️ Navigating to dashboard...');
+      
+      setIsNavigating(true);
+      
+      // Add small delay for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
       navigate('/dashboard');
     } catch (error) {
       console.error('❌ Error in handleDashboardClick:', error);
       navigate('/dashboard');
+    } finally {
+      setIsNavigating(false);
+    }
+  };
+
+  const handleSignInClick = async () => {
+    try {
+      console.log('🔐 Sign In button clicked');
+      
+      setIsNavigating(true);
+      
+      // Add small delay for visual feedback
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      navigate('/auth');
+    } catch (error) {
+      console.error('❌ Error in handleSignInClick:', error);
+      navigate('/auth');
+    } finally {
+      setIsNavigating(false);
     }
   };
 
@@ -244,16 +285,28 @@ const Landing = () => {
             </span>
           </div>
           <div className="flex space-x-2">
-            <Button variant="ghost" onClick={handleAssessmentClick}>
-              {getAssessmentButtonText()}
+            <Button
+              variant="ghost"
+              onClick={handleAssessmentClick}
+              disabled={isNavigating}
+            >
+              {isNavigating ? "Loading..." : getAssessmentButtonText()}
             </Button>
             {user ? (
-              <Button variant="outline" onClick={handleDashboardClick}>
-                Dashboard
+              <Button
+                variant="outline"
+                onClick={handleDashboardClick}
+                disabled={isNavigating}
+              >
+                {isNavigating ? "Loading..." : "Dashboard"}
               </Button>
             ) : (
-              <Button variant="outline" onClick={() => navigate('/auth')}>
-                Sign In
+              <Button
+                variant="outline"
+                onClick={handleSignInClick}
+                disabled={isNavigating}
+              >
+                {isNavigating ? "Loading..." : "Sign In"}
               </Button>
             )}
           </div>
@@ -285,13 +338,14 @@ const Landing = () => {
           beyond your current role or obvious career options.
         </p>
         <div className="flex justify-center">
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="text-lg px-8 py-3"
             onClick={handleGetStarted}
+            disabled={isNavigating}
           >
-            {getMainButtonText()}
-            <ArrowRight className="ml-2 h-5 w-5" />
+            {isNavigating ? "Loading..." : getMainButtonText()}
+            {!isNavigating && <ArrowRight className="ml-2 h-5 w-5" />}
           </Button>
         </div>
         <p className="text-sm text-gray-500 mt-4">
@@ -510,6 +564,163 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Job Families Coverage Section */}
+      <section className="bg-gray-50 py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Comprehensive Career Coverage
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Our AI-powered system covers <span className="font-semibold text-blue-600">90+ careers</span> across major industries,
+              with more being added regularly to ensure comprehensive career exploration.
+            </p>
+          </div>
+          
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Currently Supported */}
+              <Card className="p-6 border-2 border-green-200 bg-green-50">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <CheckCircle className="h-6 w-6 text-green-600" />
+                    <CardTitle className="text-xl text-green-800">Currently Supported</CardTitle>
+                  </div>
+                  <CardDescription className="text-green-700">
+                    Ready for AI-powered recommendations now
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <Brain className="h-3 w-3 mr-1" />
+                        Technology & Engineering
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">33 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <User className="h-3 w-3 mr-1" />
+                        Healthcare & Medical
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">16 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <Building2 className="h-3 w-3 mr-1" />
+                        Skilled Trades & Construction
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">16 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <GraduationCap className="h-3 w-3 mr-1" />
+                        Education & Training
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">10 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <TrendingUp className="h-3 w-3 mr-1" />
+                        Business & Finance
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">15 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <Target className="h-3 w-3 mr-1" />
+                        Product Management
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">7 careers</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Coming Soon */}
+              <Card className="p-6 border-2 border-blue-200 bg-blue-50">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Compass className="h-6 w-6 text-blue-600" />
+                    <CardTitle className="text-xl text-blue-800">Coming Soon</CardTitle>
+                  </div>
+                  <CardDescription className="text-blue-700">
+                    Expanding our coverage to serve more professionals
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                        <Award className="h-3 w-3 mr-1" />
+                        Legal & Law
+                      </Badge>
+                      <span className="text-sm text-blue-600 font-medium">~15 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                        <Briefcase className="h-3 w-3 mr-1" />
+                        Creative & Arts
+                      </Badge>
+                      <span className="text-sm text-blue-600 font-medium">~15 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                        <Users className="h-3 w-3 mr-1" />
+                        Public Service & Government
+                      </Badge>
+                      <span className="text-sm text-blue-600 font-medium">~12 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                        <Building2 className="h-3 w-3 mr-1" />
+                        Hospitality & Service
+                      </Badge>
+                      <span className="text-sm text-blue-600 font-medium">~12 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                        <Zap className="h-3 w-3 mr-1" />
+                        Manufacturing & Industrial
+                      </Badge>
+                      <span className="text-sm text-blue-600 font-medium">~15 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
+                        <Map className="h-3 w-3 mr-1" />
+                        Agriculture & Environmental
+                      </Badge>
+                      <span className="text-sm text-blue-600 font-medium">~10 careers</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            {/* Summary Stats */}
+            <div className="mt-8 text-center">
+              <div className="inline-flex items-center space-x-8 bg-white rounded-lg p-6 shadow-sm border">
+                <div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">90+</div>
+                  <p className="text-sm text-gray-600 font-medium">Careers Available Now</p>
+                </div>
+                <div className="w-px h-12 bg-gray-300"></div>
+                <div>
+                  <div className="text-3xl font-bold text-blue-600 mb-1">200+</div>
+                  <p className="text-sm text-gray-600 font-medium">Total When Complete</p>
+                </div>
+                <div className="w-px h-12 bg-gray-300"></div>
+                <div>
+                  <div className="text-3xl font-bold text-green-600 mb-1">12</div>
+                  <p className="text-sm text-gray-600 font-medium">Major Industries</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
@@ -558,14 +769,15 @@ const Landing = () => {
           <p className="text-xl mb-8 opacity-90">
             Join professionals at every career stage who have found their perfect next step with AI-powered insights
           </p>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             variant="secondary"
             className="text-lg px-8 py-3"
             onClick={handleGetStarted}
+            disabled={isNavigating}
           >
-            {getMainButtonText()}
-            <ArrowRight className="ml-2 h-5 w-5" />
+            {isNavigating ? "Loading..." : getMainButtonText()}
+            {!isNavigating && <ArrowRight className="ml-2 h-5 w-5" />}
           </Button>
         </div>
       </section>
