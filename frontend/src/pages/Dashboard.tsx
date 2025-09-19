@@ -119,8 +119,8 @@ import {
 import { showSuccess } from "@/utils/toast";
 import jsPDF from 'jspdf';
 
-// Import the career matching logic - CRITICAL DEPENDENCY ✅
-import { generateCareerRecommendations, type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
+// Import types only - we'll use the backend API for recommendations
+import { type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
 
 // ========================================
 // TYPE DEFINITIONS - ENHANCED WITH NETWORKING PROGRESS TRACKING ✅
@@ -1171,6 +1171,8 @@ const Dashboard = () => {
   const [explorationLevel, setExplorationLevel] = useState([1]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [recommendations, setRecommendations] = useState<CareerMatch[]>([]);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
   // NEW: Skills expansion state management ✅
   const [expandedSkills, setExpandedSkills] = useState<Set<string>>(new Set());
@@ -1655,43 +1657,132 @@ const Dashboard = () => {
   const isProfileComplete = profileStatus.isComplete;
 
   // ========================================
-  // CAREER RECOMMENDATIONS - WORKING PERFECTLY ✅
+  // CAREER RECOMMENDATIONS - NOW USING BACKEND API ✅
   // ========================================
-  // CRITICAL: This useMemo generates 5 career recommendations
-  // Dependencies: user data, explorationLevel, isProfileComplete
-  // Integration: Uses generateCareerRecommendations from utils
-  const recommendations = useMemo((): CareerMatch[] => {
-    if (!isProfileComplete || !user?.assessmentData) {
-      return [];
-    }
-    
-    try {
-      // Process the data for the matching algorithm
-      const processedData = {
-        ...user.assessmentData,
-        workingWithData: Array.isArray(user.assessmentData.workingWithData) 
-          ? user.assessmentData.workingWithData[0] 
-          : user.assessmentData.workingWithData,
-        workingWithPeople: Array.isArray(user.assessmentData.workingWithPeople) 
-          ? user.assessmentData.workingWithPeople[0] 
-          : user.assessmentData.workingWithPeople,
-        creativeTasks: Array.isArray(user.assessmentData.creativeTasks) 
-          ? user.assessmentData.creativeTasks[0] 
-          : user.assessmentData.creativeTasks,
-        problemSolving: Array.isArray(user.assessmentData.problemSolving) 
-          ? user.assessmentData.problemSolving[0] 
-          : user.assessmentData.problemSolving,
-        leadership: Array.isArray(user.assessmentData.leadership) 
-          ? user.assessmentData.leadership[0] 
-          : user.assessmentData.leadership,
-      };
+  // CRITICAL: Recommendations are now fetched from backend API via useEffect
+  // State managed by recommendations state variable
+  // Fallback to local function if API fails
+
+  // NEW: Fetch recommendations from backend API
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      console.log('🔍 Profile check:', {
+        isProfileComplete,
+        hasUser: !!user,
+        hasAssessmentData: !!user?.assessmentData,
+        explorationLevel: explorationLevel[0],
+        userRole: user?.assessmentData?.currentRole
+      });
       
-      const results = generateCareerRecommendations(processedData, explorationLevel[0]);
-      return results || [];
-    } catch (error) {
-      console.error('Error generating recommendations:', error);
-      return [];
-    }
+      if (!isProfileComplete || !user?.assessmentData) {
+        console.log('❌ Skipping API call - profile incomplete or no assessment data');
+        setRecommendations([]);
+        setLastUpdated(null);
+        return;
+      }
+
+      try {
+        console.log('🚀 Fetching recommendations from backend API...');
+        console.log('📊 Assessment data being sent:', {
+          currentRole: user.assessmentData.currentRole,
+          experience: user.assessmentData.experience,
+          technicalSkills: user.assessmentData.technicalSkills,
+          interests: user.assessmentData.interests,
+          explorationLevel: explorationLevel[0]
+        });
+        
+        // Process the data for the API
+        const processedData = {
+          ...user.assessmentData,
+          workingWithData: Array.isArray(user.assessmentData.workingWithData)
+            ? user.assessmentData.workingWithData[0]
+            : user.assessmentData.workingWithData,
+          workingWithPeople: Array.isArray(user.assessmentData.workingWithPeople)
+            ? user.assessmentData.workingWithPeople[0]
+            : user.assessmentData.workingWithPeople,
+          creativeTasks: Array.isArray(user.assessmentData.creativeTasks)
+            ? user.assessmentData.creativeTasks[0]
+            : user.assessmentData.creativeTasks,
+          problemSolving: Array.isArray(user.assessmentData.problemSolving)
+            ? user.assessmentData.problemSolving[0]
+            : user.assessmentData.problemSolving,
+          leadership: Array.isArray(user.assessmentData.leadership)
+            ? user.assessmentData.leadership[0]
+            : user.assessmentData.leadership,
+          explorationLevel: explorationLevel[0]
+        };
+
+        const response = await fetch('http://localhost:8000/api/recommendations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(processedData)
+        });
+
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+
+        const apiRecommendations = await response.json();
+        console.log('✅ Received recommendations from backend:', {
+          count: apiRecommendations.length,
+          titles: apiRecommendations.map((r: any) => r.title),
+          explorationLevel: explorationLevel[0]
+        });
+        
+        // Update recommendations state
+        setRecommendations(apiRecommendations);
+        setLastUpdated(new Date());
+        
+      } catch (error) {
+        console.error('❌ Error fetching recommendations from backend:', error);
+        console.log('🔄 Falling back to local recommendations...');
+        
+        // Fallback to local recommendations if API fails
+        try {
+          const { generateCareerRecommendations } = await import("@/utils/careerMatching");
+          const processedData = {
+            ...user.assessmentData,
+            workingWithData: Array.isArray(user.assessmentData.workingWithData)
+              ? user.assessmentData.workingWithData[0]
+              : user.assessmentData.workingWithData,
+            workingWithPeople: Array.isArray(user.assessmentData.workingWithPeople)
+              ? user.assessmentData.workingWithPeople[0]
+              : user.assessmentData.workingWithPeople,
+            creativeTasks: Array.isArray(user.assessmentData.creativeTasks)
+              ? user.assessmentData.creativeTasks[0]
+              : user.assessmentData.creativeTasks,
+            problemSolving: Array.isArray(user.assessmentData.problemSolving)
+              ? user.assessmentData.problemSolving[0]
+              : user.assessmentData.problemSolving,
+            leadership: Array.isArray(user.assessmentData.leadership)
+              ? user.assessmentData.leadership[0]
+              : user.assessmentData.leadership,
+          };
+          
+          console.log('🔄 Fallback data:', {
+            currentRole: processedData.currentRole,
+            explorationLevel: explorationLevel[0]
+          });
+          
+          const fallbackResults = generateCareerRecommendations(processedData, explorationLevel[0]);
+          console.log('🔄 Fallback results:', {
+            count: fallbackResults?.length || 0,
+            titles: fallbackResults?.map(r => r.title) || []
+          });
+          
+          setRecommendations(fallbackResults || []);
+          setLastUpdated(new Date());
+        } catch (fallbackError) {
+          console.error('❌ Fallback also failed:', fallbackError);
+          setRecommendations([]);
+          setLastUpdated(null);
+        }
+      }
+    };
+
+    fetchRecommendations();
   }, [user, explorationLevel, isProfileComplete]);
 
   // ========================================
@@ -2172,12 +2263,35 @@ const Dashboard = () => {
                 {/* Exploration Control */}
                 <Card>
                   <CardHeader>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <Eye className="h-5 w-5 text-gray-600" />
-                      <CardTitle className="text-lg">Career Exploration Level</CardTitle>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center space-x-2">
+                        <Eye className="h-5 w-5 text-gray-600" />
+                        <CardTitle className="text-lg">Career Exploration Level</CardTitle>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                          // Force refresh recommendations
+                          const fetchRecommendations = async () => {
+                            if (!isProfileComplete || !user?.assessmentData) return;
+                            
+                            setLastUpdated(new Date());
+                            showSuccess('🔄 Refreshing recommendations...');
+                            
+                            // Trigger the useEffect by updating a dependency
+                            setExplorationLevel([...explorationLevel]);
+                          };
+                          fetchRecommendations();
+                        }}
+                        className="text-xs"
+                      >
+                        <RefreshCw className="h-4 w-4 mr-1" />
+                        Refresh
+                      </Button>
                     </div>
                     <CardDescription>
-                      Adjust how adventurous you want your career recommendations to be.
+                      Adjust how adventurous you want your career recommendations to be. Click refresh to update recommendations.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -2215,6 +2329,28 @@ const Dashboard = () => {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Last Updated Timestamp */}
+                {lastUpdated && (
+                  <Card className="border-l-4 border-l-green-500 bg-green-50">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-2">
+                        <RefreshCw className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-medium text-green-800">
+                          Recommendations last updated: {lastUpdated.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}, {lastUpdated.toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true
+                          })}
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
 
                 {/* Career Recommendation Cards - DETAILED CARDS WORKING ✅ */}
                 {recommendations.length > 0 ? (

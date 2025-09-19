@@ -137,7 +137,7 @@ class PersonalInfo(BaseModel):
     location: Optional[str] = Field(None, max_length=200)
     salary_expectations: Optional[SalaryRange] = None
     willing_to_relocate: bool = False
-    preferred_work_style: Optional[str] = Field(None, regex="^(remote|hybrid|on-site)$")
+    preferred_work_style: Optional[str] = Field(None, pattern="^(remote|hybrid|on-site)$")
 
 
 class AssessmentResults(BaseModel):

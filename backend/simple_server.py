@@ -1,0 +1,1251 @@
+"""
+Simple FastAPI backend server for the Career Recommendation Engine.
+This version includes a simplified recommendation engine directly.
+"""
+
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from typing import List, Dict, Any, Optional
+from enum import Enum
+from datetime import datetime
+
+# Initialize FastAPI app
+app = FastAPI(
+    title="Career Recommendation API",
+    description="API for career recommendations based on user profiles",
+    version="1.0.0"
+)
+
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5137", "http://localhost:3000", "http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Simple data models
+class SkillLevel(str, Enum):
+    BEGINNER = "beginner"
+    INTERMEDIATE = "intermediate"
+    ADVANCED = "advanced"
+    EXPERT = "expert"
+
+class InterestLevel(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    VERY_HIGH = "very_high"
+
+class RecommendationCategory(str, Enum):
+    SAFE_ZONE = "safe_zone"
+    STRETCH_ZONE = "stretch_zone"
+    ADVENTURE_ZONE = "adventure_zone"
+
+# Mock data
+MOCK_CAREERS = [
+    {
+        "career_id": "career_1",
+        "title": "Data Scientist",
+        "description": "Analyzes complex data to help organizations make informed decisions.",
+        "salary_range": {"min": 90000, "max": 140000, "currency": "USD"},
+        "required_skills": ["Python", "Data Analysis", "Machine Learning", "SQL"],
+        "category": "safe_zone",
+        "score": 0.85,
+        "confidence": 0.9,
+        "reasons": [
+            "Strong match for your Python and data analysis skills",
+            "Salary range aligns with your expectations",
+            "High demand in current job market"
+        ]
+    },
+    {
+        "career_id": "career_2",
+        "title": "Machine Learning Engineer",
+        "description": "Designs and implements machine learning systems and algorithms.",
+        "salary_range": {"min": 100000, "max": 160000, "currency": "USD"},
+        "required_skills": ["Python", "Machine Learning", "TensorFlow", "Deep Learning"],
+        "category": "stretch_zone",
+        "score": 0.72,
+        "confidence": 0.75,
+        "reasons": [
+            "Good foundation in Python and ML basics",
+            "Would benefit from additional deep learning experience",
+            "Excellent growth potential"
+        ]
+    },
+    {
+        "career_id": "career_3",
+        "title": "Full Stack Developer",
+        "description": "Develops both front-end and back-end components of web applications.",
+        "salary_range": {"min": 70000, "max": 120000, "currency": "USD"},
+        "required_skills": ["JavaScript", "React", "Node.js", "HTML", "CSS"],
+        "category": "adventure_zone",
+        "score": 0.58,
+        "confidence": 0.6,
+        "reasons": [
+            "Opportunity to learn web development technologies",
+            "Transferable problem-solving skills",
+            "Growing field with many opportunities"
+        ]
+    },
+    {
+        "career_id": "career_4",
+        "title": "Data Analyst",
+        "description": "Interprets data and turns it into information for business decisions.",
+        "salary_range": {"min": 60000, "max": 90000, "currency": "USD"},
+        "required_skills": ["SQL", "Excel", "Data Visualization", "Statistics"],
+        "category": "safe_zone",
+        "score": 0.78,
+        "confidence": 0.85,
+        "reasons": [
+            "Great entry point for data career",
+            "Builds on analytical thinking skills",
+            "Strong job market demand"
+        ]
+    },
+    {
+        "career_id": "career_5",
+        "title": "DevOps Engineer",
+        "description": "Manages infrastructure and deployment pipelines for software applications.",
+        "salary_range": {"min": 85000, "max": 130000, "currency": "USD"},
+        "required_skills": ["AWS", "Docker", "Kubernetes", "CI/CD", "Linux"],
+        "category": "adventure_zone",
+        "score": 0.45,
+        "confidence": 0.5,
+        "reasons": [
+            "High-demand field with excellent growth",
+            "Would require significant upskilling",
+            "Great for systematic thinkers"
+        ]
+    }
+]
+
+# Request/Response models
+class RecommendationRequest(BaseModel):
+    user_profile: Optional[Dict[str, Any]] = None
+    limit: Optional[int] = 10
+
+# NEW: Direct API request model for frontend compatibility
+class DirectRecommendationRequest(BaseModel):
+    age: Optional[str] = None
+    location: Optional[str] = None
+    educationLevel: Optional[str] = None
+    certifications: Optional[List[str]] = []
+    currentSituation: Optional[str] = None
+    currentRole: Optional[str] = None
+    experience: Optional[str] = None
+    resumeText: Optional[str] = None
+    linkedinProfile: Optional[str] = None
+    technicalSkills: Optional[List[str]] = []
+    softSkills: Optional[List[str]] = []
+    workingWithData: Optional[int] = 3
+    workingWithPeople: Optional[int] = 3
+    creativeTasks: Optional[int] = 3
+    problemSolving: Optional[int] = 3
+    leadership: Optional[int] = 3
+    physicalHandsOnWork: Optional[int] = 3
+    outdoorWork: Optional[int] = 3
+    mechanicalAptitude: Optional[int] = 3
+    interests: Optional[List[str]] = []
+    industries: Optional[List[str]] = []
+    workEnvironment: Optional[str] = None
+    careerGoals: Optional[str] = None
+    workLifeBalance: Optional[str] = None
+    salaryExpectations: Optional[str] = None
+    explorationLevel: Optional[int] = 1
+
+class RecommendationResponse(BaseModel):
+    recommendations: List[Dict[str, Any]]
+    total_count: int
+    categories: Dict[str, int]
+
+class HealthResponse(BaseModel):
+    status: str
+    message: str
+    engine_status: str
+
+@app.get("/", response_model=Dict[str, str])
+async def root():
+    """Root endpoint with API information."""
+    return {
+        "message": "Career Recommendation API",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
+@app.get("/health", response_model=HealthResponse)
+async def health_check():
+    """Health check endpoint."""
+    return HealthResponse(
+        status="healthy",
+        message="API is running",
+        engine_status="healthy"
+    )
+
+@app.post("/recommendations", response_model=RecommendationResponse)
+async def get_recommendations(request: RecommendationRequest):
+    """
+    Get career recommendations for a user profile.
+    """
+    try:
+        # For demo purposes, return mock recommendations
+        # In production, this would use the actual recommendation engine
+        recommendations = MOCK_CAREERS[:request.limit] if request.limit else MOCK_CAREERS
+        
+        # Count categories
+        categories = {"safe_zone": 0, "stretch_zone": 0, "adventure_zone": 0}
+        for rec in recommendations:
+            categories[rec["category"]] += 1
+        
+        return RecommendationResponse(
+            recommendations=recommendations,
+            total_count=len(recommendations),
+            categories=categories
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating recommendations: {str(e)}")
+
+@app.get("/recommendations/categories")
+async def get_recommendations_by_category():
+    """Get recommendations organized by category."""
+    try:
+        result = {
+            "safe_zone": [career for career in MOCK_CAREERS if career["category"] == "safe_zone"],
+            "stretch_zone": [career for career in MOCK_CAREERS if career["category"] == "stretch_zone"],
+            "adventure_zone": [career for career in MOCK_CAREERS if career["category"] == "adventure_zone"]
+        }
+        
+        return result
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting categorized recommendations: {str(e)}")
+
+@app.get("/careers")
+async def get_careers():
+    """Get all available careers."""
+    try:
+        return {
+            "careers": MOCK_CAREERS,
+            "total_count": len(MOCK_CAREERS)
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching careers: {str(e)}")
+
+@app.get("/careers/{career_id}")
+async def get_career_detail(career_id: str):
+    """Get detailed information about a specific career."""
+    try:
+        career = next((c for c in MOCK_CAREERS if c["career_id"] == career_id), None)
+        if not career:
+            raise HTTPException(status_code=404, detail="Career not found")
+        
+        return career
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching career: {str(e)}")
+
+@app.post("/recommendations/explain/{career_id}")
+async def explain_recommendation(career_id: str):
+    """Get detailed explanation for a specific career recommendation."""
+    try:
+        career = next((c for c in MOCK_CAREERS if c["career_id"] == career_id), None)
+        if not career:
+            raise HTTPException(status_code=404, detail="Career not found")
+        
+        explanation = {
+            "career_title": career["title"],
+            "total_score": career["score"],
+            "category": career["category"],
+            "confidence": career["confidence"],
+            "reasons": career["reasons"],
+            "score_breakdown": {
+                "skill_match": 0.8,
+                "interest_match": 0.7,
+                "salary_compatibility": 0.9,
+                "experience_match": 0.85
+            },
+            "detailed_breakdown": {
+                "skill_details": {
+                    "matched_skills": [
+                        {"name": skill, "user_level": "intermediate", "required_level": "intermediate"}
+                        for skill in career["required_skills"][:2]
+                    ],
+                    "missing_skills": career["required_skills"][2:] if len(career["required_skills"]) > 2 else []
+                }
+            }
+        }
+        
+        return explanation
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error explaining recommendation: {str(e)}")
+
+@app.get("/statistics")
+async def get_recommendation_statistics():
+    """Get comprehensive statistics about the recommendation process."""
+    try:
+        stats = {
+            "filtering_stats": {
+                "original_count": len(MOCK_CAREERS),
+                "after_initial_filters": len(MOCK_CAREERS),
+                "after_skill_filters": len(MOCK_CAREERS),
+                "after_interest_filters": len(MOCK_CAREERS)
+            },
+            "category_distribution": {
+                "safe_zone": len([c for c in MOCK_CAREERS if c["category"] == "safe_zone"]),
+                "stretch_zone": len([c for c in MOCK_CAREERS if c["category"] == "stretch_zone"]),
+                "adventure_zone": len([c for c in MOCK_CAREERS if c["category"] == "adventure_zone"])
+            },
+            "score_statistics": {
+                "average_score": sum(c["score"] for c in MOCK_CAREERS) / len(MOCK_CAREERS),
+                "highest_score": max(c["score"] for c in MOCK_CAREERS),
+                "lowest_score": min(c["score"] for c in MOCK_CAREERS),
+                "score_range": max(c["score"] for c in MOCK_CAREERS) - min(c["score"] for c in MOCK_CAREERS)
+            },
+            "total_recommendations": len(MOCK_CAREERS)
+        }
+        
+        return stats
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting statistics: {str(e)}")
+
+@app.post("/api/recommendations")
+async def get_recommendations_direct(request: DirectRecommendationRequest):
+    """Direct API endpoint for frontend - matches frontend data format"""
+    try:
+        print(f"🚀 Received recommendation request from frontend")
+        print(f"📊 User profile: experience={request.experience}, skills={len(request.technicalSkills or [])}, exploration_level={request.explorationLevel}")
+        
+        # Convert frontend data to our format and generate enhanced recommendations
+        user_data = {
+            "age": request.age,
+            "location": request.location,
+            "education_level": request.educationLevel,
+            "certifications": request.certifications or [],
+            "current_situation": request.currentSituation,
+            "current_role": request.currentRole,
+            "experience": request.experience,
+            "resume_text": request.resumeText,
+            "linkedin_profile": request.linkedinProfile,
+            "technical_skills": request.technicalSkills or [],
+            "soft_skills": request.softSkills or [],
+            "working_with_data": request.workingWithData,
+            "working_with_people": request.workingWithPeople,
+            "creative_tasks": request.creativeTasks,
+            "problem_solving": request.problemSolving,
+            "leadership": request.leadership,
+            "physical_hands_on_work": request.physicalHandsOnWork,
+            "outdoor_work": request.outdoorWork,
+            "mechanical_aptitude": request.mechanicalAptitude,
+            "interests": request.interests or [],
+            "industries": request.industries or [],
+            "work_environment": request.workEnvironment,
+            "career_goals": request.careerGoals,
+            "work_life_balance": request.workLifeBalance,
+            "salary_expectations": request.salaryExpectations
+        }
+        
+        # For now, return enhanced mock data based on user profile
+        # TODO: Integrate with the actual recommendation engine
+        enhanced_recommendations = generate_enhanced_recommendations(user_data, request.explorationLevel or 1)
+        
+        print(f"✅ Generated {len(enhanced_recommendations)} recommendations")
+        return enhanced_recommendations
+        
+    except Exception as e:
+        print(f"❌ Error in /api/recommendations: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate recommendations: {str(e)}")
+
+def calculate_dynamic_distribution(exploration_level: int) -> tuple[int, int, int, int]:
+    """
+    Calculate dynamic distribution based on exploration level (1-5 scale).
+    Returns (safe_target, stretch_target, adventure_target, total_target)
+    
+    Exploration Level Distribution Strategy:
+    - Level 1 (Conservative): Heavy Safe Zone focus - 5 Safe, 3 Stretch, 1 Adventure (9 total)
+    - Level 2 (Cautious): Safe Zone preference - 4 Safe, 4 Stretch, 2 Adventure (10 total)
+    - Level 3 (Balanced): Equal distribution - 3 Safe, 4 Stretch, 4 Adventure (11 total)
+    - Level 4 (Adventurous): Adventure Zone focus - 2 Safe, 4 Stretch, 5 Adventure (11 total)
+    - Level 5 (Explorer): Maximum Adventure - 2 Safe, 3 Stretch, 6 Adventure (11 total)
+    """
+    # Ensure exploration level is within valid range
+    exploration_level = max(1, min(5, exploration_level or 1))
+    
+    distribution_map = {
+        1: (5, 3, 1, 9),   # Conservative: Heavy Safe Zone
+        2: (4, 4, 2, 10),  # Cautious: Safe Zone preference
+        3: (3, 4, 4, 11),  # Balanced: Equal focus on Stretch/Adventure
+        4: (2, 4, 5, 11),  # Adventurous: Adventure Zone focus
+        5: (2, 3, 6, 11)   # Explorer: Maximum Adventure
+    }
+    
+    safe_target, stretch_target, adventure_target, total_target = distribution_map[exploration_level]
+    
+    print(f"🎯 Exploration Level {exploration_level} Distribution:")
+    print(f"   Safe Zone: {safe_target} recommendations")
+    print(f"   Stretch Zone: {stretch_target} recommendations")
+    print(f"   Adventure Zone: {adventure_target} recommendations")
+    print(f"   Total Target: {total_target} recommendations")
+    
+    return safe_target, stretch_target, adventure_target, total_target
+
+def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_level: int) -> List[Dict[str, Any]]:
+    """Generate enhanced recommendations based on user profile using comprehensive career database"""
+    
+    # Import the comprehensive career database
+    from comprehensive_careers import (
+        COMPREHENSIVE_CAREERS,
+        get_careers_by_experience_level,
+        get_careers_by_salary_range,
+        parse_experience_years,
+        parse_salary_expectations
+    )
+    
+    # Extract insights from resume and LinkedIn profile
+    resume_insights = extract_resume_insights(user_data.get("resume_text", ""))
+    linkedin_insights = extract_linkedin_insights(user_data.get("linkedin_profile", ""))
+    
+    print(f"📄 Resume insights: {resume_insights}")
+    print(f"💼 LinkedIn insights: {linkedin_insights}")
+    
+    # Parse user experience and salary expectations
+    experience_years = parse_experience_years(user_data.get("experience", ""))
+    min_salary, max_salary = parse_salary_expectations(user_data.get("salary_expectations", ""))
+    
+    print(f"👤 User profile: {experience_years} years experience, ${min_salary:,}-${max_salary:,} salary target")
+    
+    # Filter careers by experience level and salary expectations
+    experience_filtered = get_careers_by_experience_level(experience_years)
+    salary_filtered = get_careers_by_salary_range(min_salary, max_salary)
+    
+    # Get intersection of both filters
+    filtered_careers = [career for career in experience_filtered if career in salary_filtered]
+    
+    print(f"🔍 Filtered careers: {len(filtered_careers)} careers match experience and salary criteria")
+    
+    # If no careers match strict criteria, relax salary requirements
+    if len(filtered_careers) < 3:
+        print("⚠️  Relaxing salary requirements to ensure minimum recommendations")
+        filtered_careers = experience_filtered[:10]  # Take top 10 by experience level
+    
+    # If still not enough, include broader experience range
+    if len(filtered_careers) < 3:
+        print("⚠️  Expanding experience range to ensure recommendations")
+        filtered_careers = COMPREHENSIVE_CAREERS[:15]  # Take top 15 overall
+    
+    # Enhanced scoring algorithm with career path consistency penalty
+    scored_careers = []
+    
+    # Get keyword frequencies and dominant theme from resume
+    keyword_frequencies = resume_insights.get("keyword_frequencies", {})
+    dominant_theme = resume_insights.get("dominant_theme")
+    
+    # CAREER PATH CONSISTENCY: Define career field categories and adjacency
+    career_field_categories = get_career_field_categories()
+    field_adjacency_map = get_field_adjacency_map()
+    
+    for career in filtered_careers:
+        # Base score starts at 50 for all careers
+        base_score = 50
+        
+        # CAREER PATH CONSISTENCY PENALTY: Identify career field and apply penalties
+        career_field = identify_career_field(career)
+        user_field = identify_user_field(resume_insights, user_data)
+        consistency_penalty = calculate_consistency_penalty(career_field, user_field, field_adjacency_map, dominant_theme, keyword_frequencies)
+        
+        print(f"🔍 Career: '{career.get('title', '')}' | Field: {career_field} | User Field: {user_field} | Consistency Penalty: {consistency_penalty}")
+        
+        # ENHANCED: Keyword frequency-based role matching
+        role_boost = 0
+        theme_alignment_boost = 0
+        user_current_role = resume_insights.get("current_role")
+        user_roles = resume_insights.get("roles", [])
+        career_title = career.get("title", "").lower()
+        career_desc = career.get("description", "").lower()
+        
+        print(f"🔍 Matching career '{career_title}' against dominant theme: {dominant_theme}")
+        
+        # PRIORITY 1: Keyword frequency-based matching (addresses your 18 "product" mentions)
+        product_freq = keyword_frequencies.get("product", 0)
+        engineering_freq = keyword_frequencies.get("engineering", 0)
+        data_science_freq = keyword_frequencies.get("data_science", 0)
+        management_freq = keyword_frequencies.get("management", 0)
+        
+        # ENHANCED: More precise product role matching
+        is_product_role = any(keyword in career_title for keyword in [
+            "product manager", "product lead", "head of product", "vp product",
+            "chief product officer", "director of product", "principal product", "group product"
+        ])
+        
+        is_technical_role = any(keyword in career_title for keyword in [
+            "engineer", "scientist", "developer", "analyst", "architect"
+        ])
+        
+        # Product role matching with frequency weighting
+        if is_product_role and product_freq >= 10:  # Very strong product signal
+            theme_alignment_boost = 45
+            print(f"🎯 VERY STRONG PRODUCT ALIGNMENT: {career_title} gets +45 boost ({product_freq} mentions)")
+        elif is_product_role and product_freq >= 5:  # Strong product signal
+            theme_alignment_boost = 35
+            print(f"🎯 STRONG PRODUCT ALIGNMENT: {career_title} gets +35 boost ({product_freq} mentions)")
+        elif is_product_role and product_freq >= 2:  # Moderate product signal
+            theme_alignment_boost = 25
+            print(f"🎯 MODERATE PRODUCT ALIGNMENT: {career_title} gets +25 boost ({product_freq} mentions)")
+        
+        # REDUCED BIAS: Technical roles get penalties unless resume emphasizes them
+        elif is_technical_role:
+            if engineering_freq >= 5 or data_science_freq >= 5:
+                theme_alignment_boost = 15  # Reduced boost even with technical emphasis
+                print(f"🔧 Technical role with resume support: {career_title} gets +15 boost")
+            else:
+                theme_alignment_boost = -15  # Stronger penalty for technical roles without emphasis
+                print(f"⚠️ Technical role without resume emphasis: {career_title} gets -15 penalty")
+        
+        # Management roles get moderate boost if management keywords present
+        elif "manager" in career_title or "director" in career_title:
+            if management_freq >= 3:
+                theme_alignment_boost = 20
+                print(f"👔 Management role with resume support: {career_title} gets +20 boost")
+            else:
+                theme_alignment_boost = 5
+                print(f"👔 Management role: {career_title} gets +5 boost")
+        
+        # Traditional role matching (reduced weight)
+        if user_current_role:
+            if user_current_role == "Product Management":
+                if any(keyword in career_title for keyword in ["product manager", "product lead", "head of product", "vp product", "chief product officer"]):
+                    role_boost = 20  # Reduced from 40 since theme_alignment_boost handles this better
+                    print(f"🎯 Traditional PM match: {career_title} gets +20 boost")
+                elif any(keyword in career_title for keyword in ["program manager", "project manager", "business analyst"]):
+                    role_boost = 15  # Reduced from 25
+                    print(f"🎯 Adjacent PM match: {career_title} gets +15 boost")
+            
+            # Other role matches (reduced weight)
+            elif user_current_role in user_roles:
+                if user_current_role.lower() in career_title:
+                    role_boost = 20  # Reduced from 35
+                    print(f"🎯 Traditional role match: {career_title} gets +20 boost")
+        
+        # Experience level alignment boost
+        experience_boost = 0
+        career_exp_level = career.get("experienceLevel", "mid")
+        if experience_years >= 15 and career_exp_level == "executive":
+            experience_boost = 25
+        elif experience_years >= 10 and career_exp_level == "senior":
+            experience_boost = 20
+        elif experience_years >= 5 and career_exp_level == "mid":
+            experience_boost = 15
+        elif experience_years < 5 and career_exp_level == "junior":
+            experience_boost = 15
+        elif abs(experience_years - {"junior": 2, "mid": 7, "senior": 12, "executive": 18}.get(career_exp_level, 7)) <= 3:
+            experience_boost = 10  # Close match
+        
+        # Salary alignment boost
+        salary_boost = 0
+        career_min = career.get("minSalary", 0)
+        career_max = career.get("maxSalary", 0)
+        if career_min <= max_salary and career_max >= min_salary:
+            # Overlapping salary ranges
+            overlap = min(career_max, max_salary) - max(career_min, min_salary)
+            total_range = max_salary - min_salary
+            if total_range > 0:
+                salary_boost = int(15 * (overlap / total_range))
+        
+        # Resume skills boost
+        resume_boost = 0
+        for skill in resume_insights.get("skills", []):
+            if skill.lower() in [s.lower() for s in career.get("requiredTechnicalSkills", [])]:
+                resume_boost += 3
+        
+        # LinkedIn insights boost
+        linkedin_boost = 0
+        if linkedin_insights.get("profile_strength") == "active" and "Leadership" in career.get("requiredSoftSkills", []):
+            linkedin_boost += 5
+        if linkedin_insights.get("network_indicators"):
+            linkedin_boost += 2
+        
+        # Work preferences boost
+        preferences_boost = 0
+        if user_data.get("working_with_data", 3) >= 4:
+            if "Data" in career.get("title", "") or "Analytics" in career.get("title", ""):
+                preferences_boost += 8
+        
+        if user_data.get("working_with_people", 3) >= 4:
+            if "Manager" in career.get("title", "") or "Leadership" in career.get("requiredSoftSkills", []):
+                preferences_boost += 6
+        
+        if user_data.get("leadership", 3) >= 4:
+            if "Manager" in career.get("title", "") or "Lead" in career.get("title", ""):
+                preferences_boost += 10
+        
+        # Calculate final score with career path consistency penalty
+        final_score = min(100, max(0, base_score + role_boost + theme_alignment_boost + experience_boost + salary_boost + resume_boost + linkedin_boost + preferences_boost + consistency_penalty))
+        
+        # Create career copy with enhanced data including consistency penalty
+        career_copy = career.copy()
+        career_copy["relevanceScore"] = final_score
+        career_copy["roleBoost"] = role_boost
+        career_copy["themeAlignmentBoost"] = theme_alignment_boost
+        career_copy["experienceBoost"] = experience_boost
+        career_copy["salaryBoost"] = salary_boost
+        career_copy["resumeBoost"] = resume_boost
+        career_copy["linkedinBoost"] = linkedin_boost
+        career_copy["preferencesBoost"] = preferences_boost
+        career_copy["consistencyPenalty"] = consistency_penalty
+        career_copy["careerField"] = career_field
+        career_copy["userField"] = user_field
+        
+        # Ensure salary fields are properly mapped for frontend
+        career_copy["salaryMin"] = career.get("minSalary", 0)
+        career_copy["salaryMax"] = career.get("maxSalary", 0)
+        
+        # Enhanced match reasons with theme alignment
+        match_reasons = []
+        if theme_alignment_boost >= 35:
+            theme_name = dominant_theme.replace("_", " ").title() if dominant_theme else "primary focus"
+            freq = keyword_frequencies.get(dominant_theme, 0) if dominant_theme else 0
+            match_reasons.append(f"Excellent alignment with your {theme_name} background ({freq} relevant mentions in resume)")
+        elif theme_alignment_boost >= 15:
+            theme_name = dominant_theme.replace("_", " ").title() if dominant_theme else "background"
+            match_reasons.append(f"Good match with your {theme_name} experience")
+        elif theme_alignment_boost < 0:
+            match_reasons.append("Role differs from your primary resume focus - consider as stretch opportunity")
+        
+        if role_boost >= 20:
+            match_reasons.append(f"Direct role match with your {user_current_role} experience")
+        elif role_boost >= 10:
+            match_reasons.append(f"Adjacent match to your {user_current_role} background")
+        
+        if experience_boost >= 15:
+            match_reasons.append(f"Perfect experience level match ({experience_years} years)")
+        if salary_boost >= 10:
+            match_reasons.append(f"Salary range aligns with expectations")
+        if resume_boost >= 6:
+            match_reasons.append(f"Strong technical skills match from resume")
+        if linkedin_boost >= 3:
+            match_reasons.append("Professional LinkedIn profile indicates engagement")
+        if preferences_boost >= 8:
+            match_reasons.append("Work preferences strongly align with role")
+        
+        career_copy["matchReasons"] = match_reasons
+        scored_careers.append(career_copy)
+    
+    # Sort by relevance score
+    scored_careers.sort(key=lambda x: x["relevanceScore"], reverse=True)
+    
+    # ENHANCED: Categorize into zones with theme alignment priority for Safe Zone population
+    safe_zone = []
+    stretch_zone = []
+    adventure_zone = []
+    
+    for career in scored_careers:
+        score = career["relevanceScore"]
+        role_boost = career.get("roleBoost", 0)
+        theme_boost = career.get("themeAlignmentBoost", 0)
+        exp_boost = career.get("experienceBoost", 0)
+        salary_boost = career.get("salaryBoost", 0)
+        
+        # PRIORITY 1: Strong theme alignment goes to Safe Zone (addresses your product-heavy resume)
+        if theme_boost >= 35:  # Strong theme alignment (like 18 product mentions)
+            safe_zone.append(career)
+            print(f"🟢 SAFE ZONE (Theme): {career['title']} - theme_boost={theme_boost}, score={score}")
+        # PRIORITY 2: Traditional direct role matches go to Safe Zone
+        elif role_boost >= 20 and theme_boost >= 0:  # Direct role match without negative theme
+            safe_zone.append(career)
+            print(f"🟢 SAFE ZONE (Role): {career['title']} - role_boost={role_boost}, score={score}")
+        # PRIORITY 3: High scores with good experience/salary alignment go to Stretch Zone
+        elif score >= 80 and exp_boost >= 15 and salary_boost >= 5:
+            stretch_zone.append(career)
+            print(f"🟡 STRETCH ZONE (High Score): {career['title']} - score={score}")
+        # PRIORITY 4: Moderate theme alignment or adjacent roles go to Stretch Zone
+        elif theme_boost >= 15 or (role_boost >= 10 and theme_boost >= 0):
+            stretch_zone.append(career)
+            print(f"🟡 STRETCH ZONE (Moderate): {career['title']} - theme_boost={theme_boost}, role_boost={role_boost}")
+        # PRIORITY 5: Decent scores without negative theme bias go to Adventure Zone
+        elif score >= 60 and theme_boost >= -5:
+            adventure_zone.append(career)
+            print(f"🔵 ADVENTURE ZONE (Decent): {career['title']} - score={score}, theme_boost={theme_boost}")
+        # PRIORITY 6: Low relevance or negative theme alignment
+        else:
+            adventure_zone.append(career)
+            print(f"🔵 ADVENTURE ZONE (Low): {career['title']} - score={score}, theme_boost={theme_boost}")
+    
+    # If we don't have enough in each zone, redistribute
+    total_available = len(scored_careers)
+    if len(adventure_zone) == 0 and total_available > 6:
+        # Move some stretch to adventure
+        if len(stretch_zone) > 3:
+            adventure_zone.extend(stretch_zone[-2:])
+            stretch_zone = stretch_zone[:-2]
+    
+    # DYNAMIC: Exploration-level based distribution with flexible zone allocation
+    recommendations = []
+    
+    # Dynamic distribution based on exploration level (1-5 scale)
+    safe_target, stretch_target, adventure_target, total_target = calculate_dynamic_distribution(exploration_level)
+    
+    print(f"🎯 Dynamic distribution for exploration level {exploration_level}:")
+    print(f"   Safe: {safe_target}, Stretch: {stretch_target}, Adventure: {adventure_target} (Total: {total_target})")
+    print(f"📊 Available: Safe={len(safe_zone)}, Stretch={len(stretch_zone)}, Adventure={len(adventure_zone)}")
+    
+    # Step 1: Fill each zone with available careers (up to dynamic target)
+    safe_selected = safe_zone[:safe_target]
+    stretch_selected = stretch_zone[:stretch_target]
+    adventure_selected = adventure_zone[:adventure_target]
+    
+    # Step 2: Identify zones that need backfilling
+    safe_deficit = safe_target - len(safe_selected)
+    stretch_deficit = stretch_target - len(stretch_selected)
+    adventure_deficit = adventure_target - len(adventure_selected)
+    
+    print(f"🔍 Deficits: Safe={safe_deficit}, Stretch={stretch_deficit}, Adventure={adventure_deficit}")
+    
+    # Step 3: Create redistribution pools from unused careers
+    unused_safe = safe_zone[safe_target:]
+    unused_stretch = stretch_zone[stretch_target:]
+    unused_adventure = adventure_zone[adventure_target:]
+    
+    # Step 4: Redistribute careers to fill deficits
+    # Priority: Fill Safe Zone first (most relevant), then Stretch, then Adventure
+    
+    # Fill Safe Zone deficit
+    if safe_deficit > 0:
+        # Try from unused stretch first (most relevant), then unused adventure
+        backfill_candidates = unused_stretch + unused_adventure
+        backfill_candidates.sort(key=lambda x: x["relevanceScore"], reverse=True)
+        
+        for career in backfill_candidates[:safe_deficit]:
+            safe_selected.append(career)
+            print(f"🔄 Backfilled Safe Zone: {career['title']} (score: {career['relevanceScore']})")
+    
+    # Fill Stretch Zone deficit
+    if stretch_deficit > 0:
+        # Try from unused safe first (high relevance), then unused adventure
+        backfill_candidates = unused_safe + unused_adventure
+        # Remove careers already used for safe zone backfill
+        backfill_candidates = [c for c in backfill_candidates if c not in safe_selected[TARGET_PER_ZONE:]]
+        backfill_candidates.sort(key=lambda x: x["relevanceScore"], reverse=True)
+        
+        for career in backfill_candidates[:stretch_deficit]:
+            stretch_selected.append(career)
+            print(f"🔄 Backfilled Stretch Zone: {career['title']} (score: {career['relevanceScore']})")
+    
+    # Fill Adventure Zone deficit
+    if adventure_deficit > 0:
+        # Try from unused safe and stretch
+        backfill_candidates = unused_safe + unused_stretch
+        # Remove careers already used for other zone backfills
+        used_for_backfill = safe_selected[TARGET_PER_ZONE:] + stretch_selected[TARGET_PER_ZONE:]
+        backfill_candidates = [c for c in backfill_candidates if c not in used_for_backfill]
+        backfill_candidates.sort(key=lambda x: x["relevanceScore"], reverse=True)
+        
+        for career in backfill_candidates[:adventure_deficit]:
+            adventure_selected.append(career)
+            print(f"🔄 Backfilled Adventure Zone: {career['title']} (score: {career['relevanceScore']})")
+    
+    # Step 5: If still insufficient careers, use remaining scored careers
+    total_selected = len(safe_selected) + len(stretch_selected) + len(adventure_selected)
+    if total_selected < total_target:
+        all_selected = safe_selected + stretch_selected + adventure_selected
+        remaining_careers = [c for c in scored_careers if c not in all_selected]
+        remaining_careers.sort(key=lambda x: x["relevanceScore"], reverse=True)
+        
+        needed = total_target - total_selected
+        for career in remaining_careers[:needed]:
+            # Assign to the zone with the largest deficit first, then smallest current count
+            safe_count = len(safe_selected)
+            stretch_count = len(stretch_selected)
+            adventure_count = len(adventure_selected)
+            
+            # Priority: Fill zones that are furthest from their target
+            safe_remaining = safe_target - safe_count
+            stretch_remaining = stretch_target - stretch_count
+            adventure_remaining = adventure_target - adventure_count
+            
+            if safe_remaining > 0 and safe_remaining >= max(stretch_remaining, adventure_remaining):
+                safe_selected.append(career)
+                print(f"🔄 Emergency fill Safe Zone: {career['title']}")
+            elif stretch_remaining > 0 and stretch_remaining >= adventure_remaining:
+                stretch_selected.append(career)
+                print(f"🔄 Emergency fill Stretch Zone: {career['title']}")
+            elif adventure_remaining > 0:
+                adventure_selected.append(career)
+                print(f"🔄 Emergency fill Adventure Zone: {career['title']}")
+            else:
+                # All zones at target, assign to zone with smallest count
+                if safe_count <= stretch_count and safe_count <= adventure_count:
+                    safe_selected.append(career)
+                    print(f"🔄 Overflow to Safe Zone: {career['title']}")
+                elif stretch_count <= adventure_count:
+                    stretch_selected.append(career)
+                    print(f"🔄 Overflow to Stretch Zone: {career['title']}")
+                else:
+                    adventure_selected.append(career)
+                    print(f"🔄 Overflow to Adventure Zone: {career['title']}")
+    
+    # Step 6: Assign zone labels and compile final recommendations
+    for career in safe_selected:
+        career["zone"] = "safe"
+        recommendations.append(career)
+    
+    for career in stretch_selected:
+        career["zone"] = "stretch"
+        recommendations.append(career)
+    
+    for career in adventure_selected:
+        career["zone"] = "adventure"
+        recommendations.append(career)
+    
+    # Final distribution summary
+    safe_count = len([r for r in recommendations if r['zone'] == 'safe'])
+    stretch_count = len([r for r in recommendations if r['zone'] == 'stretch'])
+    adventure_count = len([r for r in recommendations if r['zone'] == 'adventure'])
+    
+    print(f"✅ DYNAMIC DISTRIBUTION ACHIEVED:")
+    print(f"   🟢 Safe Zone: {safe_count} recommendations (target: {safe_target})")
+    print(f"   🟡 Stretch Zone: {stretch_count} recommendations (target: {stretch_target})")
+    print(f"   🔵 Adventure Zone: {adventure_count} recommendations (target: {adventure_target})")
+    print(f"   📊 Total: {len(recommendations)} recommendations (target: {total_target})")
+    print(f"   🎯 Exploration Level: {exploration_level} - Targets achieved: Safe={safe_count == safe_target}, Stretch={stretch_count == stretch_target}, Adventure={adventure_count == adventure_target}")
+    
+    if len(recommendations) > 0:
+        avg_score = sum(r.get('relevanceScore', 0) for r in recommendations) / len(recommendations)
+        print(f"   📈 Average relevance score: {avg_score:.1f}")
+    
+    return recommendations
+
+def extract_resume_insights(resume_text: str) -> Dict[str, Any]:
+    """Extract insights from resume text with keyword frequency analysis for better matching"""
+    if not resume_text:
+        return {"skills": [], "experience_indicators": [], "leadership_indicators": [], "industry_indicators": [], "roles": [], "current_role": None, "keyword_frequencies": {}, "dominant_theme": None}
+    
+    resume_lower = resume_text.lower()
+    
+    # ENHANCED: Count keyword frequencies for better role matching
+    keyword_frequencies = {}
+    
+    # Product Management keyword frequency analysis
+    product_keywords = ["product manager", "product management", "product", "pm", "product owner", "product lead", "head of product", "vp product", "chief product officer", "cpo", "roadmap", "feature", "user stories", "product strategy"]
+    product_count = sum(resume_lower.count(keyword) for keyword in product_keywords)
+    keyword_frequencies["product"] = product_count
+    
+    # Engineering keyword frequency analysis
+    engineering_keywords = ["software engineer", "engineering", "developer", "programming", "code", "software development", "technical lead", "architect", "system design"]
+    engineering_count = sum(resume_lower.count(keyword) for keyword in engineering_keywords)
+    keyword_frequencies["engineering"] = engineering_count
+    
+    # Data Science keyword frequency analysis
+    data_science_keywords = ["data scientist", "data science", "machine learning", "ml", "analytics", "statistical", "modeling", "algorithm", "data analysis"]
+    data_science_count = sum(resume_lower.count(keyword) for keyword in data_science_keywords)
+    keyword_frequencies["data_science"] = data_science_count
+    
+    # Management keyword frequency analysis
+    management_keywords = ["manager", "management", "lead", "director", "head of", "vp", "chief", "team lead", "supervisor"]
+    management_count = sum(resume_lower.count(keyword) for keyword in management_keywords)
+    keyword_frequencies["management"] = management_count
+    
+    # Determine dominant theme based on keyword frequency
+    theme_scores = {
+        "product": product_count,
+        "engineering": engineering_count,
+        "data_science": data_science_count,
+        "management": management_count
+    }
+    dominant_theme = max(theme_scores, key=theme_scores.get) if max(theme_scores.values()) > 0 else None
+    
+    print(f"📊 Keyword frequencies: Product={product_count}, Engineering={engineering_count}, Data Science={data_science_count}, Management={management_count}")
+    print(f"🎯 Dominant theme: {dominant_theme} ({theme_scores[dominant_theme] if dominant_theme else 0} mentions)")
+    
+    # Extract current and past roles based on frequency analysis
+    roles = []
+    current_role = None
+    
+    # Determine primary role based on keyword frequency
+    if product_count >= 5:  # Strong product signal
+        roles.append("Product Management")
+        current_role = "Product Management"
+        print(f"🎯 Strong Product Management signal detected ({product_count} mentions)")
+    elif product_count >= 2:  # Moderate product signal
+        roles.append("Product Management")
+        if not current_role:
+            current_role = "Product Management"
+        print(f"🎯 Moderate Product Management signal detected ({product_count} mentions)")
+    
+    # Other role detection with frequency consideration
+    role_patterns = {
+        "Engineering Management": ["engineering manager", "engineering lead", "head of engineering", "vp engineering", "cto"],
+        "Software Engineering": ["software engineer", "developer", "programmer", "full stack", "backend", "frontend"],
+        "Data Science": ["data scientist", "machine learning engineer", "ai engineer", "data analyst"],
+        "Marketing": ["marketing manager", "digital marketing", "growth marketing", "marketing lead"],
+        "Sales": ["sales manager", "account manager", "business development", "sales lead"],
+        "Operations": ["operations manager", "ops", "business operations", "program manager"],
+        "Design": ["ux designer", "ui designer", "product designer", "design lead"],
+        "Finance": ["financial analyst", "finance manager", "controller", "cfo"],
+        "HR": ["hr manager", "people operations", "talent acquisition", "recruiter"]
+    }
+    
+    # Only add roles if they have sufficient frequency or explicit mentions
+    for role_name, keywords in role_patterns.items():
+        role_mentions = 0
+        for keyword in keywords:
+            role_mentions += resume_lower.count(keyword)
+        
+        # Add role only if it has meaningful presence
+        if role_mentions > 0:
+            if role_name == "Software Engineering" and engineering_count >= 3:
+                if role_name not in roles:
+                    roles.append(role_name)
+                if not current_role and engineering_count > product_count:
+                    current_role = role_name
+            elif role_name == "Data Science" and data_science_count >= 3:
+                if role_name not in roles:
+                    roles.append(role_name)
+                if not current_role and data_science_count > product_count:
+                    current_role = role_name
+            elif role_mentions >= 2:  # Other roles need at least 2 mentions
+                if role_name not in roles:
+                    roles.append(role_name)
+                if not current_role and role_mentions > product_count:
+                    current_role = role_name
+    
+    # Technical skills extraction - expanded for Product Management
+    tech_skills = []
+    tech_keywords = [
+        # Product Management skills
+        "roadmap", "user stories", "agile", "scrum", "kanban", "jira", "confluence",
+        "analytics", "a/b testing", "user research", "wireframing", "prototyping",
+        "product strategy", "go-to-market", "gtm", "product launch", "feature prioritization",
+        
+        # Technical skills
+        "python", "java", "javascript", "sql", "machine learning", "data analysis",
+        "aws", "azure", "docker", "kubernetes", "react", "angular", "node.js",
+        "tensorflow", "pytorch", "pandas", "numpy", "tableau", "power bi",
+        "git", "jenkins", "rest api", "microservices", "figma", "sketch"
+    ]
+    
+    for skill in tech_keywords:
+        if skill in resume_lower:
+            tech_skills.append(skill.title())
+    
+    # Experience level indicators
+    experience_indicators = []
+    if "senior" in resume_lower or "lead" in resume_lower:
+        experience_indicators.append("senior_level")
+    if "manager" in resume_lower or "director" in resume_lower or "head of" in resume_lower:
+        experience_indicators.append("management_experience")
+    if "vp" in resume_lower or "vice president" in resume_lower or "chief" in resume_lower:
+        experience_indicators.append("executive_level")
+    if "architect" in resume_lower:
+        experience_indicators.append("architecture_experience")
+    
+    # Leadership indicators
+    leadership_indicators = []
+    leadership_keywords = ["managed", "led", "supervised", "coordinated", "mentored", "trained", "built team", "hired", "scaled"]
+    for keyword in leadership_keywords:
+        if keyword in resume_lower:
+            leadership_indicators.append(keyword)
+    
+    # Industry indicators
+    industry_indicators = []
+    industry_keywords = {
+        "healthcare": ["healthcare", "medical", "hospital", "clinical", "pharma"],
+        "finance": ["finance", "banking", "investment", "trading", "fintech", "payments"],
+        "technology": ["software", "tech", "startup", "saas", "platform", "mobile app"],
+        "consulting": ["consulting", "advisory", "strategy", "implementation"],
+        "education": ["education", "university", "academic", "research", "edtech"],
+        "ecommerce": ["ecommerce", "e-commerce", "retail", "marketplace", "shopify"],
+        "media": ["media", "entertainment", "streaming", "content", "publishing"]
+    }
+    
+    for industry, keywords in industry_keywords.items():
+        if any(keyword in resume_lower for keyword in keywords):
+            industry_indicators.append(industry)
+    
+    return {
+        "skills": tech_skills,
+        "experience_indicators": experience_indicators,
+        "leadership_indicators": leadership_indicators,
+        "industry_indicators": industry_indicators,
+        "roles": roles,
+        "current_role": current_role,
+        "keyword_frequencies": keyword_frequencies,
+        "dominant_theme": dominant_theme
+    }
+
+def extract_linkedin_insights(linkedin_profile: str) -> Dict[str, Any]:
+    """Extract insights from LinkedIn profile URL or text"""
+    if not linkedin_profile:
+        return {"profile_strength": "unknown", "network_indicators": [], "activity_indicators": []}
+    
+    linkedin_lower = linkedin_profile.lower()
+    
+    # Profile strength indicators
+    profile_strength = "basic"
+    if "linkedin.com/in/" in linkedin_lower:
+        profile_strength = "active"
+    
+    # Network indicators
+    network_indicators = []
+    if "connections" in linkedin_lower or "network" in linkedin_lower:
+        network_indicators.append("active_networker")
+    
+    # Activity indicators
+    activity_indicators = []
+    activity_keywords = ["posts", "articles", "shares", "comments", "recommendations"]
+    for keyword in activity_keywords:
+        if keyword in linkedin_lower:
+            activity_indicators.append(keyword)
+    
+    return {
+        "profile_strength": profile_strength,
+        "network_indicators": network_indicators,
+        "activity_indicators": activity_indicators
+    }
+
+def get_career_field_categories() -> Dict[str, List[str]]:
+    """Define career field categories for consistency checking"""
+    return {
+        "technology": [
+            "software engineer", "data scientist", "machine learning", "devops", "cloud",
+            "cybersecurity", "full stack", "frontend", "backend", "qa engineer", "technical writer",
+            "solutions architect", "principal engineer", "staff engineer", "engineering manager",
+            "cto", "vp engineering", "cio", "technical program manager"
+        ],
+        "product_management": [
+            "product manager", "senior product manager", "principal product manager",
+            "group product manager", "director of product", "head of product", "vp product",
+            "chief product officer", "cpo", "junior product manager"
+        ],
+        "healthcare": [
+            "physician", "doctor", "nurse", "surgeon", "cardiologist", "pediatrician",
+            "physical therapist", "occupational therapist", "medical assistant",
+            "healthcare administrator", "clinical psychologist", "social worker",
+            "radiologic technologist", "medical records", "family medicine"
+        ],
+        "business_finance": [
+            "financial analyst", "accountant", "controller", "cfo", "investment", "banking",
+            "business analyst", "consultant", "operations manager", "project manager"
+        ],
+        "sales_marketing": [
+            "sales", "marketing", "digital marketing", "account manager", "business development",
+            "sales development representative", "marketing specialist", "growth marketing"
+        ],
+        "design": [
+            "ux designer", "ui designer", "product designer", "graphic designer", "design lead",
+            "senior ux designer", "creative director"
+        ],
+        "education": [
+            "teacher", "professor", "instructor", "education", "academic", "curriculum",
+            "school administrator", "principal"
+        ],
+        "skilled_trades": [
+            "electrician", "plumber", "carpenter", "mechanic", "technician", "welder",
+            "hvac", "construction", "maintenance"
+        ]
+    }
+
+def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
+    """Define how adjacent/related different career fields are (0=unrelated, 1=adjacent, 2=closely related)"""
+    return {
+        "technology": {
+            "product_management": 2,  # Very closely related
+            "business_finance": 1,    # Adjacent (tech companies need business skills)
+            "design": 2,              # Closely related (work together frequently)
+            "sales_marketing": 1,     # Adjacent (tech sales, growth)
+            "healthcare": 0,          # Unrelated
+            "education": 0,           # Unrelated
+            "skilled_trades": 0       # Unrelated
+        },
+        "product_management": {
+            "technology": 2,          # Very closely related
+            "business_finance": 2,    # Closely related (business strategy)
+            "design": 2,              # Closely related (product design)
+            "sales_marketing": 2,     # Closely related (go-to-market)
+            "healthcare": 0,          # Unrelated
+            "education": 0,           # Unrelated
+            "skilled_trades": 0       # Unrelated
+        },
+        "healthcare": {
+            "technology": 0,          # Unrelated (unless health tech)
+            "product_management": 0,  # Unrelated
+            "business_finance": 1,    # Adjacent (healthcare admin)
+            "design": 0,              # Unrelated
+            "sales_marketing": 0,     # Unrelated
+            "education": 1,           # Adjacent (medical education)
+            "skilled_trades": 0       # Unrelated
+        },
+        "business_finance": {
+            "technology": 1,          # Adjacent
+            "product_management": 2,  # Closely related
+            "healthcare": 1,          # Adjacent (healthcare finance)
+            "design": 0,              # Unrelated
+            "sales_marketing": 2,     # Closely related
+            "education": 1,           # Adjacent (education finance)
+            "skilled_trades": 1       # Adjacent (construction finance)
+        },
+        "sales_marketing": {
+            "technology": 1,          # Adjacent
+            "product_management": 2,  # Closely related
+            "healthcare": 0,          # Unrelated
+            "business_finance": 2,    # Closely related
+            "design": 1,              # Adjacent (marketing design)
+            "education": 0,           # Unrelated
+            "skilled_trades": 0       # Unrelated
+        },
+        "design": {
+            "technology": 2,          # Closely related
+            "product_management": 2,  # Closely related
+            "healthcare": 0,          # Unrelated
+            "business_finance": 0,    # Unrelated
+            "sales_marketing": 1,     # Adjacent
+            "education": 1,           # Adjacent (educational design)
+            "skilled_trades": 0       # Unrelated
+        },
+        "education": {
+            "technology": 0,          # Unrelated
+            "product_management": 0,  # Unrelated
+            "healthcare": 1,          # Adjacent
+            "business_finance": 1,    # Adjacent
+            "sales_marketing": 0,     # Unrelated
+            "design": 1,              # Adjacent
+            "skilled_trades": 0       # Unrelated
+        },
+        "skilled_trades": {
+            "technology": 0,          # Unrelated
+            "product_management": 0,  # Unrelated
+            "healthcare": 0,          # Unrelated
+            "business_finance": 1,    # Adjacent
+            "sales_marketing": 0,     # Unrelated
+            "design": 0,              # Unrelated
+            "education": 0            # Unrelated
+        }
+    }
+
+def identify_career_field(career: Dict[str, Any]) -> str:
+    """Identify which field a career belongs to based on title and description"""
+    career_title = career.get("title", "").lower()
+    career_desc = career.get("description", "").lower()
+    career_text = f"{career_title} {career_desc}"
+    
+    field_categories = get_career_field_categories()
+    
+    # Check each field for keyword matches
+    field_scores = {}
+    for field, keywords in field_categories.items():
+        score = 0
+        for keyword in keywords:
+            if keyword in career_text:
+                # Weight title matches higher than description matches
+                if keyword in career_title:
+                    score += 3
+                else:
+                    score += 1
+        field_scores[field] = score
+    
+    # Return the field with the highest score, or "unknown" if no matches
+    if max(field_scores.values()) > 0:
+        return max(field_scores, key=field_scores.get)
+    else:
+        return "unknown"
+
+def identify_user_field(resume_insights: Dict[str, Any], user_data: Dict[str, Any]) -> str:
+    """Identify the user's primary career field based on resume and profile data"""
+    keyword_frequencies = resume_insights.get("keyword_frequencies", {})
+    dominant_theme = resume_insights.get("dominant_theme")
+    current_role = resume_insights.get("current_role")
+    
+    # Strong signals from keyword frequency analysis
+    if keyword_frequencies.get("product", 0) >= 5:
+        return "product_management"
+    elif keyword_frequencies.get("engineering", 0) >= 5:
+        return "technology"
+    elif keyword_frequencies.get("data_science", 0) >= 5:
+        return "technology"  # Data science is part of technology field
+    elif keyword_frequencies.get("management", 0) >= 5:
+        # Need to determine what type of management
+        if current_role and "product" in current_role.lower():
+            return "product_management"
+        elif current_role and any(tech_word in current_role.lower() for tech_word in ["engineering", "technical", "software"]):
+            return "technology"
+        else:
+            return "business_finance"  # General management
+    
+    # Fallback to current role analysis
+    if current_role:
+        role_lower = current_role.lower()
+        if "product" in role_lower:
+            return "product_management"
+        elif any(tech_word in role_lower for tech_word in ["engineer", "developer", "data scientist", "technical"]):
+            return "technology"
+        elif any(biz_word in role_lower for biz_word in ["analyst", "consultant", "finance", "business"]):
+            return "business_finance"
+        elif any(design_word in role_lower for design_word in ["designer", "ux", "ui"]):
+            return "design"
+        elif any(sales_word in role_lower for sales_word in ["sales", "marketing", "account manager"]):
+            return "sales_marketing"
+    
+    # Default fallback based on technical skills
+    tech_skills = user_data.get("technical_skills", [])
+    if tech_skills:
+        tech_skill_text = " ".join(tech_skills).lower()
+        if any(product_skill in tech_skill_text for product_skill in ["product management", "roadmap", "user research"]):
+            return "product_management"
+        elif any(tech_skill in tech_skill_text for tech_skill in ["python", "javascript", "sql", "aws", "machine learning"]):
+            return "technology"
+    
+    return "unknown"
+
+def calculate_consistency_penalty(career_field: str, user_field: str, field_adjacency_map: Dict[str, Dict[str, int]],
+                                dominant_theme: str, keyword_frequencies: Dict[str, int]) -> int:
+    """Calculate penalty for career path consistency - negative values are penalties"""
+    
+    if career_field == "unknown" or user_field == "unknown":
+        return -5  # Small penalty for unknown fields
+    
+    if career_field == user_field:
+        return 0  # No penalty for same field
+    
+    # Get adjacency score (0=unrelated, 1=adjacent, 2=closely related)
+    adjacency_score = field_adjacency_map.get(user_field, {}).get(career_field, 0)
+    
+    # STRONG PENALTIES for completely unrelated fields
+    if adjacency_score == 0:
+        # Extra strong penalty if user has a dominant theme that's completely different
+        if dominant_theme and keyword_frequencies.get(dominant_theme, 0) >= 10:
+            penalty = -60  # Very strong penalty for users with clear specialization
+            print(f"🚫 STRONG CONSISTENCY PENALTY: {career_field} career for {user_field} user with strong {dominant_theme} theme ({keyword_frequencies.get(dominant_theme, 0)} mentions) = {penalty}")
+        elif dominant_theme and keyword_frequencies.get(dominant_theme, 0) >= 5:
+            penalty = -45  # Strong penalty for users with moderate specialization
+            print(f"🚫 MODERATE CONSISTENCY PENALTY: {career_field} career for {user_field} user with {dominant_theme} theme ({keyword_frequencies.get(dominant_theme, 0)} mentions) = {penalty}")
+        else:
+            penalty = -30  # Standard penalty for unrelated fields
+            print(f"🚫 STANDARD CONSISTENCY PENALTY: {career_field} career for {user_field} user = {penalty}")
+        return penalty
+    
+    # MODERATE PENALTIES for adjacent fields
+    elif adjacency_score == 1:
+        penalty = -10  # Small penalty for adjacent fields
+        print(f"⚠️ ADJACENT FIELD PENALTY: {career_field} career for {user_field} user = {penalty}")
+        return penalty
+    
+    # NO PENALTY for closely related fields
+    elif adjacency_score == 2:
+        print(f"✅ CLOSELY RELATED FIELDS: {career_field} career for {user_field} user = 0 penalty")
+        return 0
+    
+    return -5  # Default small penalty
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)

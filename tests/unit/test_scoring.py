@@ -14,13 +14,41 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from recommendation_engine.scoring import ScoringEngine
-from recommendation_engine.models import (
-    UserProfile, Career, UserSkill, RequiredSkill, SalaryRange,
-    PersonalInfo, AssessmentResults, ProfessionalData, Experience,
-    SkillLevel, InterestLevel, Demand, RecommendationScore
-)
-from recommendation_engine.config import ScoringConfig, ScoringWeights
+# Import using importlib to handle the hyphenated directory name
+import importlib.util
+
+# Load modules from recommendation-engine directory
+def load_module_from_path(module_name, file_path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+# Get the base path
+base_path = os.path.join(os.path.dirname(__file__), '..', '..', 'recommendation-engine')
+
+# Load the modules
+scoring_module = load_module_from_path("scoring", os.path.join(base_path, "scoring.py"))
+models_module = load_module_from_path("models", os.path.join(base_path, "models.py"))
+config_module = load_module_from_path("config", os.path.join(base_path, "config.py"))
+
+# Import the classes we need
+ScoringEngine = scoring_module.ScoringEngine
+UserProfile = models_module.UserProfile
+Career = models_module.Career
+UserSkill = models_module.UserSkill
+RequiredSkill = models_module.RequiredSkill
+SalaryRange = models_module.SalaryRange
+PersonalInfo = models_module.PersonalInfo
+AssessmentResults = models_module.AssessmentResults
+ProfessionalData = models_module.ProfessionalData
+Experience = models_module.Experience
+SkillLevel = models_module.SkillLevel
+InterestLevel = models_module.InterestLevel
+Demand = models_module.Demand
+RecommendationScore = models_module.RecommendationScore
+ScoringConfig = config_module.ScoringConfig
+ScoringWeights = config_module.ScoringWeights
 
 
 class TestScoringEngine(unittest.TestCase):

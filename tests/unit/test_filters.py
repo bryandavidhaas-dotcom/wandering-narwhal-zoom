@@ -14,13 +14,41 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from recommendation_engine.filters import FilterEngine
-from recommendation_engine.models import (
-    UserProfile, Career, Skill, UserSkill, RequiredSkill, SalaryRange,
-    PersonalInfo, AssessmentResults, ProfessionalData, Experience,
-    SkillLevel, InterestLevel, Demand, ExperienceLevel
-)
-from recommendation_engine.config import FilteringConfig
+# Import using importlib to handle the hyphenated directory name
+import importlib.util
+
+# Load modules from recommendation-engine directory
+def load_module_from_path(module_name, file_path):
+    spec = importlib.util.spec_from_file_location(module_name, file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+# Get the base path
+base_path = os.path.join(os.path.dirname(__file__), '..', '..', 'recommendation-engine')
+
+# Load the modules
+filters_module = load_module_from_path("filters", os.path.join(base_path, "filters.py"))
+models_module = load_module_from_path("models", os.path.join(base_path, "models.py"))
+config_module = load_module_from_path("config", os.path.join(base_path, "config.py"))
+
+# Import the classes we need
+FilterEngine = filters_module.FilterEngine
+UserProfile = models_module.UserProfile
+Career = models_module.Career
+Skill = models_module.Skill
+UserSkill = models_module.UserSkill
+RequiredSkill = models_module.RequiredSkill
+SalaryRange = models_module.SalaryRange
+PersonalInfo = models_module.PersonalInfo
+AssessmentResults = models_module.AssessmentResults
+ProfessionalData = models_module.ProfessionalData
+Experience = models_module.Experience
+SkillLevel = models_module.SkillLevel
+InterestLevel = models_module.InterestLevel
+Demand = models_module.Demand
+ExperienceLevel = models_module.ExperienceLevel
+FilteringConfig = config_module.FilteringConfig
 
 
 class TestFilterEngine(unittest.TestCase):
