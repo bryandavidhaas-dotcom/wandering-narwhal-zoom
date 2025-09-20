@@ -572,7 +572,7 @@ const Landing = () => {
               Comprehensive Career Coverage
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered system covers <span className="font-semibold text-blue-600">90+ careers</span> across major industries,
+              Our AI-powered system covers <span className="font-semibold text-blue-600">219 careers</span> across major industries,
               with more being added regularly to ensure comprehensive career exploration.
             </p>
           </div>
@@ -597,35 +597,35 @@ const Landing = () => {
                         <Brain className="h-3 w-3 mr-1" />
                         Technology & Engineering
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">33 careers</span>
+                      <span className="text-sm text-green-600 font-medium">55 careers</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
                         <User className="h-3 w-3 mr-1" />
                         Healthcare & Medical
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">16 careers</span>
+                      <span className="text-sm text-green-600 font-medium">40 careers</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
                         <Building2 className="h-3 w-3 mr-1" />
                         Skilled Trades & Construction
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">16 careers</span>
+                      <span className="text-sm text-green-600 font-medium">40 careers</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
                         <GraduationCap className="h-3 w-3 mr-1" />
                         Education & Training
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">10 careers</span>
+                      <span className="text-sm text-green-600 font-medium">40 careers</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
                         <TrendingUp className="h-3 w-3 mr-1" />
                         Business & Finance
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">15 careers</span>
+                      <span className="text-sm text-green-600 font-medium">44 careers</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
@@ -702,7 +702,7 @@ const Landing = () => {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center space-x-8 bg-white rounded-lg p-6 shadow-sm border">
                 <div>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">90+</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">219</div>
                   <p className="text-sm text-gray-600 font-medium">Careers Available Now</p>
                 </div>
                 <div className="w-px h-12 bg-gray-300"></div>
