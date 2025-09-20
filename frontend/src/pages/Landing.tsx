@@ -572,7 +572,7 @@ const Landing = () => {
               Comprehensive Career Coverage
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered system covers <span className="font-semibold text-blue-600">219 careers</span> across major industries,
+              Our AI-powered system covers <span className="font-semibold text-blue-600">240 careers</span> across major industries,
               with more being added regularly to ensure comprehensive career exploration.
             </p>
           </div>
@@ -634,6 +634,13 @@ const Landing = () => {
                       </Badge>
                       <span className="text-sm text-green-600 font-medium">7 careers</span>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <Award className="h-3 w-3 mr-1" />
+                        Legal & Law
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">21 careers</span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -651,13 +658,6 @@ const Landing = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
-                        <Award className="h-3 w-3 mr-1" />
-                        Legal & Law
-                      </Badge>
-                      <span className="text-sm text-blue-600 font-medium">~15 careers</span>
-                    </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
                         <Briefcase className="h-3 w-3 mr-1" />
@@ -702,7 +702,7 @@ const Landing = () => {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center space-x-8 bg-white rounded-lg p-6 shadow-sm border">
                 <div>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">219</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">240</div>
                   <p className="text-sm text-gray-600 font-medium">Careers Available Now</p>
                 </div>
                 <div className="w-px h-12 bg-gray-300"></div>
