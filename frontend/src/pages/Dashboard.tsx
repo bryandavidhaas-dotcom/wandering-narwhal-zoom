@@ -118,6 +118,7 @@ import {
 } from "lucide-react";
 import { showSuccess } from "@/utils/toast";
 import jsPDF from 'jspdf';
+import { Logo } from "@/components/Logo";
 
 // Import types only - we'll use the backend API for recommendations
 import { type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
@@ -2128,10 +2129,7 @@ const Dashboard = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-3">
-              <Search className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-semibold text-gray-900">Career Finder</span>
-            </div>
+            <Logo size="lg" />
             
             <div className="flex items-center space-x-4">
               <Avatar>

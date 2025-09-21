@@ -5,8 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
+import { Logo } from "@/components/Logo";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -153,9 +154,8 @@ const Auth = () => {
             Back to Home
           </Button>
           
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Search className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-bold text-gray-900">Career Finder</span>
+          <div className="flex justify-center mb-4">
+            <Logo size="lg" />
           </div>
         </div>
 

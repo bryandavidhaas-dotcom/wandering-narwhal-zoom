@@ -9,6 +9,7 @@ from skilled_trades_careers import SKILLED_TRADES_CAREERS
 from education_careers import EDUCATION_CAREERS
 from business_finance_careers import BUSINESS_FINANCE_CAREERS
 from legal_law_careers import LEGAL_LAW_CAREERS
+from creative_arts_careers import CREATIVE_ARTS_CAREERS
 
 # Combine all career databases
 COMPREHENSIVE_CAREERS = [
@@ -1065,7 +1066,7 @@ COMPREHENSIVE_CAREERS = [
         "minSalary": 125000,
         "maxSalary": 175000
     }
-] + HEALTHCARE_CAREERS + SKILLED_TRADES_CAREERS + EDUCATION_CAREERS + BUSINESS_FINANCE_CAREERS + LEGAL_LAW_CAREERS
+] + HEALTHCARE_CAREERS + SKILLED_TRADES_CAREERS + EDUCATION_CAREERS + BUSINESS_FINANCE_CAREERS + LEGAL_LAW_CAREERS + CREATIVE_ARTS_CAREERS
 
 def get_careers_by_experience_level(experience_years: int) -> list:
     """Filter careers by experience level with more inclusive ranges for better matching"""
