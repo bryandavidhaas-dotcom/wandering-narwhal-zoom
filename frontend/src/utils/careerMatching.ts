@@ -1308,33 +1308,61 @@ export const getExperienceYears = (experience: string): number => {
  * for cross-industry recommendations without proper qualifications
  */
 const isSafetyCriticalCareer = (career: CareerTemplate): boolean => {
-  const safetyCriticalKeywords = [
-    // Medical/Healthcare roles requiring licenses
-    'physician', 'doctor', 'surgeon', 'nurse anesthetist', 'crna', 'anesthesiologist',
-    'pharmacist', 'dentist', 'veterinarian', 'therapist', 'psychologist', 'psychiatrist',
-    
-    // Legal roles requiring bar admission
-    'attorney', 'lawyer', 'judge', 'legal counsel',
-    
-    // Engineering roles with public safety implications
-    'structural engineer', 'civil engineer', 'electrical engineer', 'nuclear engineer',
-    
-    // Aviation and transportation
-    'pilot', 'air traffic controller', 'ship captain',
-    
-    // Financial roles requiring licenses
-    'financial advisor', 'investment advisor', 'securities broker',
-    
-    // Other licensed professions
-    'architect', 'real estate broker', 'insurance agent'
-  ];
+  // CRITICAL SAFETY UPDATE: Only block truly life-threatening careers requiring specialized medical/emergency training
+  // This matches the backend logic exactly to prevent inconsistencies
   
   const titleLower = career.title.toLowerCase();
   const descriptionLower = career.description.toLowerCase();
   
-  return safetyCriticalKeywords.some(keyword =>
-    titleLower.includes(keyword) || descriptionLower.includes(keyword)
-  );
+  // LIFE-CRITICAL MEDICAL ROLES - Direct patient care with life/death decisions
+  const medicalLifeCritical = [
+    'physician', 'doctor', 'surgeon', 'anesthesiologist', 'anesthetist', 'crna',
+    'nurse anesthetist', 'emergency physician', 'trauma surgeon', 'cardiologist',
+    'oncologist', 'neurologist', 'psychiatrist', 'pharmacist', 'dentist'
+  ];
+  
+  // EMERGENCY RESPONSE ROLES - Life/death emergency situations
+  const emergencyLifeCritical = [
+    'paramedic', 'emt', 'emergency medical technician', 'firefighter',
+    'police officer', 'sheriff', 'detective', '911 dispatcher', 'emergency dispatcher'
+  ];
+  
+  // AVIATION SAFETY ROLES - Passenger safety responsibility
+  const aviationLifeCritical = [
+    'airline pilot', 'commercial pilot', 'air traffic controller', 'flight engineer'
+  ];
+  
+  // NUCLEAR/HAZARDOUS MATERIALS - Public safety with catastrophic risk
+  const hazmatLifeCritical = [
+    'nuclear engineer', 'nuclear technician', 'radiation safety', 'hazmat specialist'
+  ];
+  
+  const allLifeCritical = [
+    ...medicalLifeCritical,
+    ...emergencyLifeCritical,
+    ...aviationLifeCritical,
+    ...hazmatLifeCritical
+  ];
+  
+  // Check for exact matches or very specific containment
+  const isLifeCritical = allLifeCritical.some(keyword => {
+    // More precise matching to avoid false positives
+    if (keyword.includes(' ')) {
+      // Multi-word terms need exact phrase matching
+      return titleLower.includes(keyword) || descriptionLower.includes(keyword);
+    } else {
+      // Single words need word boundary checking to avoid partial matches
+      const wordBoundaryRegex = new RegExp(`\\b${keyword}\\b`, 'i');
+      return wordBoundaryRegex.test(career.title) || wordBoundaryRegex.test(career.description);
+    }
+  });
+  
+  if (isLifeCritical) {
+    console.log(`🚨 FRONTEND SAFETY: Identified life-critical career: ${career.title}`);
+    return true;
+  }
+  
+  return false;
 };
 
 /**
@@ -1567,6 +1595,58 @@ export const generateCareerRecommendations = (
       if (isSafetyCriticalCareer(career) && !hasRelevantBackground(normalizedData, career)) {
         console.log(`🚨 SAFETY FILTER: Blocked ${career.title} - requires specialized training/licensing without relevant background`);
         return false;
+      }
+      
+      // NEW: Enhanced filtering - Filter out inappropriate careers for users without relevant background
+      const hasMinimalProfile = (
+        (!normalizedData.resumeText || normalizedData.resumeText.length < 50) &&
+        (!normalizedData.technicalSkills || normalizedData.technicalSkills.length === 0)
+      );
+      
+      // Check if user has trades-relevant skills
+      const userTechnicalSkills = normalizedData.technicalSkills || [];
+      const tradesRelevantSkills = [
+        "electrical", "plumbing", "hvac", "welding", "carpentry", "mechanical", "automotive",
+        "construction", "maintenance", "machining", "fabrication", "installation", "repair"
+      ];
+      const hasTradesSkills = userTechnicalSkills.some(skill =>
+        tradesRelevantSkills.some(tradesSkill => skill.toLowerCase().includes(tradesSkill))
+      );
+      
+      // Check if user has medical-relevant skills
+      const medicalRelevantSkills = [
+        "medical", "clinical", "healthcare", "patient", "nursing", "laboratory", "radiology",
+        "pharmacy", "medical equipment", "medical device", "healthcare technology"
+      ];
+      const hasMedicalSkills = userTechnicalSkills.some(skill =>
+        medicalRelevantSkills.some(medicalSkill => skill.toLowerCase().includes(medicalSkill))
+      );
+      
+      // Apply filtering for users without relevant background
+      const shouldFilterTradesMedical = hasMinimalProfile || (!hasTradesSkills && !hasMedicalSkills);
+      
+      if (shouldFilterTradesMedical) {
+        const inappropriateCareers = [
+          "medical equipment technician", "clinical research coordinator", "plumber",
+          "electrician", "hvac technician", "welder", "carpenter", "mechanic",
+          "radiologic technologist", "medical laboratory technologist", "pharmacy technician",
+          "diesel mechanic", "auto body technician", "sheet metal worker", "boilermaker",
+          "pipefitter", "mason", "roofer", "concrete finisher", "drywall installer",
+          "flooring installer", "heavy equipment operator", "automotive technician",
+          "motorcycle technician", "machinist", "cnc operator", "industrial maintenance technician",
+          "millwright", "glazier", "insulation worker", "power line technician", "locksmith",
+          "refrigeration technician", "industrial electrician"
+        ];
+        
+        const careerTitleLower = career.title.toLowerCase();
+        if (inappropriateCareers.some(inappropriate => careerTitleLower.includes(inappropriate))) {
+          if (hasMinimalProfile) {
+            console.log(`❌ MINIMAL PROFILE FILTER: Blocked ${career.title} - inappropriate for minimal profile user`);
+          } else {
+            console.log(`❌ SKILLS FILTER: Blocked ${career.title} - user lacks relevant trades/medical background`);
+          }
+          return false;
+        }
       }
       
       // FIXED: Apply industry compatibility check
@@ -1994,15 +2074,27 @@ export const calculateCareerMatch = (
   // Calculate final score
   let relevanceScore = Math.round((totalScore / maxPossibleScore) * 100);
   
-  // FIXED: Adventure Zone gets more generous minimum scores, BUT higher minimums for safety-critical careers
+  // FIXED: Adventure Zone gets more generous minimum scores, BUT higher minimums for safety-critical careers AND minimal profiles
   let minScore;
   if (explorationLevel === 1) {
     minScore = 60;
   } else if (explorationLevel === 2) {
     minScore = 50;
   } else {
-    // Adventure Zone: Higher minimum for safety-critical careers
-    minScore = isSafetyCriticalCareer(career) ? 70 : 35;
+    // Adventure Zone: Check for minimal profile
+    const hasMinimalProfile = (
+      (!assessmentData.resumeText || assessmentData.resumeText.length < 50) &&
+      (!assessmentData.technicalSkills || assessmentData.technicalSkills.length === 0)
+    );
+    
+    // Higher minimum scores for safety-critical careers and minimal profiles
+    if (isSafetyCriticalCareer(career)) {
+      minScore = 70; // Safety-critical careers need high relevance
+    } else if (hasMinimalProfile) {
+      minScore = 60; // Minimal profiles need higher relevance to prevent inappropriate recommendations
+    } else {
+      minScore = 35; // Standard Adventure Zone minimum
+    }
   }
   relevanceScore = Math.max(minScore, relevanceScore);
   

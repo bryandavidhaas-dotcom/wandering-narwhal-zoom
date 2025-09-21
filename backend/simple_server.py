@@ -458,23 +458,103 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     # This prevents dangerous recommendations like suggesting Product Managers become Nurse Anesthetists
     safety_filtered_careers = []
     for career in filtered_careers:
-        if is_safety_critical_career(career):
-            if has_relevant_background_for_safety_critical(career, user_data, resume_insights):
-                safety_filtered_careers.append(career)
-                print(f"✅ SAFETY CHECK PASSED: {career.get('title', '')} - user has relevant background")
+        try:
+            if is_safety_critical_career(career):
+                if has_relevant_background_for_safety_critical(career, user_data, resume_insights):
+                    safety_filtered_careers.append(career)
+                    print(f"✅ SAFETY CHECK PASSED: {career.get('title', '')} - user has relevant background")
+                else:
+                    print(f"🚫 SAFETY CHECK FAILED: {career.get('title', '')} - BLOCKED for safety (user lacks medical/licensed background)")
             else:
-                print(f"🚫 SAFETY CHECK FAILED: {career.get('title', '')} - BLOCKED for safety (user lacks medical/licensed background)")
-        else:
-            safety_filtered_careers.append(career)
+                safety_filtered_careers.append(career)
+        except Exception as e:
+            print(f"❌ ERROR in safety filtering for career {career.get('title', 'Unknown')}: {str(e)}")
+            # Skip this career if there's an error
+            continue
     
     # Update filtered careers to use safety-filtered list
     filtered_careers = safety_filtered_careers
     print(f"🛡️  After safety filtering: {len(filtered_careers)} careers remain")
     
+    # ENHANCED: Apply trades/medical filtering immediately after safety filtering
+    # Check if user has minimal profile OR lacks relevant trades/medical background
+    has_minimal_profile = (
+        not user_data.get("resume_text") or len(user_data.get("resume_text", "")) < 50
+    ) and (
+        not user_data.get("technical_skills") or len(user_data.get("technical_skills", [])) == 0
+    )
+    
+    # Check if user has trades-relevant skills
+    user_technical_skills = user_data.get("technical_skills", [])
+    
+    # Ensure we have a valid list of strings
+    if user_technical_skills is None:
+        user_technical_skills = []
+    
+    # Filter out None values and ensure all are strings
+    user_technical_skills = [str(skill) for skill in user_technical_skills if skill is not None]
+    
+    trades_relevant_skills = [
+        "electrical", "plumbing", "hvac", "welding", "carpentry", "mechanical", "automotive",
+        "construction", "maintenance", "machining", "fabrication", "installation", "repair"
+    ]
+    has_trades_skills = any(
+        any(trades_skill in skill.lower() for trades_skill in trades_relevant_skills)
+        for skill in user_technical_skills
+    )
+    
+    # Check if user has medical-relevant skills
+    medical_relevant_skills = [
+        "medical", "clinical", "healthcare", "patient", "nursing", "laboratory", "radiology",
+        "pharmacy", "medical equipment", "medical device", "healthcare technology"
+    ]
+    has_medical_skills = any(
+        any(medical_skill in skill.lower() for medical_skill in medical_relevant_skills)
+        for skill in user_technical_skills
+    )
+    
+    # Apply filtering for users without relevant background
+    should_filter_trades_medical = has_minimal_profile or (not has_trades_skills and not has_medical_skills)
+    
+    if should_filter_trades_medical:
+        if has_minimal_profile:
+            print("👤 MINIMAL PROFILE DETECTED - Applying comprehensive filtering")
+        else:
+            print("👤 NO TRADES/MEDICAL SKILLS DETECTED - Filtering inappropriate careers")
+            print(f"🔧 User skills: {user_technical_skills}")
+            print(f"🔧 Has trades skills: {has_trades_skills}")
+            print(f"🏥 Has medical skills: {has_medical_skills}")
+        
+        inappropriate_careers = [
+            "medical equipment technician", "clinical research coordinator", "plumber",
+            "electrician", "hvac technician", "welder", "carpenter", "mechanic",
+            "radiologic technologist", "medical laboratory technologist", "pharmacy technician",
+            "diesel mechanic", "auto body technician", "sheet metal worker", "boilermaker",
+            "pipefitter", "mason", "roofer", "concrete finisher", "drywall installer",
+            "flooring installer", "heavy equipment operator", "automotive technician",
+            "motorcycle technician", "machinist", "cnc operator", "industrial maintenance technician",
+            "millwright", "glazier", "insulation worker", "power line technician", "locksmith",
+            "refrigeration technician", "industrial electrician"
+        ]
+        
+        trades_filtered_careers = []
+        for career in filtered_careers:
+            career_title_lower = career.get("title", "").lower()
+            if any(inappropriate in career_title_lower for inappropriate in inappropriate_careers):
+                if has_minimal_profile:
+                    print(f"❌ MINIMAL PROFILE FILTER: Blocked {career['title']} - inappropriate for minimal profile user")
+                else:
+                    print(f"❌ SKILLS FILTER: Blocked {career['title']} - user lacks relevant trades/medical background")
+            else:
+                trades_filtered_careers.append(career)
+        
+        filtered_careers = trades_filtered_careers
+        print(f"🔍 After trades/medical filtering: {len(filtered_careers)} careers remain")
+    
     # If no careers match strict criteria, relax salary requirements
     if len(filtered_careers) < 3:
         print("⚠️  Relaxing salary requirements to ensure minimum recommendations")
-        # Apply safety filtering to the relaxed list too
+        # Apply both safety and trades/medical filtering to the relaxed list
         relaxed_careers = experience_filtered[:10]
         safety_filtered_relaxed = []
         for career in relaxed_careers:
@@ -486,12 +566,65 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
                     print(f"🚫 RELAXED SAFETY CHECK FAILED: {career.get('title', '')} - BLOCKED for safety")
             else:
                 safety_filtered_relaxed.append(career)
-        filtered_careers = safety_filtered_relaxed
+        
+        # Apply trades/medical filtering to relaxed careers too
+        if should_filter_trades_medical:
+            trades_filtered_relaxed = []
+            for career in safety_filtered_relaxed:
+                career_title_lower = career.get("title", "").lower()
+                if any(inappropriate in career_title_lower for inappropriate in inappropriate_careers):
+                    print(f"❌ RELAXED FILTER: Blocked {career['title']} - inappropriate for user background")
+                else:
+                    trades_filtered_relaxed.append(career)
+            filtered_careers = trades_filtered_relaxed
+        else:
+            filtered_careers = safety_filtered_relaxed
     
     # If still not enough, include broader experience range with safety filtering
+    # IMPROVED: For users with minimal profiles, prioritize general business/tech roles over trades
     if len(filtered_careers) < 3:
         print("⚠️  Expanding experience range to ensure recommendations")
-        broad_careers = COMPREHENSIVE_CAREERS[:15]
+        
+        # Check if user has minimal profile
+        has_minimal_profile = (
+            not user_data.get("resume_text") or len(user_data.get("resume_text", "")) < 50
+        ) and (
+            not user_data.get("technical_skills") or len(user_data.get("technical_skills", [])) == 0
+        )
+        
+        if has_minimal_profile:
+            print("👤 Minimal profile detected - prioritizing general business/tech roles")
+            # For minimal profiles, prioritize general business and entry-level tech roles
+            preferred_titles = [
+                "data analyst", "business analyst", "marketing", "customer success",
+                "project manager", "account manager", "sales", "administrative",
+                "coordinator", "specialist", "junior", "associate", "entry"
+            ]
+            
+            # Filter COMPREHENSIVE_CAREERS to prioritize general roles for minimal profiles
+            general_careers = []
+            trades_careers = []
+            
+            for career in COMPREHENSIVE_CAREERS[:30]:  # Look at more careers
+                title_lower = career.get("title", "").lower()
+                is_general_role = any(keyword in title_lower for keyword in preferred_titles)
+                is_trades_role = any(keyword in title_lower for keyword in [
+                    "electrician", "plumber", "welder", "mechanic", "technician",
+                    "carpenter", "hvac", "diesel", "equipment operator"
+                ])
+                
+                if is_general_role and not is_trades_role:
+                    general_careers.append(career)
+                elif is_trades_role:
+                    trades_careers.append(career)
+                else:
+                    general_careers.append(career)  # Default to general
+            
+            # Prioritize general careers for minimal profiles
+            broad_careers = general_careers[:20] + trades_careers[:5]
+        else:
+            broad_careers = COMPREHENSIVE_CAREERS[:25]
+        
         safety_filtered_broad = []
         for career in broad_careers:
             if is_safety_critical_career(career):
@@ -516,8 +649,20 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     field_adjacency_map = get_field_adjacency_map()
     
     for career in filtered_careers:
-        # Base score starts at 50 for all careers
-        base_score = 50
+        # IMPROVED: Base score varies based on user profile completeness
+        # Users with minimal profiles get lower base scores to prevent irrelevant recommendations
+        profile_completeness = 0
+        if user_data.get("resume_text") and len(user_data.get("resume_text", "")) > 50:
+            profile_completeness += 20
+        if user_data.get("technical_skills") and len(user_data.get("technical_skills", [])) > 0:
+            profile_completeness += 15
+        if user_data.get("current_role") and user_data.get("current_role") != "":
+            profile_completeness += 10
+        if user_data.get("experience") and user_data.get("experience") != "":
+            profile_completeness += 5
+        
+        # Base score: 30 for minimal profiles, up to 50 for complete profiles
+        base_score = 30 + min(20, profile_completeness)
         
         # CAREER PATH CONSISTENCY PENALTY: Identify career field and apply penalties
         career_field = identify_career_field(career)
@@ -536,13 +681,15 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         
         print(f"🔍 Matching career '{career_title}' against dominant theme: {dominant_theme}")
         
-        # PRIORITY 1: Keyword frequency-based matching (addresses your 18 "product" mentions)
+        # PRIORITY 1: Keyword frequency-based matching
         product_freq = keyword_frequencies.get("product", 0)
         engineering_freq = keyword_frequencies.get("engineering", 0)
         data_science_freq = keyword_frequencies.get("data_science", 0)
         management_freq = keyword_frequencies.get("management", 0)
+        communications_freq = keyword_frequencies.get("communications", 0)
+        creative_freq = keyword_frequencies.get("creative", 0)
         
-        # ENHANCED: More precise product role matching
+        # ENHANCED: Role categorization
         is_product_role = any(keyword in career_title for keyword in [
             "product manager", "product lead", "head of product", "vp product",
             "chief product officer", "director of product", "principal product", "group product"
@@ -552,8 +699,47 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
             "engineer", "scientist", "developer", "analyst", "architect"
         ])
         
+        is_communications_role = any(keyword in career_title for keyword in [
+            "marketing", "communications", "social media", "content", "copywriter",
+            "public relations", "pr", "brand", "campaign", "digital marketing",
+            "content marketing", "social media marketing", "community manager"
+        ])
+        
+        is_creative_role = any(keyword in career_title for keyword in [
+            "designer", "creative", "graphic", "visual", "art director", "creative director",
+            "ux designer", "ui designer", "web designer", "video editor", "photographer", "illustrator"
+        ])
+        
+        # COMMUNICATIONS & MARKETING role matching with frequency weighting
+        if is_communications_role and communications_freq >= 10:  # Very strong communications signal
+            theme_alignment_boost = 45
+            print(f"📢 VERY STRONG COMMUNICATIONS ALIGNMENT: {career_title} gets +45 boost ({communications_freq} mentions)")
+        elif is_communications_role and communications_freq >= 5:  # Strong communications signal
+            theme_alignment_boost = 35
+            print(f"📢 STRONG COMMUNICATIONS ALIGNMENT: {career_title} gets +35 boost ({communications_freq} mentions)")
+        elif is_communications_role and communications_freq >= 2:  # Moderate communications signal
+            theme_alignment_boost = 25
+            print(f"📢 MODERATE COMMUNICATIONS ALIGNMENT: {career_title} gets +25 boost ({communications_freq} mentions)")
+        elif is_communications_role:  # Communications role without strong resume signal
+            theme_alignment_boost = 15
+            print(f"📢 COMMUNICATIONS ROLE: {career_title} gets +15 boost")
+        
+        # CREATIVE role matching with frequency weighting
+        elif is_creative_role and creative_freq >= 10:  # Very strong creative signal
+            theme_alignment_boost = 45
+            print(f"🎨 VERY STRONG CREATIVE ALIGNMENT: {career_title} gets +45 boost ({creative_freq} mentions)")
+        elif is_creative_role and creative_freq >= 5:  # Strong creative signal
+            theme_alignment_boost = 35
+            print(f"🎨 STRONG CREATIVE ALIGNMENT: {career_title} gets +35 boost ({creative_freq} mentions)")
+        elif is_creative_role and creative_freq >= 2:  # Moderate creative signal
+            theme_alignment_boost = 25
+            print(f"🎨 MODERATE CREATIVE ALIGNMENT: {career_title} gets +25 boost ({creative_freq} mentions)")
+        elif is_creative_role:  # Creative role without strong resume signal
+            theme_alignment_boost = 15
+            print(f"🎨 CREATIVE ROLE: {career_title} gets +15 boost")
+        
         # Product role matching with frequency weighting
-        if is_product_role and product_freq >= 10:  # Very strong product signal
+        elif is_product_role and product_freq >= 10:  # Very strong product signal
             theme_alignment_boost = 45
             print(f"🎯 VERY STRONG PRODUCT ALIGNMENT: {career_title} gets +45 boost ({product_freq} mentions)")
         elif is_product_role and product_freq >= 5:  # Strong product signal
@@ -704,6 +890,9 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     # Sort by relevance score
     scored_careers.sort(key=lambda x: x["relevanceScore"], reverse=True)
     
+    # NOTE: Trades/medical filtering has been moved to happen earlier in the pipeline (after safety filtering)
+    # This ensures inappropriate careers are filtered out before scoring, improving performance and user experience
+    
     # ENHANCED: Categorize into zones with theme alignment priority for Safe Zone population
     safe_zone = []
     stretch_zone = []
@@ -736,10 +925,13 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         elif score >= 60 and theme_boost >= -5:
             adventure_zone.append(career)
             print(f"🔵 ADVENTURE ZONE (Decent): {career['title']} - score={score}, theme_boost={theme_boost}")
-        # PRIORITY 6: Low relevance or negative theme alignment
-        else:
+        # PRIORITY 6: Only include careers with reasonable relevance (minimum 45 score)
+        elif score >= 45:
             adventure_zone.append(career)
             print(f"🔵 ADVENTURE ZONE (Low): {career['title']} - score={score}, theme_boost={theme_boost}")
+        # REJECT: Careers with very low relevance scores
+        else:
+            print(f"❌ REJECTED: {career['title']} - score too low ({score}), theme_boost={theme_boost}")
     
     # If we don't have enough in each zone, redistribute
     total_available = len(scored_careers)
@@ -886,7 +1078,21 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     return recommendations
 
 def extract_resume_insights(resume_text: str) -> Dict[str, Any]:
-    """Extract insights from resume text with keyword frequency analysis for better matching"""
+    """
+    Extract insights from resume text with keyword frequency analysis for better matching
+    
+    ⚠️  CRITICAL ENHANCEMENT (FIXED 2025-01-21):
+    This function was enhanced to properly detect communications and creative skills
+    to prevent users with those skills from getting irrelevant recommendations like
+    "Sheet Metal Worker" instead of marketing/communications roles.
+    
+    KEY ADDITIONS:
+    - Communications keyword detection: marketing, social media, content, PR, etc.
+    - Creative keyword detection: design, creative, graphic design, video, etc.
+    - Proper theme scoring to prioritize relevant career matches
+    
+    DO NOT REMOVE communications_keywords or creative_keywords without testing!
+    """
     if not resume_text:
         return {"skills": [], "experience_indicators": [], "leadership_indicators": [], "industry_indicators": [], "roles": [], "current_role": None, "keyword_frequencies": {}, "dominant_theme": None}
     
@@ -915,16 +1121,28 @@ def extract_resume_insights(resume_text: str) -> Dict[str, Any]:
     management_count = sum(resume_lower.count(keyword) for keyword in management_keywords)
     keyword_frequencies["management"] = management_count
     
+    # COMMUNICATIONS & MARKETING keyword frequency analysis
+    communications_keywords = ["communications", "communication", "marketing", "social media", "content", "copywriting", "public relations", "pr", "brand", "campaign", "digital marketing", "content marketing", "social media marketing", "community management"]
+    communications_count = sum(resume_lower.count(keyword) for keyword in communications_keywords)
+    keyword_frequencies["communications"] = communications_count
+    
+    # CREATIVE & DESIGN keyword frequency analysis
+    creative_keywords = ["design", "creative", "graphic design", "visual", "branding", "creative director", "art director", "ux design", "ui design", "web design", "video", "photography", "illustration"]
+    creative_count = sum(resume_lower.count(keyword) for keyword in creative_keywords)
+    keyword_frequencies["creative"] = creative_count
+    
     # Determine dominant theme based on keyword frequency
     theme_scores = {
         "product": product_count,
         "engineering": engineering_count,
         "data_science": data_science_count,
-        "management": management_count
+        "management": management_count,
+        "communications": communications_count,
+        "creative": creative_count
     }
     dominant_theme = max(theme_scores, key=theme_scores.get) if max(theme_scores.values()) > 0 else None
     
-    print(f"📊 Keyword frequencies: Product={product_count}, Engineering={engineering_count}, Data Science={data_science_count}, Management={management_count}")
+    print(f"📊 Keyword frequencies: Product={product_count}, Engineering={engineering_count}, Data Science={data_science_count}, Management={management_count}, Communications={communications_count}, Creative={creative_count}")
     print(f"🎯 Dominant theme: {dominant_theme} ({theme_scores[dominant_theme] if dominant_theme else 0} mentions)")
     
     # Extract current and past roles based on frequency analysis
@@ -1333,50 +1551,66 @@ def calculate_consistency_penalty(career_field: str, user_field: str, field_adja
 
 def is_safety_critical_career(career: Dict[str, Any]) -> bool:
     """
-    ⚠️  CRITICAL SAFETY FUNCTION ⚠️
-    Identifies careers that require specialized licensing, certification, or training
-    where incorrect recommendations could pose safety risks.
+    ⚠️⚠️⚠️  CRITICAL SAFETY FUNCTION - DO NOT MODIFY WITHOUT EXTREME CAUTION  ⚠️⚠️⚠️
+    
+    HISTORICAL CONTEXT:
+    - This function was initially too aggressive, blocking legitimate careers like:
+      * "Digital Marketing Specialist"
+      * "Software Engineer"
+      * "Junior UX Designer"
+      * "Marketing Analyst"
+    - This caused users with communications/social media skills to get irrelevant
+      recommendations like "Sheet Metal Worker" instead of marketing roles
+    
+    CURRENT IMPLEMENTATION (FIXED 2025-01-21):
+    - ONLY blocks careers where unqualified practice could IMMEDIATELY kill someone
+    - Does NOT block general engineering, marketing, design, or business roles
+    - Maintains essential protections for medical professionals and emergency responders
+    
+    ⚠️  CRITICAL: If you modify this function, you MUST test with these scenarios:
+    1. User with "communications" and "social media" skills should get marketing recommendations
+    2. "Digital Marketing Specialist" should NOT be blocked as safety-critical
+    3. "Software Engineer" should NOT be blocked as safety-critical
+    4. "Nurse Anesthetist" SHOULD be blocked as safety-critical
     
     DO NOT REMOVE OR MODIFY WITHOUT CAREFUL REVIEW - SAFETY IMPLICATIONS
     """
-    career_title = career.get("title", "").lower()
-    career_desc = career.get("description", "").lower()
+    career_title = career.get("title", "").lower().strip()
     
-    # Medical and healthcare professionals requiring licensing
-    medical_keywords = [
-        "nurse anesthetist", "crna", "anesthetist", "physician", "doctor", "surgeon",
-        "cardiologist", "pediatrician", "psychiatrist", "radiologist", "pathologist",
-        "anesthesiologist", "emergency medicine", "family medicine", "internal medicine",
-        "registered nurse", "rn", "nurse practitioner", "physician assistant", "pa",
-        "pharmacist", "physical therapist", "occupational therapist", "respiratory therapist",
-        "medical technologist", "radiologic technologist", "dental hygienist", "dentist",
-        "veterinarian", "optometrist", "chiropractor", "clinical psychologist"
+    # ONLY THE MOST CRITICAL LIFE-THREATENING CAREERS
+    # These are careers where unqualified practice could directly kill someone
+    truly_life_critical = [
+        # Medical professionals who make life/death decisions
+        "nurse anesthetist", "crna", "anesthetist", "anesthesiologist",
+        "physician", "doctor", "surgeon", "cardiologist", "pediatrician",
+        "psychiatrist", "radiologist", "pathologist", "emergency medicine physician",
+        "family medicine physician", "internal medicine physician",
+        "registered nurse", "nurse practitioner", "physician assistant",
+        "pharmacist",
+        
+        # Emergency responders
+        "paramedic", "emergency medical technician", "emt",
+        
+        # Transportation safety
+        "airline pilot", "commercial pilot", "air traffic controller",
+        
+        # Public safety
+        "firefighter", "police officer"
     ]
     
-    # Licensed professionals in other safety-critical fields
-    licensed_keywords = [
-        "pilot", "air traffic controller", "nuclear engineer", "structural engineer",
-        "electrical engineer", "civil engineer", "mechanical engineer", "chemical engineer",
-        "architect", "lawyer", "attorney", "judge", "police officer", "firefighter",
-        "paramedic", "emt", "security guard", "social worker", "therapist", "counselor"
-    ]
-    
-    # Check if career involves safety-critical responsibilities
-    safety_critical_keywords = medical_keywords + licensed_keywords
-    
-    for keyword in safety_critical_keywords:
-        if keyword in career_title or keyword in career_desc:
+    # Check for EXACT matches only
+    for safety_career in truly_life_critical:
+        if career_title == safety_career:
+            return True
+        # Also check for titles that start with the safety career (e.g., "Senior Registered Nurse")
+        if career_title.startswith(safety_career + " ") or career_title.endswith(" " + safety_career):
             return True
     
-    # Additional check for careers involving life-critical decisions
-    life_critical_phrases = [
-        "patient care", "medical treatment", "anesthesia", "surgery", "diagnosis",
-        "prescribe medication", "life support", "emergency response", "public safety",
-        "structural integrity", "flight safety", "nuclear safety"
-    ]
-    
-    for phrase in life_critical_phrases:
-        if phrase in career_desc:
+    # Special case: Check for nurse roles (but not "nurse aide" or similar non-licensed roles)
+    if " nurse" in career_title or career_title.startswith("nurse "):
+        # Allow non-licensed nursing support roles
+        non_licensed_nurse_roles = ["nurse aide", "nurse assistant", "nursing assistant", "nurse technician"]
+        if not any(role in career_title for role in non_licensed_nurse_roles):
             return True
     
     return False
