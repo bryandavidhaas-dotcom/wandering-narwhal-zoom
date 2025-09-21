@@ -1,4 +1,30 @@
 // ========================================
+// CRITICAL SAFETY GUARDRAILS - DO NOT REMOVE OR MODIFY WITHOUT REVIEW
+// ========================================
+//
+// ⚠️  IMPORTANT SAFETY NOTICE ⚠️
+//
+// This file contains CRITICAL SAFETY GUARDRAILS that prevent the recommendation
+// of dangerous career paths to users without proper qualifications.
+//
+// BEFORE MODIFYING ANY SAFETY-RELATED CODE, YOU MUST:
+// 1. Understand that removing these guardrails could recommend life-threatening careers
+//    (e.g., recommending Product Managers become Brain Surgeons or Nurse Anesthetists)
+// 2. Get explicit approval from system architects and safety reviewers
+// 3. Ensure any changes maintain or strengthen safety protections
+// 4. Test thoroughly with safety-critical career scenarios
+//
+// KEY SAFETY FUNCTIONS (DO NOT REMOVE):
+// - isSafetyCriticalCareer(): Identifies careers requiring specialized licensing
+// - hasRelevantBackground(): Verifies users have appropriate experience
+// - Safety filtering in Adventure Zone (lines ~1477-1482)
+// - Stricter scoring for safety-critical careers (lines ~1778-1784)
+//
+// RATIONALE: Adventure Zone previously recommended a Product Manager become a
+// Nurse Anesthetist (CRNA) - a role requiring 7+ years medical training and
+// responsible for administering life-saving/life-threatening anesthesia.
+//
+// ========================================
 // FIXED ADVENTURE ZONE FILTERING - ENSURES RELATED RECOMMENDATIONS
 // ========================================
 
@@ -1274,8 +1300,89 @@ export const getExperienceYears = (experience: string): number => {
 };
 
 // ========================================
-// NEW: ADVENTURE ZONE FILTERING HELPERS
+// NEW: ADVENTURE ZONE FILTERING HELPERS WITH SAFETY GUARDRAILS
 // ========================================
+
+/**
+ * Check if a career requires specialized licensing or training that makes it inappropriate
+ * for cross-industry recommendations without proper qualifications
+ */
+const isSafetyCriticalCareer = (career: CareerTemplate): boolean => {
+  const safetyCriticalKeywords = [
+    // Medical/Healthcare roles requiring licenses
+    'physician', 'doctor', 'surgeon', 'nurse anesthetist', 'crna', 'anesthesiologist',
+    'pharmacist', 'dentist', 'veterinarian', 'therapist', 'psychologist', 'psychiatrist',
+    
+    // Legal roles requiring bar admission
+    'attorney', 'lawyer', 'judge', 'legal counsel',
+    
+    // Engineering roles with public safety implications
+    'structural engineer', 'civil engineer', 'electrical engineer', 'nuclear engineer',
+    
+    // Aviation and transportation
+    'pilot', 'air traffic controller', 'ship captain',
+    
+    // Financial roles requiring licenses
+    'financial advisor', 'investment advisor', 'securities broker',
+    
+    // Other licensed professions
+    'architect', 'real estate broker', 'insurance agent'
+  ];
+  
+  const titleLower = career.title.toLowerCase();
+  const descriptionLower = career.description.toLowerCase();
+  
+  return safetyCriticalKeywords.some(keyword =>
+    titleLower.includes(keyword) || descriptionLower.includes(keyword)
+  );
+};
+
+/**
+ * Check if user has relevant background for safety-critical careers
+ */
+const hasRelevantBackground = (userAssessment: UserAssessmentData, career: CareerTemplate): boolean => {
+  if (!isSafetyCriticalCareer(career)) return true; // Not safety-critical, allow
+  
+  const userSkills = [...(userAssessment.technicalSkills || []), ...(userAssessment.softSkills || [])];
+  const userIndustries = userAssessment.industries || [];
+  const userResume = (userAssessment.resumeText || '').toLowerCase();
+  const userRole = (userAssessment.currentRole || '').toLowerCase();
+  
+  // Check for relevant medical background
+  if (career.title.toLowerCase().includes('nurse') || career.title.toLowerCase().includes('medical')) {
+    const medicalKeywords = ['nurse', 'medical', 'healthcare', 'hospital', 'clinical', 'patient care'];
+    const hasmedicalBackground =
+      userIndustries.some(ind => ind.toLowerCase().includes('healthcare')) ||
+      userSkills.some(skill => medicalKeywords.some(keyword => skill.toLowerCase().includes(keyword))) ||
+      medicalKeywords.some(keyword => userResume.includes(keyword) || userRole.includes(keyword));
+    
+    if (!hasmedicalBackground) return false;
+  }
+  
+  // Check for relevant legal background
+  if (career.title.toLowerCase().includes('attorney') || career.title.toLowerCase().includes('lawyer')) {
+    const legalKeywords = ['legal', 'law', 'attorney', 'lawyer', 'paralegal', 'compliance'];
+    const hasLegalBackground =
+      userIndustries.some(ind => ind.toLowerCase().includes('legal')) ||
+      userSkills.some(skill => legalKeywords.some(keyword => skill.toLowerCase().includes(keyword))) ||
+      legalKeywords.some(keyword => userResume.includes(keyword) || userRole.includes(keyword));
+    
+    if (!hasLegalBackground) return false;
+  }
+  
+  // Check for relevant engineering background
+  if (career.title.toLowerCase().includes('engineer')) {
+    const engineeringKeywords = ['engineer', 'engineering', 'technical', 'systems', 'architecture'];
+    const hasEngineeringBackground =
+      userIndustries.some(ind => ind.toLowerCase().includes('engineering')) ||
+      userSkills.some(skill => engineeringKeywords.some(keyword => skill.toLowerCase().includes(keyword))) ||
+      engineeringKeywords.some(keyword => userResume.includes(keyword) || userRole.includes(keyword));
+    
+    if (!hasEngineeringBackground) return false;
+  }
+  
+  return true;
+};
 
 /**
  * Check if industries are compatible for Adventure Zone
@@ -1452,10 +1559,16 @@ export const generateCareerRecommendations = (
     
     console.log(`🔍 Stretch Zone: ${candidateCareers.length} careers after filtering`);
   } else {
-    // FIXED ADVENTURE ZONE: SMART FILTERING WITH PROPER BOUNDARIES
+    // FIXED ADVENTURE ZONE: SMART FILTERING WITH SAFETY GUARDRAILS
     console.log('🎯 Adventure Zone: SMART DISCOVERY MODE - Filtering for appropriate opportunities...');
     
     candidateCareers = CAREER_TEMPLATES.filter(career => {
+      // NEW: Safety-critical career check - HIGHEST PRIORITY
+      if (isSafetyCriticalCareer(career) && !hasRelevantBackground(normalizedData, career)) {
+        console.log(`🚨 SAFETY FILTER: Blocked ${career.title} - requires specialized training/licensing without relevant background`);
+        return false;
+      }
+      
       // FIXED: Apply industry compatibility check
       if (!isIndustryCompatible(normalizedData.industries, career.preferredIndustries)) {
         console.log(`❌ Industry incompatible: ${career.title} (${career.preferredIndustries.join(', ')}) vs user (${normalizedData.industries.join(', ')})`);
@@ -1754,8 +1867,14 @@ export const calculateCareerMatch = (
   if (requiredSkills.length === 0) {
     skillScore = weights.skills * 0.8;
   } else if (directMatches.length === 0) {
-    // FIXED: Adventure Zone gives much higher scores for no skill matches
-    skillScore = explorationLevel === 3 ? weights.skills * 0.8 : weights.skills * 0.5;
+    // FIXED: Adventure Zone gives higher scores for no skill matches, BUT not for safety-critical careers
+    if (explorationLevel === 3 && isSafetyCriticalCareer(career)) {
+      // Safety-critical careers require relevant skills - much lower score for no matches
+      skillScore = weights.skills * 0.2;
+    } else {
+      // Non-safety-critical careers can have generous scoring for skill gaps
+      skillScore = explorationLevel === 3 ? weights.skills * 0.8 : weights.skills * 0.5;
+    }
   } else {
     skillScore = (directMatches.length / requiredSkills.length) * weights.skills;
     skillScore = Math.min(skillScore, weights.skills);
@@ -1875,8 +1994,16 @@ export const calculateCareerMatch = (
   // Calculate final score
   let relevanceScore = Math.round((totalScore / maxPossibleScore) * 100);
   
-  // FIXED: Adventure Zone gets MUCH more generous minimum scores
-  const minScore = explorationLevel === 1 ? 60 : explorationLevel === 2 ? 50 : 35; // Much lower minimum for Adventure Zone
+  // FIXED: Adventure Zone gets more generous minimum scores, BUT higher minimums for safety-critical careers
+  let minScore;
+  if (explorationLevel === 1) {
+    minScore = 60;
+  } else if (explorationLevel === 2) {
+    minScore = 50;
+  } else {
+    // Adventure Zone: Higher minimum for safety-critical careers
+    minScore = isSafetyCriticalCareer(career) ? 70 : 35;
+  }
   relevanceScore = Math.max(minScore, relevanceScore);
   
   // FIXED: Adventure Zone gets bigger bonuses for work preference alignment

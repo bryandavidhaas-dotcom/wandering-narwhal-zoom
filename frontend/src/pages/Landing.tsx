@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Users, Target, TrendingUp, Network, FileText, CheckCircle, Compass, Briefcase, Brain, Zap, Star, User, Building2, GraduationCap, Award, Map, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Logo } from "@/components/Logo";
 
 const Landing = () => {
   const navigate = useNavigate();
@@ -278,12 +279,7 @@ const Landing = () => {
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Search className="h-8 w-8 text-blue-600" />
-            <span className="text-2xl font-semibold text-gray-900 tracking-wide" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-              Career Finder
-            </span>
-          </div>
+          <Logo size="lg" />
           <div className="flex space-x-2">
             <Button
               variant="ghost"
@@ -572,7 +568,7 @@ const Landing = () => {
               Comprehensive Career Coverage
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered system covers <span className="font-semibold text-blue-600">240 careers</span> across major industries,
+              Our AI-powered system covers <span className="font-semibold text-blue-600">266 careers</span> across major industries,
               with more being added regularly to ensure comprehensive career exploration.
             </p>
           </div>
@@ -597,7 +593,7 @@ const Landing = () => {
                         <Brain className="h-3 w-3 mr-1" />
                         Technology & Engineering
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">55 careers</span>
+                      <span className="text-sm text-green-600 font-medium">57 careers</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
@@ -629,17 +625,17 @@ const Landing = () => {
                     </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <Target className="h-3 w-3 mr-1" />
-                        Product Management
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">7 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
                         <Award className="h-3 w-3 mr-1" />
                         Legal & Law
                       </Badge>
-                      <span className="text-sm text-green-600 font-medium">21 careers</span>
+                      <span className="text-sm text-green-600 font-medium">19 careers</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <Briefcase className="h-3 w-3 mr-1" />
+                        Creative & Arts
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">26 careers</span>
                     </div>
                   </div>
                 </CardContent>
@@ -658,13 +654,6 @@ const Landing = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
-                        <Briefcase className="h-3 w-3 mr-1" />
-                        Creative & Arts
-                      </Badge>
-                      <span className="text-sm text-blue-600 font-medium">~15 careers</span>
-                    </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
                         <Users className="h-3 w-3 mr-1" />
@@ -702,12 +691,12 @@ const Landing = () => {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center space-x-8 bg-white rounded-lg p-6 shadow-sm border">
                 <div>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">240</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">266</div>
                   <p className="text-sm text-gray-600 font-medium">Careers Available Now</p>
                 </div>
                 <div className="w-px h-12 bg-gray-300"></div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600 mb-1">200+</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-1">330+</div>
                   <p className="text-sm text-gray-600 font-medium">Total When Complete</p>
                 </div>
                 <div className="w-px h-12 bg-gray-300"></div>
@@ -785,11 +774,8 @@ const Landing = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
         <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <Search className="h-6 w-6" />
-            <span className="text-xl font-medium tracking-wide" style={{ fontFamily: 'Georgia, "Times New Roman", serif' }}>
-              Career Finder
-            </span>
+          <div className="flex justify-center mb-4">
+            <Logo size="md" />
           </div>
           <p className="text-gray-400">
             AI-powered career discovery for professionals at every stage

@@ -401,16 +401,36 @@ def calculate_dynamic_distribution(exploration_level: int) -> tuple[int, int, in
     return safe_target, stretch_target, adventure_target, total_target
 
 def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_level: int) -> List[Dict[str, Any]]:
-    """Generate enhanced recommendations based on user profile using comprehensive career database"""
+    """
+    Generate enhanced recommendations based on user profile using comprehensive career database
+    
+    ⚠️  CRITICAL SAFETY GUARDRAILS IMPLEMENTED ⚠️
+    This function includes mandatory safety checks to prevent recommending safety-critical
+    careers (like medical professionals) to users without proper qualifications.
+    DO NOT REMOVE OR MODIFY THESE SAFETY CHECKS WITHOUT CAREFUL REVIEW.
+    """
     
     # Import the comprehensive career database
-    from comprehensive_careers import (
-        COMPREHENSIVE_CAREERS,
-        get_careers_by_experience_level,
-        get_careers_by_salary_range,
-        parse_experience_years,
-        parse_salary_expectations
-    )
+    try:
+        from comprehensive_careers import (
+            COMPREHENSIVE_CAREERS,
+            get_careers_by_experience_level,
+            get_careers_by_salary_range,
+            parse_experience_years,
+            parse_salary_expectations
+        )
+    except ImportError:
+        # Fallback to relative import
+        import sys
+        import os
+        sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+        from comprehensive_careers import (
+            COMPREHENSIVE_CAREERS,
+            get_careers_by_experience_level,
+            get_careers_by_salary_range,
+            parse_experience_years,
+            parse_salary_expectations
+        )
     
     # Extract insights from resume and LinkedIn profile
     resume_insights = extract_resume_insights(user_data.get("resume_text", ""))
@@ -434,15 +454,55 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     
     print(f"🔍 Filtered careers: {len(filtered_careers)} careers match experience and salary criteria")
     
+    # ⚠️  CRITICAL SAFETY GUARDRAILS: Filter out safety-critical careers for unqualified users
+    # This prevents dangerous recommendations like suggesting Product Managers become Nurse Anesthetists
+    safety_filtered_careers = []
+    for career in filtered_careers:
+        if is_safety_critical_career(career):
+            if has_relevant_background_for_safety_critical(career, user_data, resume_insights):
+                safety_filtered_careers.append(career)
+                print(f"✅ SAFETY CHECK PASSED: {career.get('title', '')} - user has relevant background")
+            else:
+                print(f"🚫 SAFETY CHECK FAILED: {career.get('title', '')} - BLOCKED for safety (user lacks medical/licensed background)")
+        else:
+            safety_filtered_careers.append(career)
+    
+    # Update filtered careers to use safety-filtered list
+    filtered_careers = safety_filtered_careers
+    print(f"🛡️  After safety filtering: {len(filtered_careers)} careers remain")
+    
     # If no careers match strict criteria, relax salary requirements
     if len(filtered_careers) < 3:
         print("⚠️  Relaxing salary requirements to ensure minimum recommendations")
-        filtered_careers = experience_filtered[:10]  # Take top 10 by experience level
+        # Apply safety filtering to the relaxed list too
+        relaxed_careers = experience_filtered[:10]
+        safety_filtered_relaxed = []
+        for career in relaxed_careers:
+            if is_safety_critical_career(career):
+                if has_relevant_background_for_safety_critical(career, user_data, resume_insights):
+                    safety_filtered_relaxed.append(career)
+                    print(f"✅ RELAXED SAFETY CHECK PASSED: {career.get('title', '')} - user has relevant background")
+                else:
+                    print(f"🚫 RELAXED SAFETY CHECK FAILED: {career.get('title', '')} - BLOCKED for safety")
+            else:
+                safety_filtered_relaxed.append(career)
+        filtered_careers = safety_filtered_relaxed
     
-    # If still not enough, include broader experience range
+    # If still not enough, include broader experience range with safety filtering
     if len(filtered_careers) < 3:
         print("⚠️  Expanding experience range to ensure recommendations")
-        filtered_careers = COMPREHENSIVE_CAREERS[:15]  # Take top 15 overall
+        broad_careers = COMPREHENSIVE_CAREERS[:15]
+        safety_filtered_broad = []
+        for career in broad_careers:
+            if is_safety_critical_career(career):
+                if has_relevant_background_for_safety_critical(career, user_data, resume_insights):
+                    safety_filtered_broad.append(career)
+                    print(f"✅ BROAD SAFETY CHECK PASSED: {career.get('title', '')} - user has relevant background")
+                else:
+                    print(f"🚫 BROAD SAFETY CHECK FAILED: {career.get('title', '')} - BLOCKED for safety")
+            else:
+                safety_filtered_broad.append(career)
+        filtered_careers = safety_filtered_broad
     
     # Enhanced scoring algorithm with career path consistency penalty
     scored_careers = []
@@ -734,7 +794,7 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         # Try from unused safe first (high relevance), then unused adventure
         backfill_candidates = unused_safe + unused_adventure
         # Remove careers already used for safe zone backfill
-        backfill_candidates = [c for c in backfill_candidates if c not in safe_selected[TARGET_PER_ZONE:]]
+        backfill_candidates = [c for c in backfill_candidates if c not in safe_selected[safe_target:]]
         backfill_candidates.sort(key=lambda x: x["relevanceScore"], reverse=True)
         
         for career in backfill_candidates[:stretch_deficit]:
@@ -746,7 +806,7 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         # Try from unused safe and stretch
         backfill_candidates = unused_safe + unused_stretch
         # Remove careers already used for other zone backfills
-        used_for_backfill = safe_selected[TARGET_PER_ZONE:] + stretch_selected[TARGET_PER_ZONE:]
+        used_for_backfill = safe_selected[safe_target:] + stretch_selected[stretch_target:]
         backfill_candidates = [c for c in backfill_candidates if c not in used_for_backfill]
         backfill_candidates.sort(key=lambda x: x["relevanceScore"], reverse=True)
         
@@ -1045,6 +1105,13 @@ def get_career_field_categories() -> Dict[str, List[str]]:
             "ux designer", "ui designer", "product designer", "graphic designer", "design lead",
             "senior ux designer", "creative director"
         ],
+        "creative_arts": [
+            "creative director", "art director", "head of design", "chief creative officer",
+            "graphic designer", "motion graphics", "brand designer", "creative producer",
+            "web designer", "video editor", "photographer", "illustrator", "3d artist",
+            "game artist", "concept artist", "sound designer", "animator", "content creator",
+            "social media designer", "production assistant", "art teacher"
+        ],
         "education": [
             "teacher", "professor", "instructor", "education", "academic", "curriculum",
             "school administrator", "principal"
@@ -1062,6 +1129,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "product_management": 2,  # Very closely related
             "business_finance": 1,    # Adjacent (tech companies need business skills)
             "design": 2,              # Closely related (work together frequently)
+            "creative_arts": 2,       # Closely related (digital media, game dev, web design)
             "sales_marketing": 1,     # Adjacent (tech sales, growth)
             "healthcare": 0,          # Unrelated
             "education": 0,           # Unrelated
@@ -1071,6 +1139,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "technology": 2,          # Very closely related
             "business_finance": 2,    # Closely related (business strategy)
             "design": 2,              # Closely related (product design)
+            "creative_arts": 2,       # Closely related (product design, UX)
             "sales_marketing": 2,     # Closely related (go-to-market)
             "healthcare": 0,          # Unrelated
             "education": 0,           # Unrelated
@@ -1081,6 +1150,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "product_management": 0,  # Unrelated
             "business_finance": 1,    # Adjacent (healthcare admin)
             "design": 0,              # Unrelated
+            "creative_arts": 0,       # Unrelated
             "sales_marketing": 0,     # Unrelated
             "education": 1,           # Adjacent (medical education)
             "skilled_trades": 0       # Unrelated
@@ -1090,6 +1160,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "product_management": 2,  # Closely related
             "healthcare": 1,          # Adjacent (healthcare finance)
             "design": 0,              # Unrelated
+            "creative_arts": 1,       # Adjacent (creative industry business)
             "sales_marketing": 2,     # Closely related
             "education": 1,           # Adjacent (education finance)
             "skilled_trades": 1       # Adjacent (construction finance)
@@ -1100,6 +1171,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "healthcare": 0,          # Unrelated
             "business_finance": 2,    # Closely related
             "design": 1,              # Adjacent (marketing design)
+            "creative_arts": 2,       # Closely related (marketing creative, content)
             "education": 0,           # Unrelated
             "skilled_trades": 0       # Unrelated
         },
@@ -1109,7 +1181,18 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "healthcare": 0,          # Unrelated
             "business_finance": 0,    # Unrelated
             "sales_marketing": 1,     # Adjacent
+            "creative_arts": 2,       # Very closely related (overlapping skills)
             "education": 1,           # Adjacent (educational design)
+            "skilled_trades": 0       # Unrelated
+        },
+        "creative_arts": {
+            "technology": 2,          # Closely related (digital media, web, games)
+            "product_management": 2,  # Closely related (UX, product design)
+            "healthcare": 0,          # Unrelated
+            "business_finance": 1,    # Adjacent (creative industry business)
+            "sales_marketing": 2,     # Closely related (content, campaigns, branding)
+            "design": 2,              # Very closely related (overlapping field)
+            "education": 1,           # Adjacent (art education, instructional design)
             "skilled_trades": 0       # Unrelated
         },
         "education": {
@@ -1119,6 +1202,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "business_finance": 1,    # Adjacent
             "sales_marketing": 0,     # Unrelated
             "design": 1,              # Adjacent
+            "creative_arts": 1,       # Adjacent (art education)
             "skilled_trades": 0       # Unrelated
         },
         "skilled_trades": {
@@ -1128,6 +1212,7 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "business_finance": 1,    # Adjacent
             "sales_marketing": 0,     # Unrelated
             "design": 0,              # Unrelated
+            "creative_arts": 0,       # Unrelated
             "education": 0            # Unrelated
         }
     }
@@ -1245,6 +1330,135 @@ def calculate_consistency_penalty(career_field: str, user_field: str, field_adja
         return 0
     
     return -5  # Default small penalty
+
+def is_safety_critical_career(career: Dict[str, Any]) -> bool:
+    """
+    ⚠️  CRITICAL SAFETY FUNCTION ⚠️
+    Identifies careers that require specialized licensing, certification, or training
+    where incorrect recommendations could pose safety risks.
+    
+    DO NOT REMOVE OR MODIFY WITHOUT CAREFUL REVIEW - SAFETY IMPLICATIONS
+    """
+    career_title = career.get("title", "").lower()
+    career_desc = career.get("description", "").lower()
+    
+    # Medical and healthcare professionals requiring licensing
+    medical_keywords = [
+        "nurse anesthetist", "crna", "anesthetist", "physician", "doctor", "surgeon",
+        "cardiologist", "pediatrician", "psychiatrist", "radiologist", "pathologist",
+        "anesthesiologist", "emergency medicine", "family medicine", "internal medicine",
+        "registered nurse", "rn", "nurse practitioner", "physician assistant", "pa",
+        "pharmacist", "physical therapist", "occupational therapist", "respiratory therapist",
+        "medical technologist", "radiologic technologist", "dental hygienist", "dentist",
+        "veterinarian", "optometrist", "chiropractor", "clinical psychologist"
+    ]
+    
+    # Licensed professionals in other safety-critical fields
+    licensed_keywords = [
+        "pilot", "air traffic controller", "nuclear engineer", "structural engineer",
+        "electrical engineer", "civil engineer", "mechanical engineer", "chemical engineer",
+        "architect", "lawyer", "attorney", "judge", "police officer", "firefighter",
+        "paramedic", "emt", "security guard", "social worker", "therapist", "counselor"
+    ]
+    
+    # Check if career involves safety-critical responsibilities
+    safety_critical_keywords = medical_keywords + licensed_keywords
+    
+    for keyword in safety_critical_keywords:
+        if keyword in career_title or keyword in career_desc:
+            return True
+    
+    # Additional check for careers involving life-critical decisions
+    life_critical_phrases = [
+        "patient care", "medical treatment", "anesthesia", "surgery", "diagnosis",
+        "prescribe medication", "life support", "emergency response", "public safety",
+        "structural integrity", "flight safety", "nuclear safety"
+    ]
+    
+    for phrase in life_critical_phrases:
+        if phrase in career_desc:
+            return True
+    
+    return False
+
+def has_relevant_background_for_safety_critical(career: Dict[str, Any], user_data: Dict[str, Any], resume_insights: Dict[str, Any]) -> bool:
+    """
+    ⚠️  CRITICAL SAFETY FUNCTION ⚠️
+    Determines if a user has the relevant background for a safety-critical career.
+    
+    This function prevents dangerous recommendations by ensuring users have appropriate
+    education, experience, or licensing before recommending safety-critical roles.
+    
+    DO NOT REMOVE OR MODIFY WITHOUT CAREFUL REVIEW - SAFETY IMPLICATIONS
+    """
+    career_title = career.get("title", "").lower()
+    career_desc = career.get("description", "").lower()
+    
+    # Extract user background information
+    education_level = user_data.get("education_level", "").lower()
+    certifications = [cert.lower() for cert in (user_data.get("certifications") or [])]
+    technical_skills = [skill.lower() for skill in (user_data.get("technical_skills") or [])]
+    resume_text = user_data.get("resume_text", "").lower()
+    current_role = user_data.get("current_role", "").lower()
+    industry_indicators = resume_insights.get("industry_indicators", [])
+    
+    # Medical/Healthcare careers - require medical background
+    if any(keyword in career_title for keyword in ["nurse", "physician", "doctor", "medical", "clinical", "pharmacist", "therapist"]):
+        # Check for medical education
+        medical_education = any(edu in education_level for edu in ["medical", "nursing", "pharmacy", "clinical", "health"])
+        
+        # Check for medical certifications
+        medical_certs = any(cert in " ".join(certifications) for cert in ["rn", "md", "pharmd", "dpt", "rrt", "medical", "nursing", "clinical"])
+        
+        # Check for healthcare industry experience
+        healthcare_experience = "healthcare" in industry_indicators or any(
+            keyword in resume_text for keyword in ["hospital", "clinic", "medical", "patient", "healthcare", "nursing", "clinical"]
+        )
+        
+        # Check for medical role experience
+        medical_role = any(keyword in current_role for keyword in ["nurse", "medical", "clinical", "healthcare", "patient"])
+        
+        return medical_education or medical_certs or healthcare_experience or medical_role
+    
+    # Engineering careers - require engineering background
+    if "engineer" in career_title:
+        engineering_education = any(edu in education_level for edu in ["engineering", "engineer"])
+        engineering_certs = any(cert in " ".join(certifications) for cert in ["pe", "engineering", "engineer"])
+        engineering_experience = any(keyword in resume_text for keyword in ["engineering", "engineer", "technical design", "systems"])
+        engineering_role = "engineer" in current_role
+        
+        return engineering_education or engineering_certs or engineering_experience or engineering_role
+    
+    # Legal careers - require legal background
+    if any(keyword in career_title for keyword in ["lawyer", "attorney", "judge", "legal"]):
+        legal_education = any(edu in education_level for edu in ["law", "legal", "juris doctor", "jd"])
+        legal_certs = any(cert in " ".join(certifications) for cert in ["bar", "legal", "law"])
+        legal_experience = any(keyword in resume_text for keyword in ["legal", "law", "attorney", "litigation"])
+        legal_role = any(keyword in current_role for keyword in ["legal", "attorney", "lawyer"])
+        
+        return legal_education or legal_certs or legal_experience or legal_role
+    
+    # Aviation careers - require aviation background
+    if any(keyword in career_title for keyword in ["pilot", "air traffic"]):
+        aviation_education = any(edu in education_level for edu in ["aviation", "aeronautical", "aerospace"])
+        aviation_certs = any(cert in " ".join(certifications) for cert in ["pilot", "aviation", "faa", "atc"])
+        aviation_experience = any(keyword in resume_text for keyword in ["aviation", "aircraft", "flight", "pilot", "aerospace"])
+        aviation_role = any(keyword in current_role for keyword in ["pilot", "aviation", "aircraft", "flight"])
+        
+        return aviation_education or aviation_certs or aviation_experience or aviation_role
+    
+    # Public safety careers - require relevant background
+    if any(keyword in career_title for keyword in ["police", "firefighter", "paramedic", "emt"]):
+        safety_education = any(edu in education_level for edu in ["criminal justice", "fire science", "emergency", "public safety"])
+        safety_certs = any(cert in " ".join(certifications) for cert in ["emt", "paramedic", "fire", "police", "safety"])
+        safety_experience = any(keyword in resume_text for keyword in ["emergency", "public safety", "first responder", "law enforcement"])
+        safety_role = any(keyword in current_role for keyword in ["police", "fire", "emergency", "safety", "security"])
+        
+        return safety_education or safety_certs or safety_experience or safety_role
+    
+    # Default: For any other safety-critical career, require some relevant background
+    # This is a conservative approach to prevent dangerous recommendations
+    return False
 
 if __name__ == "__main__":
     import uvicorn

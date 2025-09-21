@@ -59,6 +59,7 @@ import {
   CheckCircle
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
+import { Logo } from "@/components/Logo";
 
 const Assessment = () => {
   const navigate = useNavigate();

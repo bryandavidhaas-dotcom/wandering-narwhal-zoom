@@ -49,6 +49,7 @@ import {
 import { showSuccess, showError } from "@/utils/toast";
 import { generateCareerRecommendations, type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
 import jsPDF from 'jspdf';
+import { Logo } from "@/components/Logo";
 
 interface User {
   id: string;
@@ -1046,9 +1047,8 @@ const CareerDetail = () => {
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Dashboard
               </Button>
-              <div className="flex items-center space-x-3 cursor-pointer" onClick={handleLogoClick}>
-                <Search className="h-8 w-8 text-blue-600" />
-                <span className="text-xl font-semibold text-gray-900">Career Explorer</span>
+              <div className="cursor-pointer" onClick={handleLogoClick}>
+                <Logo size="lg" />
               </div>
             </div>
             
