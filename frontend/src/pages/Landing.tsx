@@ -568,7 +568,7 @@ const Landing = () => {
               Comprehensive Career Coverage
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered system covers <span className="font-semibold text-blue-600">266 careers</span> across major industries,
+              Our AI-powered system covers <span className="font-semibold text-blue-600">296 careers</span> across major industries,
               with more being added regularly to ensure comprehensive career exploration.
             </p>
           </div>
@@ -637,6 +637,13 @@ const Landing = () => {
                       </Badge>
                       <span className="text-sm text-green-600 font-medium">26 careers</span>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
+                        <Users className="h-3 w-3 mr-1" />
+                        Public Service & Government
+                      </Badge>
+                      <span className="text-sm text-green-600 font-medium">30 careers</span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -654,13 +661,6 @@ const Landing = () => {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
-                        <Users className="h-3 w-3 mr-1" />
-                        Public Service & Government
-                      </Badge>
-                      <span className="text-sm text-blue-600 font-medium">~12 careers</span>
-                    </div>
                     <div className="flex items-center space-x-2">
                       <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
                         <Building2 className="h-3 w-3 mr-1" />
@@ -691,17 +691,17 @@ const Landing = () => {
             <div className="mt-8 text-center">
               <div className="inline-flex items-center space-x-8 bg-white rounded-lg p-6 shadow-sm border">
                 <div>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">266</div>
+                  <div className="text-3xl font-bold text-gray-900 mb-1">296</div>
                   <p className="text-sm text-gray-600 font-medium">Careers Available Now</p>
                 </div>
                 <div className="w-px h-12 bg-gray-300"></div>
                 <div>
-                  <div className="text-3xl font-bold text-blue-600 mb-1">330+</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-1">345+</div>
                   <p className="text-sm text-gray-600 font-medium">Total When Complete</p>
                 </div>
                 <div className="w-px h-12 bg-gray-300"></div>
                 <div>
-                  <div className="text-3xl font-bold text-green-600 mb-1">12</div>
+                  <div className="text-3xl font-bold text-green-600 mb-1">11</div>
                   <p className="text-sm text-gray-600 font-medium">Major Industries</p>
                 </div>
               </div>
