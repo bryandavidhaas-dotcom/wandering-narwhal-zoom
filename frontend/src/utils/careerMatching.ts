@@ -119,6 +119,7 @@ export interface UserAssessmentData {
 
 // Import existing trades templates
 import { TRADES_CAREER_TEMPLATES } from './tradesCareerTemplates';
+import { placeholderTemplates } from './placeholder_templates';
 
 // ========================================
 // COMPREHENSIVE CAREER TEMPLATES - ALL EXPERIENCE LEVELS
@@ -413,6 +414,54 @@ const COMPREHENSIVE_CAREER_TEMPLATES: CareerTemplate[] = [
     alternativeQualifications: ["10+ years product experience", "Team leadership", "Strategic thinking"],
     skillBasedEntry: false,
     experienceCanSubstitute: true,
+    handsOnWorkWeight: 1,
+    physicalWorkWeight: 1,
+    outdoorWorkWeight: 1,
+    mechanicalAptitudeWeight: 1
+  },
+
+  {
+    title: "Head of Product",
+    salaryRange: "$180,000 - $250,000",
+    description: "Lead product organization, set product vision and strategy, manage senior product managers across multiple product lines",
+    requiredTechnicalSkills: ["Product Strategy", "Data Analysis", "User Research", "Product Management", "Roadmap Planning"],
+    requiredSoftSkills: ["Executive Leadership", "Strategic Thinking", "Communication", "Team Building", "Vision Setting"],
+    preferredInterests: ["Technology & Software", "Business & Entrepreneurship", "Innovation", "Leadership"],
+    preferredIndustries: ["Technology & Software", "Financial Services", "E-commerce", "SaaS"],
+    workDataWeight: 4,
+    workPeopleWeight: 5,
+    creativityWeight: 4,
+    problemSolvingWeight: 5,
+    leadershipWeight: 5,
+    learningPath: "Head of Product Program (4-8 months)",
+    stretchLevel: "safe",
+    careerType: "head-of-product",
+    requiresTechnical: true,
+    companies: ["Airbnb", "Uber", "Stripe", "Slack", "Zoom", "Dropbox", "Google", "Microsoft", "Amazon", "Meta"],
+    dayInLife: "Strategic product planning, team leadership, stakeholder management, product vision development",
+    experienceLevel: "senior",
+    minYearsExperience: 12,
+    maxYearsExperience: 20,
+    salaryMin: 180000,
+    salaryMax: 250000,
+    remoteOptions: "Hybrid available",
+    workEnvironments: ["office", "hybrid", "remote"],
+    requiredEducation: "bachelors",
+    preferredEducation: "masters",
+    valuedCertifications: ["Product Management", "MBA", "Agile/Scrum", "Leadership"],
+    requiredCertifications: [],
+    workLifeBalanceRating: 2,
+    agePreference: "35-50",
+    locationFlexibility: "flexible",
+    transitionFriendly: false,
+    resumeKeywords: ["head of product", "product leadership", "product strategy", "product vision", "team leadership"],
+    relatedJobTitles: ["VP Product", "Director of Product", "Chief Product Officer", "Senior Product Manager"],
+    valuedCompanies: ["Airbnb", "Uber", "Stripe", "Slack", "Zoom", "Dropbox"],
+    preferredIndustryExperience: ["Product management", "Technology", "SaaS"],
+    careerProgressionPatterns: ["Senior PM → Principal PM → Director → Head of Product → VP Product"],
+    alternativeQualifications: ["12+ years product experience", "Team leadership", "Strategic product thinking"],
+    skillBasedEntry: false,
+    experienceCanSubstitute: false,
     handsOnWorkWeight: 1,
     physicalWorkWeight: 1,
     outdoorWorkWeight: 1,
@@ -1266,10 +1315,25 @@ const sanitizeCareerTemplate = (career: any): CareerTemplate => {
 const SANITIZED_TRADES_TEMPLATES = TRADES_CAREER_TEMPLATES.map(sanitizeCareerTemplate);
 
 // Combined career templates with sanitized data
-export const CAREER_TEMPLATES: CareerTemplate[] = [
+// Combine all templates and remove duplicates
+const combinedTemplates = [
   ...COMPREHENSIVE_CAREER_TEMPLATES,
-  ...SANITIZED_TRADES_TEMPLATES
+  ...SANITIZED_TRADES_TEMPLATES,
+  ...placeholderTemplates,
 ];
+
+const uniqueCareerTemplates = Array.from(
+  combinedTemplates
+    .reduce((map, career) => {
+      if (!map.has(career.careerType)) {
+        map.set(career.careerType, career);
+      }
+      return map;
+    }, new Map<string, CareerTemplate>())
+    .values()
+);
+
+export const CAREER_TEMPLATES: CareerTemplate[] = uniqueCareerTemplates;
 
 console.log(`🔧 FIXED: Career templates loaded and sanitized: ${CAREER_TEMPLATES.length} total careers`);
 
