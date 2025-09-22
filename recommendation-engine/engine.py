@@ -13,6 +13,7 @@ from .config import RecommendationConfig, DEFAULT_CONFIG
 from .filters import FilterEngine
 from .scoring import ScoringEngine
 from .categorization import CategorizationEngine
+from .career_database import normalize_career_title
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -491,14 +492,14 @@ class RecommendationEngine:
                 score += industry_score * 0.3
             
             # Interest/keyword matching (20% weight)
-            career_text = f"{career.title} {getattr(career, 'description', '')}".lower()
+            career_text = f"{normalize_career_title(career.title)} {getattr(career, 'description', '')}".lower()
             interest_matches = sum(1 for interest in user_interests if interest in career_text)
             if user_interests:
                 interest_score = interest_matches / len(user_interests)
                 score += interest_score * 0.2
             
             # Title relevance (10% weight)
-            title_matches = sum(1 for skill in user_skills if skill in career.title.lower())
+            title_matches = sum(1 for skill in user_skills if skill in normalize_career_title(career.title))
             if user_skills:
                 title_score = min(title_matches / len(user_skills), 1.0)
                 score += title_score * 0.1
