@@ -245,6 +245,7 @@ class Career(BaseModel):
         growth_potential: Career growth potential description
         work_environment: Typical work environment
         education_requirements: Education requirements
+        career_field: Career field category for consistency checking
     """
     career_id: str = Field(..., min_length=1)
     title: str = Field(..., min_length=1, max_length=200)
@@ -256,6 +257,7 @@ class Career(BaseModel):
     growth_potential: Optional[str] = Field(None, max_length=500)
     work_environment: Optional[str] = Field(None, max_length=200)
     education_requirements: Optional[str] = Field(None, max_length=300)
+    career_field: Optional[str] = Field(None, max_length=100, description="Career field category (e.g., 'technology', 'healthcare', 'business_finance')")
     
     def get_required_skill_names(self) -> List[str]:
         """Get list of required skill names."""
@@ -281,6 +283,7 @@ class RecommendationScore(BaseModel):
         interest_match_score: Score based on interest alignment
         salary_compatibility_score: Score based on salary compatibility
         experience_match_score: Score based on experience level
+        consistency_penalty: Penalty for career field mismatch (negative value)
         breakdown: Detailed score breakdown
     """
     career_id: str = Field(..., min_length=1)
@@ -289,6 +292,7 @@ class RecommendationScore(BaseModel):
     interest_match_score: float = Field(..., ge=0.0, le=1.0)
     salary_compatibility_score: float = Field(..., ge=0.0, le=1.0)
     experience_match_score: float = Field(..., ge=0.0, le=1.0)
+    consistency_penalty: float = Field(0.0, description="Penalty for career field mismatch (negative values reduce total score)")
     breakdown: Dict[str, Any] = Field(default_factory=dict)
 
 

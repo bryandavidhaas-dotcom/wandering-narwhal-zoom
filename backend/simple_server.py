@@ -513,6 +513,9 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         for skill in user_technical_skills
     )
     
+    # ENHANCED: Apply more comprehensive skills-based filtering
+    user_field = identify_user_field(resume_insights, user_data)
+    
     # Apply filtering for users without relevant background
     should_filter_trades_medical = has_minimal_profile or (not has_trades_skills and not has_medical_skills)
     
@@ -550,6 +553,55 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         
         filtered_careers = trades_filtered_careers
         print(f"🔍 After trades/medical filtering: {len(filtered_careers)} careers remain")
+    
+    # ENHANCED: Additional field-based filtering to prevent cross-field recommendations
+    if user_field != "unknown":
+        print(f"🎯 User field identified as: {user_field} - Applying field-based filtering")
+        
+        # Define highly inappropriate cross-field recommendations to block
+        field_blocks = {
+            "skilled_trades": [
+                # Block business/marketing roles for trades people
+                "junior product manager", "marketing analyst", "digital marketing specialist",
+                "content creator", "social media manager", "account manager", "business analyst"
+            ],
+            "sales_marketing": [
+                # Block hospitality management for marketing people (unless they have hospitality experience)
+                "restaurant manager", "spa manager", "banquet manager", "hotel manager",
+                "front desk manager", "concierge"
+            ]
+        }
+        
+        if user_field in field_blocks:
+            blocked_titles = field_blocks[user_field]
+            field_filtered_careers = []
+            
+            for career in filtered_careers:
+                career_title_lower = career.get("title", "").lower()
+                should_block = False
+                
+                for blocked_title in blocked_titles:
+                    if blocked_title in career_title_lower:
+                        # Special exception: Allow if user has relevant industry experience
+                        if user_field == "sales_marketing" and "manager" in blocked_title:
+                            # Check if user has hospitality industry experience
+                            industry_indicators = resume_insights.get("industry_indicators", [])
+                            if "hospitality" in industry_indicators or any(
+                                hosp_word in user_data.get("resume_text", "").lower()
+                                for hosp_word in ["restaurant", "hotel", "hospitality", "service industry"]
+                            ):
+                                print(f"✅ EXCEPTION: Allowing {career['title']} - user has hospitality experience")
+                                continue
+                        
+                        should_block = True
+                        print(f"❌ FIELD FILTER: Blocked {career['title']} - inappropriate cross-field recommendation for {user_field} user")
+                        break
+                
+                if not should_block:
+                    field_filtered_careers.append(career)
+            
+            filtered_careers = field_filtered_careers
+            print(f"🔍 After field-based filtering: {len(filtered_careers)} careers remain")
     
     # If no careers match strict criteria, relax salary requirements
     if len(filtered_careers) < 3:
@@ -667,7 +719,7 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         # CAREER PATH CONSISTENCY PENALTY: Identify career field and apply penalties
         career_field = identify_career_field(career)
         user_field = identify_user_field(resume_insights, user_data)
-        consistency_penalty = calculate_consistency_penalty(career_field, user_field, field_adjacency_map, dominant_theme, keyword_frequencies)
+        consistency_penalty = calculate_consistency_penalty(career_field, user_field, field_adjacency_map, dominant_theme, keyword_frequencies, exploration_level)
         
         print(f"🔍 Career: '{career.get('title', '')}' | Field: {career_field} | User Field: {user_field} | Consistency Penalty: {consistency_penalty}")
         
@@ -758,14 +810,30 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
                 theme_alignment_boost = -15  # Stronger penalty for technical roles without emphasis
                 print(f"⚠️ Technical role without resume emphasis: {career_title} gets -15 penalty")
         
-        # Management roles get moderate boost if management keywords present
+        # FIXED: Management roles only get boost if they're in related fields
         elif "manager" in career_title or "director" in career_title:
-            if management_freq >= 3:
-                theme_alignment_boost = 20
-                print(f"👔 Management role with resume support: {career_title} gets +20 boost")
+            # Check if it's a relevant management role based on user's field
+            user_field = identify_user_field(resume_insights, user_data)
+            career_field = identify_career_field(career)
+            
+            # Only boost management roles in same or adjacent fields
+            if user_field != "unknown" and career_field != "unknown":
+                adjacency_score = field_adjacency_map.get(user_field, {}).get(career_field, 0)
+                if adjacency_score >= 1:  # Same or adjacent field
+                    if management_freq >= 3:
+                        theme_alignment_boost = 20
+                        print(f"👔 Relevant management role with resume support: {career_title} gets +20 boost")
+                    else:
+                        theme_alignment_boost = 5
+                        print(f"👔 Relevant management role: {career_title} gets +5 boost")
+                else:
+                    # Unrelated management role gets penalty instead of boost
+                    theme_alignment_boost = -10
+                    print(f"⚠️ Unrelated management role: {career_title} gets -10 penalty")
             else:
-                theme_alignment_boost = 5
-                print(f"👔 Management role: {career_title} gets +5 boost")
+                # Unknown fields get small boost only
+                theme_alignment_boost = 2
+                print(f"👔 Management role (unknown field): {career_title} gets +2 boost")
         
         # Traditional role matching (reduced weight)
         if user_current_role:
@@ -1149,16 +1217,45 @@ def extract_resume_insights(resume_text: str) -> Dict[str, Any]:
     roles = []
     current_role = None
     
-    # Determine primary role based on keyword frequency
-    if product_count >= 5:  # Strong product signal
-        roles.append("Product Management")
-        current_role = "Product Management"
-        print(f"🎯 Strong Product Management signal detected ({product_count} mentions)")
-    elif product_count >= 2:  # Moderate product signal
-        roles.append("Product Management")
-        if not current_role:
+    # ENHANCED: Check for explicit role mentions in resume first
+    # Look for "Aircraft Mechanic", "Social Media Manager", etc.
+    explicit_role_patterns = [
+        "aircraft mechanic", "social media manager", "product manager", "software engineer",
+        "data scientist", "marketing manager", "sales manager", "project manager",
+        "business analyst", "ux designer", "graphic designer", "content creator",
+        "electrician", "plumber", "carpenter", "welder", "hvac technician",
+        "nurse", "doctor", "teacher", "instructor"
+    ]
+    
+    for role_pattern in explicit_role_patterns:
+        if role_pattern in resume_lower:
+            if "aircraft mechanic" in role_pattern:
+                current_role = "Aircraft Mechanic"
+                roles.append("Aircraft Mechanic")
+                print(f"🎯 Explicit Aircraft Mechanic role detected")
+                break
+            elif "social media manager" in role_pattern:
+                current_role = "Social Media Manager"
+                roles.append("Social Media Manager")
+                print(f"🎯 Explicit Social Media Manager role detected")
+                break
+            elif "product manager" in role_pattern:
+                current_role = "Product Management"
+                roles.append("Product Management")
+                print(f"🎯 Explicit Product Manager role detected")
+                break
+    
+    # Fallback: Determine primary role based on keyword frequency if no explicit role found
+    if not current_role:
+        if product_count >= 5:  # Strong product signal
+            roles.append("Product Management")
             current_role = "Product Management"
-        print(f"🎯 Moderate Product Management signal detected ({product_count} mentions)")
+            print(f"🎯 Strong Product Management signal detected ({product_count} mentions)")
+        elif product_count >= 2:  # Moderate product signal
+            roles.append("Product Management")
+            if not current_role:
+                current_role = "Product Management"
+            print(f"🎯 Moderate Product Management signal detected ({product_count} mentions)")
     
     # Other role detection with frequency consideration
     role_patterns = {
@@ -1303,7 +1400,8 @@ def get_career_field_categories() -> Dict[str, List[str]]:
         "product_management": [
             "product manager", "senior product manager", "principal product manager",
             "group product manager", "director of product", "head of product", "vp product",
-            "chief product officer", "cpo", "junior product manager"
+            "chief product officer", "cpo", "junior product manager", "technical product manager",
+            "growth product manager", "platform product manager"
         ],
         "healthcare": [
             "physician", "doctor", "nurse", "surgeon", "cardiologist", "pediatrician",
@@ -1313,11 +1411,13 @@ def get_career_field_categories() -> Dict[str, List[str]]:
         ],
         "business_finance": [
             "financial analyst", "accountant", "controller", "cfo", "investment", "banking",
-            "business analyst", "consultant", "operations manager", "project manager"
+            "business analyst", "consultant", "operations manager", "project manager",
+            "tax specialist", "treasury analyst", "budget analyst", "credit analyst"
         ],
         "sales_marketing": [
             "sales", "marketing", "digital marketing", "account manager", "business development",
-            "sales development representative", "marketing specialist", "growth marketing"
+            "sales development representative", "marketing specialist", "growth marketing",
+            "recruiter", "marketing analyst"
         ],
         "design": [
             "ux designer", "ui designer", "product designer", "graphic designer", "design lead",
@@ -1336,7 +1436,23 @@ def get_career_field_categories() -> Dict[str, List[str]]:
         ],
         "skilled_trades": [
             "electrician", "plumber", "carpenter", "mechanic", "technician", "welder",
-            "hvac", "construction", "maintenance"
+            "hvac", "construction", "maintenance", "aircraft mechanic", "automotive technician",
+            "diesel mechanic", "industrial maintenance", "machinist", "cnc operator"
+        ],
+        "government_public_service": [
+            "policy analyst", "government relations specialist", "public affairs manager",
+            "regulatory affairs specialist", "city planner", "public administrator",
+            "legislative director", "congressional staff director", "senior executive service (ses)",
+            "legislative analyst", "government analyst", "federal", "state", "gs-"
+        ],
+        "hospitality_service": [
+            "restaurant manager", "hotel manager", "spa manager", "banquet manager",
+            "front desk manager", "concierge", "sommelier", "wedding planner"
+        ],
+        "agriculture_environment": [
+            "organic farm manager", "agronomist", "environmental consultant", "wildlife biologist",
+            "soil scientist", "sustainable agriculture", "water resource", "climate change analyst",
+            "renewable energy", "environmental educator"
         ]
     }
 
@@ -1351,7 +1467,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "sales_marketing": 1,     # Adjacent (tech sales, growth)
             "healthcare": 0,          # Unrelated
             "education": 0,           # Unrelated
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 0     # Unrelated
         },
         "product_management": {
             "technology": 2,          # Very closely related
@@ -1361,7 +1480,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "sales_marketing": 2,     # Closely related (go-to-market)
             "healthcare": 0,          # Unrelated
             "education": 0,           # Unrelated
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 0     # Unrelated
         },
         "healthcare": {
             "technology": 0,          # Unrelated (unless health tech)
@@ -1371,7 +1493,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "creative_arts": 0,       # Unrelated
             "sales_marketing": 0,     # Unrelated
             "education": 1,           # Adjacent (medical education)
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 1,  # Adjacent (public health)
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 0     # Unrelated
         },
         "business_finance": {
             "technology": 1,          # Adjacent
@@ -1381,7 +1506,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "creative_arts": 1,       # Adjacent (creative industry business)
             "sales_marketing": 2,     # Closely related
             "education": 1,           # Adjacent (education finance)
-            "skilled_trades": 1       # Adjacent (construction finance)
+            "skilled_trades": 1,      # Adjacent (construction finance)
+            "government_public_service": 1,  # Adjacent (public finance)
+            "hospitality_service": 1,        # Adjacent (hospitality business)
+            "agriculture_environment": 1     # Adjacent (agribusiness)
         },
         "sales_marketing": {
             "technology": 1,          # Adjacent
@@ -1391,7 +1519,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "design": 1,              # Adjacent (marketing design)
             "creative_arts": 2,       # Closely related (marketing creative, content)
             "education": 0,           # Unrelated
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "hospitality_service": 1,        # Adjacent (hospitality marketing)
+            "agriculture_environment": 0     # Unrelated
         },
         "design": {
             "technology": 2,          # Closely related
@@ -1401,7 +1532,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "sales_marketing": 1,     # Adjacent
             "creative_arts": 2,       # Very closely related (overlapping skills)
             "education": 1,           # Adjacent (educational design)
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 0     # Unrelated
         },
         "creative_arts": {
             "technology": 2,          # Closely related (digital media, web, games)
@@ -1411,7 +1545,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "sales_marketing": 2,     # Closely related (content, campaigns, branding)
             "design": 2,              # Very closely related (overlapping field)
             "education": 1,           # Adjacent (art education, instructional design)
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 0     # Unrelated
         },
         "education": {
             "technology": 0,          # Unrelated
@@ -1421,7 +1558,10 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "sales_marketing": 0,     # Unrelated
             "design": 1,              # Adjacent
             "creative_arts": 1,       # Adjacent (art education)
-            "skilled_trades": 0       # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 1,  # Adjacent (public education)
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 1     # Adjacent (environmental education)
         },
         "skilled_trades": {
             "technology": 0,          # Unrelated
@@ -1431,21 +1571,119 @@ def get_field_adjacency_map() -> Dict[str, Dict[str, int]]:
             "sales_marketing": 0,     # Unrelated
             "design": 0,              # Unrelated
             "creative_arts": 0,       # Unrelated
-            "education": 0            # Unrelated
+            "education": 0,           # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 1     # Adjacent (agricultural equipment)
+        },
+        "government_public_service": {
+            "technology": 0,          # Unrelated
+            "product_management": 0,  # Unrelated
+            "healthcare": 1,          # Adjacent (public health)
+            "business_finance": 1,    # Adjacent (public finance)
+            "sales_marketing": 0,     # Unrelated
+            "design": 0,              # Unrelated
+            "creative_arts": 0,       # Unrelated
+            "education": 1,           # Adjacent (public education)
+            "skilled_trades": 0,      # Unrelated
+            "hospitality_service": 0,        # Unrelated
+            "agriculture_environment": 1     # Adjacent (environmental policy)
+        },
+        "hospitality_service": {
+            "technology": 0,          # Unrelated
+            "product_management": 0,  # Unrelated
+            "healthcare": 0,          # Unrelated
+            "business_finance": 1,    # Adjacent (hospitality business)
+            "sales_marketing": 1,     # Adjacent (hospitality marketing)
+            "design": 0,              # Unrelated
+            "creative_arts": 0,       # Unrelated
+            "education": 0,           # Unrelated
+            "skilled_trades": 0,      # Unrelated
+            "government_public_service": 0,  # Unrelated
+            "agriculture_environment": 0     # Unrelated
+        },
+        "agriculture_environment": {
+            "technology": 0,          # Unrelated
+            "product_management": 0,  # Unrelated
+            "healthcare": 0,          # Unrelated
+            "business_finance": 1,    # Adjacent (agribusiness)
+            "sales_marketing": 0,     # Unrelated
+            "design": 0,              # Unrelated
+            "creative_arts": 0,       # Unrelated
+            "education": 1,           # Adjacent (environmental education)
+            "skilled_trades": 1,      # Adjacent (agricultural equipment)
+            "government_public_service": 1,  # Adjacent (environmental policy)
+            "hospitality_service": 0         # Unrelated
         }
     }
 
 def identify_career_field(career: Dict[str, Any]) -> str:
-    """Identify which field a career belongs to based on title and description"""
+    """
+    Identify which field a career belongs to based on title and description
+    
+    CRITICAL FIX: This function was misclassifying careers like:
+    - "Tourism Director" as "technology" instead of "hospitality_service"
+    - "Conservation Director" as "technology" instead of "agriculture_environment"
+    - "Congressional Staff Director" as "technology" instead of "government_public_service"
+    
+    Fixed to use exact phrase matching and prioritize specific field terms.
+    """
     career_title = career.get("title", "").lower()
     career_desc = career.get("description", "").lower()
     career_text = f"{career_title} {career_desc}"
     
     field_categories = get_career_field_categories()
     
-    # Check each field for keyword matches
+    # PRIORITY 1: Check for exact government/public service matches first
+    government_keywords = field_categories.get("government_public_service", [])
+    for keyword in government_keywords:
+        if keyword in career_title:  # Exact match in title
+            print(f"🏛️ GOVERNMENT MATCH: '{career_title}' matched '{keyword}' -> government_public_service")
+            return "government_public_service"
+    
+    # PRIORITY 2: Check for exact hospitality matches (including tourism)
+    hospitality_keywords = field_categories.get("hospitality_service", [])
+    # Add tourism-specific keywords
+    tourism_keywords = ["tourism director", "tourism manager", "tourism", "travel", "hospitality"]
+    all_hospitality_keywords = hospitality_keywords + tourism_keywords
+    
+    for keyword in all_hospitality_keywords:
+        if keyword in career_title:  # Exact match in title
+            print(f"🏨 HOSPITALITY/TOURISM MATCH: '{career_title}' matched '{keyword}' -> hospitality_service")
+            return "hospitality_service"
+    
+    # PRIORITY 3: Check for exact agriculture/environment matches (including conservation)
+    agriculture_keywords = field_categories.get("agriculture_environment", [])
+    # Add conservation-specific keywords
+    conservation_keywords = ["conservation director", "conservation manager", "conservation", "environmental director", "environmental manager", "sustainability"]
+    all_agriculture_keywords = agriculture_keywords + conservation_keywords
+    
+    for keyword in all_agriculture_keywords:
+        if keyword in career_title:  # Exact match in title
+            print(f"🌱 AGRICULTURE/CONSERVATION MATCH: '{career_title}' matched '{keyword}' -> agriculture_environment")
+            return "agriculture_environment"
+    
+    # PRIORITY 4: Check for skilled trades matches
+    trades_keywords = field_categories.get("skilled_trades", [])
+    for keyword in trades_keywords:
+        if keyword in career_title:  # Exact match in title
+            print(f"🔧 TRADES MATCH: '{career_title}' matched '{keyword}' -> skilled_trades")
+            return "skilled_trades"
+    
+    # PRIORITY 5: Check for healthcare matches
+    healthcare_keywords = field_categories.get("healthcare", [])
+    for keyword in healthcare_keywords:
+        if keyword in career_title:  # Exact match in title
+            print(f"🏥 HEALTHCARE MATCH: '{career_title}' matched '{keyword}' -> healthcare")
+            return "healthcare"
+    
+    # PRIORITY 6: Standard scoring for remaining fields
     field_scores = {}
     for field, keywords in field_categories.items():
+        # Skip the fields we already handled with exact matching
+        if field in ["government_public_service", "hospitality_service", "agriculture_environment", "skilled_trades", "healthcare"]:
+            continue
+            
         score = 0
         for keyword in keywords:
             if keyword in career_text:
@@ -1457,61 +1695,159 @@ def identify_career_field(career: Dict[str, Any]) -> str:
         field_scores[field] = score
     
     # Return the field with the highest score, or "unknown" if no matches
-    if max(field_scores.values()) > 0:
-        return max(field_scores, key=field_scores.get)
+    if field_scores and max(field_scores.values()) > 0:
+        best_field = max(field_scores, key=field_scores.get)
+        print(f"🔍 STANDARD MATCH: '{career_title}' -> {best_field} (score: {field_scores[best_field]})")
+        return best_field
     else:
+        print(f"❓ NO MATCH: '{career_title}' -> unknown")
         return "unknown"
 
 def identify_user_field(resume_insights: Dict[str, Any], user_data: Dict[str, Any]) -> str:
-    """Identify the user's primary career field based on resume and profile data"""
+    """
+    Identify the user's primary career field based on resume and profile data
+    
+    CRITICAL FIX (2025-01-21): This function was misclassifying Aircraft Mechanics as "sales_marketing"
+    instead of "skilled_trades", causing inappropriate recommendations like "Junior Product Manager"
+    for aircraft mechanics. Fixed to properly prioritize current role and technical skills analysis.
+    """
     keyword_frequencies = resume_insights.get("keyword_frequencies", {})
     dominant_theme = resume_insights.get("dominant_theme")
     current_role = resume_insights.get("current_role")
     
-    # Strong signals from keyword frequency analysis
-    if keyword_frequencies.get("product", 0) >= 5:
+    # PRIORITY 1: Current role analysis (most reliable indicator)
+    if current_role:
+        role_lower = current_role.lower()
+        
+        # SKILLED TRADES - Check first to prevent misclassification
+        if any(trades_word in role_lower for trades_word in [
+            "mechanic", "aircraft mechanic", "technician", "electrician", "plumber",
+            "welder", "carpenter", "hvac", "maintenance", "machinist", "operator"
+        ]):
+            return "skilled_trades"
+        
+        # PRODUCT MANAGEMENT
+        elif "product" in role_lower and any(pm_word in role_lower for pm_word in ["manager", "management", "lead", "owner"]):
+            return "product_management"
+        
+        # TECHNOLOGY
+        elif any(tech_word in role_lower for tech_word in ["engineer", "developer", "data scientist", "technical", "software"]):
+            # Exception: Aircraft mechanics are NOT technology workers
+            if "aircraft" in role_lower or "aviation" in role_lower:
+                return "skilled_trades"
+            return "technology"
+        
+        # COMMUNICATIONS/MARKETING - FIXED: Added "coordinator" and more comprehensive matching
+        elif any(comm_word in role_lower for comm_word in [
+            "social media", "marketing", "communications", "content", "pr", "brand",
+            "marketing coordinator", "marketing manager", "marketing assistant", "marketing specialist",
+            "social media manager", "content creator", "communications coordinator", "communications manager"
+        ]):
+            return "sales_marketing"
+        
+        # CREATIVE ARTS
+        elif any(creative_word in role_lower for creative_word in ["designer", "creative", "artist", "photographer", "illustrator"]):
+            return "creative_arts"
+        
+        # HEALTHCARE
+        elif any(health_word in role_lower for health_word in ["nurse", "doctor", "therapist", "medical", "clinical"]):
+            return "healthcare"
+        
+        # EDUCATION
+        elif any(edu_word in role_lower for edu_word in ["teacher", "instructor", "educator", "professor"]):
+            return "education"
+        
+        # BUSINESS/FINANCE - FIXED: Moved this AFTER communications/marketing to prevent misclassification
+        elif any(biz_word in role_lower for biz_word in ["analyst", "consultant", "finance", "business"]):
+            return "business_finance"
+        
+        # GENERIC MANAGEMENT - Only if no other specific field matches
+        elif "manager" in role_lower or "coordinator" in role_lower:
+            # Try to determine management type from context
+            if any(marketing_word in role_lower for marketing_word in ["marketing", "social", "brand", "communications"]):
+                return "sales_marketing"
+            elif any(product_word in role_lower for product_word in ["product"]):
+                return "product_management"
+            else:
+                return "business_finance"  # Default for generic management roles
+    
+    # PRIORITY 2: Technical skills analysis (second most reliable)
+    tech_skills = user_data.get("technical_skills", [])
+    if tech_skills:
+        tech_skill_text = " ".join(str(skill) for skill in tech_skills if skill).lower()
+        
+        # SKILLED TRADES - Check first to prevent misclassification
+        if any(trades_skill in tech_skill_text for trades_skill in [
+            "aircraft maintenance", "engine repair", "hydraulic systems", "electrical troubleshooting",
+            "avionics", "faa regulations", "mechanical", "automotive", "hvac", "welding",
+            "plumbing", "machining", "fabrication", "maintenance", "repair"
+        ]):
+            return "skilled_trades"
+        
+        # COMMUNICATIONS/MARKETING - ENHANCED: Added more comprehensive matching
+        elif any(comm_skill in tech_skill_text for comm_skill in [
+            "social media management", "content creation", "digital marketing", "copywriting",
+            "seo", "email marketing", "brand", "communications", "google analytics", "facebook blueprint",
+            "social media", "content", "marketing", "graphic design", "video editing", "photography",
+            "adobe creative suite", "web design", "email management"
+        ]):
+            return "sales_marketing"
+        
+        # CREATIVE ARTS - REFINED: Removed overlapping skills that should go to sales_marketing
+        elif any(creative_skill in tech_skill_text for creative_skill in [
+            "illustrator", "photoshop", "design", "creative", "visual design", "art", "animation",
+            "3d modeling", "ui design", "ux design"
+        ]):
+            return "creative_arts"
+        
+        # PRODUCT MANAGEMENT
+        elif any(product_skill in tech_skill_text for product_skill in [
+            "product management", "roadmap", "user research", "a/b testing", "product analytics",
+            "jira", "confluence", "agile", "scrum"
+        ]):
+            return "product_management"
+        
+        # TECHNOLOGY
+        elif any(tech_skill in tech_skill_text for tech_skill in [
+            "python", "javascript", "sql", "aws", "machine learning", "programming", "software",
+            "react", "node.js", "docker", "kubernetes", "git"
+        ]):
+            return "technology"
+    
+    # PRIORITY 3: Keyword frequency analysis (fallback)
+    if keyword_frequencies.get("communications", 0) >= 5:
+        return "sales_marketing"
+    elif keyword_frequencies.get("creative", 0) >= 5:
+        return "creative_arts"
+    elif keyword_frequencies.get("product", 0) >= 5:
         return "product_management"
     elif keyword_frequencies.get("engineering", 0) >= 5:
         return "technology"
     elif keyword_frequencies.get("data_science", 0) >= 5:
-        return "technology"  # Data science is part of technology field
+        return "technology"
     elif keyword_frequencies.get("management", 0) >= 5:
-        # Need to determine what type of management
+        # Determine management type
         if current_role and "product" in current_role.lower():
             return "product_management"
         elif current_role and any(tech_word in current_role.lower() for tech_word in ["engineering", "technical", "software"]):
             return "technology"
         else:
-            return "business_finance"  # General management
-    
-    # Fallback to current role analysis
-    if current_role:
-        role_lower = current_role.lower()
-        if "product" in role_lower:
-            return "product_management"
-        elif any(tech_word in role_lower for tech_word in ["engineer", "developer", "data scientist", "technical"]):
-            return "technology"
-        elif any(biz_word in role_lower for biz_word in ["analyst", "consultant", "finance", "business"]):
             return "business_finance"
-        elif any(design_word in role_lower for design_word in ["designer", "ux", "ui"]):
-            return "design"
-        elif any(sales_word in role_lower for sales_word in ["sales", "marketing", "account manager"]):
-            return "sales_marketing"
-    
-    # Default fallback based on technical skills
-    tech_skills = user_data.get("technical_skills", [])
-    if tech_skills:
-        tech_skill_text = " ".join(tech_skills).lower()
-        if any(product_skill in tech_skill_text for product_skill in ["product management", "roadmap", "user research"]):
-            return "product_management"
-        elif any(tech_skill in tech_skill_text for tech_skill in ["python", "javascript", "sql", "aws", "machine learning"]):
-            return "technology"
     
     return "unknown"
 
 def calculate_consistency_penalty(career_field: str, user_field: str, field_adjacency_map: Dict[str, Dict[str, int]],
-                                dominant_theme: str, keyword_frequencies: Dict[str, int]) -> int:
-    """Calculate penalty for career path consistency - negative values are penalties"""
+                                dominant_theme: str, keyword_frequencies: Dict[str, int], exploration_level: int = 1) -> int:
+    """
+    Calculate penalty for career path consistency - negative values are penalties
+    
+    ENHANCED FOR HIGH EXPLORATION LEVELS:
+    This function now applies much stronger penalties for high exploration levels (4-5)
+    to prevent inappropriate cross-category recommendations like:
+    - Product Managers → Congressional Staff Director
+    - Social Media Managers → Tax Specialist
+    - Aircraft Mechanics → Spa Manager
+    """
     
     if career_field == "unknown" or user_field == "unknown":
         return -5  # Small penalty for unknown fields
@@ -1522,24 +1858,47 @@ def calculate_consistency_penalty(career_field: str, user_field: str, field_adja
     # Get adjacency score (0=unrelated, 1=adjacent, 2=closely related)
     adjacency_score = field_adjacency_map.get(user_field, {}).get(career_field, 0)
     
+    # EXPLORATION LEVEL MULTIPLIERS: Higher exploration = stronger penalties for inappropriate matches
+    exploration_multiplier = 1.0
+    if exploration_level >= 5:
+        exploration_multiplier = 2.5  # 2.5x stronger penalties for maximum exploration
+    elif exploration_level >= 4:
+        exploration_multiplier = 2.0  # 2x stronger penalties for high exploration
+    elif exploration_level >= 3:
+        exploration_multiplier = 1.5  # 1.5x stronger penalties for moderate exploration
+    
     # STRONG PENALTIES for completely unrelated fields
     if adjacency_score == 0:
-        # Extra strong penalty if user has a dominant theme that's completely different
+        # Base penalty calculation
         if dominant_theme and keyword_frequencies.get(dominant_theme, 0) >= 10:
-            penalty = -60  # Very strong penalty for users with clear specialization
-            print(f"🚫 STRONG CONSISTENCY PENALTY: {career_field} career for {user_field} user with strong {dominant_theme} theme ({keyword_frequencies.get(dominant_theme, 0)} mentions) = {penalty}")
+            base_penalty = -60  # Very strong penalty for users with clear specialization
         elif dominant_theme and keyword_frequencies.get(dominant_theme, 0) >= 5:
-            penalty = -45  # Strong penalty for users with moderate specialization
-            print(f"🚫 MODERATE CONSISTENCY PENALTY: {career_field} career for {user_field} user with {dominant_theme} theme ({keyword_frequencies.get(dominant_theme, 0)} mentions) = {penalty}")
+            base_penalty = -45  # Strong penalty for users with moderate specialization
         else:
-            penalty = -30  # Standard penalty for unrelated fields
+            base_penalty = -30  # Standard penalty for unrelated fields
+        
+        # Apply exploration level multiplier
+        penalty = int(base_penalty * exploration_multiplier)
+        
+        # Cap the penalty to prevent extreme values
+        penalty = max(penalty, -150)  # Maximum penalty of -150
+        
+        if exploration_level >= 4:
+            print(f"🚫 HIGH EXPLORATION PENALTY: {career_field} career for {user_field} user (exploration {exploration_level}) = {penalty} (base: {base_penalty}, multiplier: {exploration_multiplier}x)")
+        else:
             print(f"🚫 STANDARD CONSISTENCY PENALTY: {career_field} career for {user_field} user = {penalty}")
         return penalty
     
-    # MODERATE PENALTIES for adjacent fields
+    # MODERATE PENALTIES for adjacent fields (also scaled by exploration level)
     elif adjacency_score == 1:
-        penalty = -10  # Small penalty for adjacent fields
-        print(f"⚠️ ADJACENT FIELD PENALTY: {career_field} career for {user_field} user = {penalty}")
+        base_penalty = -10  # Small penalty for adjacent fields
+        penalty = int(base_penalty * exploration_multiplier)
+        penalty = max(penalty, -25)  # Cap adjacent field penalties
+        
+        if exploration_level >= 4:
+            print(f"⚠️ HIGH EXPLORATION ADJACENT PENALTY: {career_field} career for {user_field} user (exploration {exploration_level}) = {penalty}")
+        else:
+            print(f"⚠️ ADJACENT FIELD PENALTY: {career_field} career for {user_field} user = {penalty}")
         return penalty
     
     # NO PENALTY for closely related fields

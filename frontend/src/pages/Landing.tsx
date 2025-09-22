@@ -357,27 +357,42 @@ const Landing = () => {
 
       {/* AI Differentiator Section */}
       <section className="container mx-auto px-4 py-12">
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white text-center">
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-6 text-white text-center">
           <div className="flex items-center justify-center mb-4">
             <Zap className="h-8 w-8 mr-2" />
             <h2 className="text-2xl font-bold">Powered by Advanced AI</h2>
           </div>
           <p className="text-lg mb-6 max-w-3xl mx-auto opacity-90">
-            Unlike generic career tests, our AI analyzes complex patterns across thousands of career paths, 
-            skills, and professional profiles to find opportunities that perfectly match your unique combination of abilities.
+            Unlike generic career tests, our AI analyzes complex patterns across thousands of career paths,
+            skills, and professional profiles to discover personalized recommendations beyond your current role or obvious career options.
           </p>
           <div className="grid md:grid-cols-3 gap-6 text-center">
-            <div>
-              <div className="text-3xl font-bold mb-2">10,000+</div>
-              <p className="text-sm opacity-80">Career-skill patterns analyzed</p>
+            <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/20">
+              <div className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
+                361
+              </div>
+              <p className="text-base font-semibold mb-3 text-white">Careers in Database</p>
+              <p className="text-sm text-white/90 leading-relaxed">
+                Spanning 11 major job categories from technology to healthcare to skilled trades
+              </p>
             </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">95%</div>
-              <p className="text-sm opacity-80">Users discover new career options</p>
+            <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/20">
+              <div className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
+                25,270
+              </div>
+              <p className="text-base font-semibold mb-3 text-white">Data Points Analyzed</p>
+              <p className="text-sm text-white/90 leading-relaxed">
+                Every recommendation considers 70+ factors including skills, experience, salary, and growth potential
+              </p>
             </div>
-            <div>
-              <div className="text-3xl font-bold mb-2">3x</div>
-              <p className="text-sm opacity-80">More accurate than traditional assessments</p>
+            <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/20">
+              <div className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
+                2,166
+              </div>
+              <p className="text-base font-semibold mb-3 text-white">Skill-Career Connections</p>
+              <p className="text-sm text-white/90 leading-relaxed">
+                Advanced AI maps thousands of skill combinations across 361 careers to find your perfect match
+              </p>
             </div>
           </div>
         </div>
@@ -568,144 +583,103 @@ const Landing = () => {
               Comprehensive Career Coverage
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered system covers <span className="font-semibold text-blue-600">296 careers</span> across major industries,
+              Our AI-powered system covers <span className="font-semibold text-blue-600">361 careers</span> across major industries,
               with more being added regularly to ensure comprehensive career exploration.
             </p>
           </div>
           
           <div className="max-w-6xl mx-auto">
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Currently Supported */}
-              <Card className="p-6 border-2 border-green-200 bg-green-50">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <CheckCircle className="h-6 w-6 text-green-600" />
-                    <CardTitle className="text-xl text-green-800">Currently Supported</CardTitle>
+            {/* Currently Supported - Full Width */}
+            <Card className="p-6 border-2 border-green-200 bg-green-50">
+              <CardHeader className="pb-6">
+                <div className="flex items-center justify-center space-x-2 mb-2">
+                  <CheckCircle className="h-6 w-6 text-green-600" />
+                  <CardTitle className="text-2xl text-green-800">Supported Career Categories and Careers</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Brain className="h-4 w-4 mr-1" />
+                      Technology & Engineering
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">57 careers</span>
                   </div>
-                  <CardDescription className="text-green-700">
-                    Ready for AI-powered recommendations now
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <Brain className="h-3 w-3 mr-1" />
-                        Technology & Engineering
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">57 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <User className="h-3 w-3 mr-1" />
-                        Healthcare & Medical
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">40 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <Building2 className="h-3 w-3 mr-1" />
-                        Skilled Trades & Construction
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">40 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <GraduationCap className="h-3 w-3 mr-1" />
-                        Education & Training
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">40 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <TrendingUp className="h-3 w-3 mr-1" />
-                        Business & Finance
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">44 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <Award className="h-3 w-3 mr-1" />
-                        Legal & Law
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">19 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <Briefcase className="h-3 w-3 mr-1" />
-                        Creative & Arts
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">26 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-green-300 text-green-700">
-                        <Users className="h-3 w-3 mr-1" />
-                        Public Service & Government
-                      </Badge>
-                      <span className="text-sm text-green-600 font-medium">30 careers</span>
-                    </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <User className="h-4 w-4 mr-1" />
+                      Healthcare & Medical
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">40 careers</span>
                   </div>
-                </CardContent>
-              </Card>
-
-              {/* Coming Soon */}
-              <Card className="p-6 border-2 border-blue-200 bg-blue-50">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Compass className="h-6 w-6 text-blue-600" />
-                    <CardTitle className="text-xl text-blue-800">Coming Soon</CardTitle>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Building2 className="h-4 w-4 mr-1" />
+                      Skilled Trades & Construction
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">40 careers</span>
                   </div>
-                  <CardDescription className="text-blue-700">
-                    Expanding our coverage to serve more professionals
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
-                        <Building2 className="h-3 w-3 mr-1" />
-                        Hospitality & Service
-                      </Badge>
-                      <span className="text-sm text-blue-600 font-medium">~12 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
-                        <Zap className="h-3 w-3 mr-1" />
-                        Manufacturing & Industrial
-                      </Badge>
-                      <span className="text-sm text-blue-600 font-medium">~15 careers</span>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Badge variant="outline" className="bg-white border-blue-300 text-blue-700">
-                        <Map className="h-3 w-3 mr-1" />
-                        Agriculture & Environmental
-                      </Badge>
-                      <span className="text-sm text-blue-600 font-medium">~10 careers</span>
-                    </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <GraduationCap className="h-4 w-4 mr-1" />
+                      Education & Training
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">40 careers</span>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <TrendingUp className="h-4 w-4 mr-1" />
+                      Business & Finance
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">44 careers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Award className="h-4 w-4 mr-1" />
+                      Legal & Law
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">19 careers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Briefcase className="h-4 w-4 mr-1" />
+                      Creative & Arts
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">26 careers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Users className="h-4 w-4 mr-1" />
+                      Public Service & Government
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">30 careers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Building2 className="h-4 w-4 mr-1" />
+                      Hospitality & Service
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">21 careers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Zap className="h-4 w-4 mr-1" />
+                      Manufacturing & Industrial
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">22 careers</span>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
+                      <Map className="h-4 w-4 mr-1" />
+                      Agriculture & Environment
+                    </Badge>
+                    <span className="text-base text-green-600 font-semibold">22 careers</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
             
-            {/* Summary Stats */}
-            <div className="mt-8 text-center">
-              <div className="inline-flex items-center space-x-8 bg-white rounded-lg p-6 shadow-sm border">
-                <div>
-                  <div className="text-3xl font-bold text-gray-900 mb-1">296</div>
-                  <p className="text-sm text-gray-600 font-medium">Careers Available Now</p>
-                </div>
-                <div className="w-px h-12 bg-gray-300"></div>
-                <div>
-                  <div className="text-3xl font-bold text-blue-600 mb-1">345+</div>
-                  <p className="text-sm text-gray-600 font-medium">Total When Complete</p>
-                </div>
-                <div className="w-px h-12 bg-gray-300"></div>
-                <div>
-                  <div className="text-3xl font-bold text-green-600 mb-1">11</div>
-                  <p className="text-sm text-gray-600 font-medium">Major Industries</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

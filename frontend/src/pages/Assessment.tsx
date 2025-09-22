@@ -223,7 +223,7 @@ const Assessment = () => {
         }
       }
       
-      showSuccess('Assessment data loaded for editing');
+      // Assessment data loaded for editing
     } else {
       setIsEditMode(false);
     }
@@ -300,7 +300,7 @@ const Assessment = () => {
           const text = e.target?.result as string;
           console.log('✅ Text file processed, length:', text.length);
           handleInputChange('resumeText', text);
-          showSuccess(`✅ Resume uploaded successfully! ${file.name} (${text.length} characters processed)`);
+          // Resume uploaded successfully
         };
         reader.onerror = () => {
           showError('Failed to read the text file. Please try again.');
@@ -310,12 +310,12 @@ const Assessment = () => {
         const resumeContent = `[PDF Resume: ${file.name}] - PDF content successfully processed for analysis. File contains professional experience, skills, and qualifications that will be analyzed for career matching.`;
         console.log('✅ PDF file processed:', file.name);
         handleInputChange('resumeText', resumeContent);
-        showSuccess(`✅ PDF resume uploaded successfully! ${file.name} has been processed and will be analyzed for career recommendations.`);
+        // PDF resume uploaded successfully
       } else if (fileType === 'application/msword' || fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || fileName.endsWith('.doc') || fileName.endsWith('.docx')) {
         const resumeContent = `[Word Document: ${file.name}] - Word document content successfully processed for analysis. File contains professional experience, skills, and qualifications that will be analyzed for career matching.`;
         console.log('✅ Word document processed:', file.name);
         handleInputChange('resumeText', resumeContent);
-        showSuccess(`✅ Word document uploaded successfully! ${file.name} has been processed and will be analyzed for career recommendations.`);
+        // Word document uploaded successfully
       }
     }
   };
@@ -438,7 +438,7 @@ const Assessment = () => {
       const successMessage = isEditMode 
         ? 'Assessment updated successfully! Your career recommendations will be refreshed.' 
         : 'Assessment completed successfully! Generating your personalized career recommendations...';
-      showSuccess(successMessage);
+      // Assessment completed/updated successfully
       navigate('/dashboard');
     } catch (error) {
       console.error('❌ Failed to save assessment:', error);
