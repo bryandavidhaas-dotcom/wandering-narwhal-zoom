@@ -1,26 +1,37 @@
-// Simple toast utility functions
-// In a real app, you might use react-hot-toast or similar
+import { toast } from "@/hooks/use-toast";
 
 export const showSuccess = (message: string) => {
   console.log('✅ Success:', message);
-  // You can implement actual toast notifications here
-  // For now, we'll just log to console
+  toast({
+    title: "Success",
+    description: message,
+    variant: "default",
+  });
 };
 
 export const showError = (message: string) => {
   console.error('❌ Error:', message);
-  // You can implement actual toast notifications here
-  // For now, we'll just log to console
+  toast({
+    title: "Error",
+    description: message,
+    variant: "destructive",
+  });
 };
 
 export const showInfo = (message: string) => {
   console.log('ℹ️ Info:', message);
-  // You can implement actual toast notifications here
-  // For now, we'll just log to console
+  toast({
+    title: "Info",
+    description: message,
+    variant: "default",
+  });
 };
 
 export const showWarning = (message: string) => {
   console.warn('⚠️ Warning:', message);
-  // You can implement actual toast notifications here
-  // For now, we'll just log to console
+  toast({
+    title: "Warning",
+    description: message,
+    variant: "default",
+  });
 };

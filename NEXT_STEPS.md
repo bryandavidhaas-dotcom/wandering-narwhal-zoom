@@ -1,77 +1,120 @@
-# 🚀 NEXT STEPS: Recommendation Engine Validation
+# Next Steps: Implementing the New Recommendation Engine Architecture
 
-**Status**: Recommendation engine code and tests are complete. Ready for validation.
+This document outlines the necessary code changes to implement the new multi-step architecture in the `recommendation-engine/engine.py` file.
 
-## Quick Start Commands
+## 1. New Private Methods
 
-### 1. Run Tests First (15-45 min)
-```bash
-# Navigate to project directory
-cd c:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom
+The following private methods need to be added to the `RecommendationEngine` class:
 
-# Run unit tests first
-python tests/run_tests.py --suite unit
+### `_preprocess_user_profile`
 
-# If unit tests pass, run integration tests
-python tests/run_tests.py --suite integration
+This method will be responsible for summarizing the user's profile and resume.
 
-# Skip performance tests initially
-python tests/run_tests.py --no-performance
-```
-
-### 2. Manual Test Script (if tests pass)
-Create `test_engine.py` in project root:
 ```python
-from recommendation_engine.engine import RecommendationEngine
-from recommendation_engine.mock_data import MOCK_USER_PROFILE, MOCK_CAREERS, MOCK_SKILLS
+def _preprocess_user_profile(self, user_profile: UserProfile) -> Dict:
+    """
+    Summarizes the user's profile and resume using a dedicated LLM call.
 
-print("Testing recommendation engine...")
-engine = RecommendationEngine()
-recommendations = engine.get_recommendations(MOCK_USER_PROFILE, MOCK_CAREERS, MOCK_SKILLS)
+    Args:
+        user_profile: The user's full profile.
 
-print(f"Generated {len(recommendations)} recommendations:")
-for i, rec in enumerate(recommendations[:3]):
-    print(f"{i+1}. {rec.career.title}")
-    print(f"   Score: {rec.score.total_score:.2f}")
-    print(f"   Category: {rec.category.name}")
-    print(f"   Reasons: {rec.reasons[:2]}")
-    print()
+    Returns:
+        A dictionary containing the summarized profile.
+    """
+    # This is a placeholder for the actual implementation.
+    # In a real-world scenario, this method would make a call to an LLM
+    # with a prompt designed for summarization.
+    summary = {
+        "key_skills": user_profile.technicalSkills,
+        "experience_years": user_profile.experience,
+        "primary_industry": user_profile.industries[0] if user_profile.industries else "",
+        "career_goals": user_profile.careerGoals,
+    }
+    return summary
 ```
 
-Run with: `python test_engine.py`
+### `_prefilter_careers`
 
-## Time Estimates
-- **Tests pass immediately**: 30 minutes total
-- **Minor fixes needed**: 1-2 hours
-- **Major issues**: 3-6 hours
-- **Full frontend integration**: +2-4 hours
+This method will implement the lightweight, non-LLM pre-filtering logic.
 
-## Key Files Created
-- [`tests/README.md`](tests/README.md) - Complete testing documentation
-- [`recommendation-engine-testing-strategy.md`](recommendation-engine-testing-strategy.md) - Testing strategy
-- [`tests/run_tests.py`](tests/run_tests.py) - Main test runner
-- All test files in [`tests/`](tests/) directory
+```python
+def _prefilter_careers(
+    self,
+    summarized_profile: Dict,
+    available_careers: List[Career],
+) -> List[Career]:
+    """
+    Prefilters the list of available careers based on the summarized profile.
 
-## If Tests Fail
-Common fixes needed:
-1. Install missing packages: `pip install psutil` (for performance tests)
-2. Fix import paths in test files
-3. Create missing configuration classes
-4. Update model definitions
+    Args:
+        summarized_profile: The summarized user profile.
+        available_careers: The full list of available careers.
 
-## Success Criteria
-✅ Unit tests pass  
-✅ Integration tests pass  
-✅ Manual test script produces sensible recommendations  
-✅ Frontend integration works  
+    Returns:
+        A filtered list of candidate careers.
+    """
+    # This is a placeholder for the actual implementation.
+    # A more sophisticated implementation would involve keyword matching,
+    # skill overlap calculation, and industry filtering.
+    return available_careers[:200]  # Simulate filtering to 200 careers
+```
 
-**Only then**: Add new features/enhancements
+## 2. Modified `get_recommendations` Method
 
-## Documentation
-- [`tests/README.md`](tests/README.md) - Comprehensive test documentation
-- [`recommendation-engine/README.md`](recommendation-engine/README.md) - Engine documentation
-- [`recommendation-engine-testing-strategy.md`](recommendation-engine-testing-strategy.md) - Testing strategy
+The `get_recommendations` method needs to be updated to orchestrate the new multi-step process.
 
----
-**Created**: 2025-01-17  
-**Next Action**: Run `python tests/run_tests.py --suite unit`
+```python
+def get_recommendations(
+    self,
+    user_profile: UserProfile,
+    available_careers: List[Career],
+    limit: Optional[int] = None,
+    exploration_level: int = 3,
+) -> List[CareerRecommendation]:
+    """
+    Generate career recommendations for a user using the new multi-step process.
+    """
+    # Step 1: Pre-process the user profile
+    summarized_profile = self._preprocess_user_profile(user_profile)
+
+    # Step 2: Pre-filter careers
+    candidate_careers = self._prefilter_careers(
+        summarized_profile, available_careers
+    )
+
+    # Step 3: Multi-call recommendation generation
+    # This is a placeholder for the batch scoring and top candidate analysis logic.
+    # This would involve multiple calls to the LLM with smaller batches of careers.
+    
+    # For now, we'll use the existing scoring and categorization engines
+    # with the filtered list of careers.
+    scores = self.scoring_engine.score_multiple_careers(
+        user_profile, candidate_careers, exploration_level
+    )
+    recommendations = self.categorization_engine.categorize_recommendations(
+        user_profile, candidate_careers, scores
+    )
+
+    # Step 4: Apply final limits and sorting
+    recommendations.sort(key=lambda x: x.score.total_score, reverse=True)
+
+    if limit:
+        recommendations = recommendations[:limit]
+    elif len(recommendations) > self.config.max_recommendations:
+        recommendations = recommendations[: self.config.max_recommendations]
+
+    return recommendations
+```
+
+## 3. Configuration Updates
+
+The `RecommendationConfig` class (in `recommendation-engine/config.py`) should be updated to include new parameters for controlling the multi-step process.
+
+```python
+# In recommendation-engine/config.py
+
+@dataclass
+class RecommendationConfig:
+    # ... existing configuration ...
+    batch_size: int = 20
+    top_n_candidates: int = 30

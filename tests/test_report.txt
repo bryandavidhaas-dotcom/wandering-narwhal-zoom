@@ -1,24 +1,26 @@
 RECOMMENDATION ENGINE TEST REPORT
 ==================================================
 
-Generated: 2025-09-18 14:35:40
+Generated: 2025-09-21 23:12:24
 Python version: 3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]
 
 SUMMARY:
-Total tests: 3
+Total tests: 8
 Failures: 0
-Errors: 3
+Errors: 8
 
 
 UNIT TESTS
 ----------
-Tests run: 3
+Tests run: 5
 Failures: 0
-Errors: 3
+Errors: 5
 Success rate: 0.0%
-Execution time: 0.14s
+Execution time: 0.20s
 
 test_categorization (unittest.loader._FailedTest.test_categorization) ... ERROR
+test_engine_prompt_validation (unittest.loader._FailedTest.test_engine_prompt_validation) ... ERROR
+test_enhanced_categorization (unittest.loader._FailedTest.test_enhanced_categorization) ... ERROR
 test_filters (unittest.loader._FailedTest.test_filters) ... ERROR
 test_scoring (unittest.loader._FailedTest.test_scoring) ... ERROR
 
@@ -37,11 +39,46 @@ Traceback (most recent call last):
   File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_categorization.py", line 23, in load_module_from_path
     spec.loader.exec_module(module)
     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
-  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\categorization.py", line 9, in <module>
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\categorization.py", line 10, in <module>
     from .models import (
     ...<2 lines>...
     )
 ImportError: attempted relative import with no known parent package
+
+
+======================================================================
+ERROR: test_engine_prompt_validation (unittest.loader._FailedTest.test_engine_prompt_validation)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_engine_prompt_validation
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_engine_prompt_validation.py", line 32, in <module>
+    engine_module = load_module_from_path("engine", os.path.join(base_path, "engine.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_engine_prompt_validation.py", line 25, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\engine.py", line 11, in <module>
+    from .models import UserProfile, Career, Skill, CareerRecommendation
+ImportError: attempted relative import with no known parent package
+
+
+======================================================================
+ERROR: test_enhanced_categorization (unittest.loader._FailedTest.test_enhanced_categorization)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_enhanced_categorization
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_enhanced_categorization.py", line 8, in <module>
+    import pytest
+ModuleNotFoundError: No module named 'pytest'
 
 
 ======================================================================
@@ -87,9 +124,9 @@ ImportError: attempted relative import with no known parent package
 
 
 ----------------------------------------------------------------------
-Ran 3 tests in 0.000s
+Ran 5 tests in 0.001s
 
-FAILED (errors=3)
+FAILED (errors=5)
 
 ERRORS:
   test_categorization (unittest.loader._FailedTest.test_categorization): ImportError: Failed to import test module: test_categorization
@@ -104,11 +141,40 @@ Traceback (most recent call last):
   File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_categorization.py", line 23, in load_module_from_path
     spec.loader.exec_module(module)
     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
-  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\categorization.py", line 9, in <module>
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\categorization.py", line 10, in <module>
     from .models import (
     ...<2 lines>...
     )
 ImportError: attempted relative import with no known parent package
+
+
+  test_engine_prompt_validation (unittest.loader._FailedTest.test_engine_prompt_validation): ImportError: Failed to import test module: test_engine_prompt_validation
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_engine_prompt_validation.py", line 32, in <module>
+    engine_module = load_module_from_path("engine", os.path.join(base_path, "engine.py"))
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_engine_prompt_validation.py", line 25, in load_module_from_path
+    spec.loader.exec_module(module)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\..\..\recommendation-engine\engine.py", line 11, in <module>
+    from .models import UserProfile, Career, Skill, CareerRecommendation
+ImportError: attempted relative import with no known parent package
+
+
+  test_enhanced_categorization (unittest.loader._FailedTest.test_enhanced_categorization): ImportError: Failed to import test module: test_enhanced_categorization
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\unit\test_enhanced_categorization.py", line 8, in <module>
+    import pytest
+ModuleNotFoundError: No module named 'pytest'
 
 
   test_filters (unittest.loader._FailedTest.test_filters): ImportError: Failed to import test module: test_filters
@@ -145,5 +211,137 @@ Traceback (most recent call last):
     ...<2 lines>...
     )
 ImportError: attempted relative import with no known parent package
+
+
+
+INTEGRATION TESTS
+-----------------
+Tests run: 1
+Failures: 0
+Errors: 1
+Success rate: 0.0%
+Execution time: 0.01s
+
+test_recommendation_engine (unittest.loader._FailedTest.test_recommendation_engine) ... ERROR
+
+======================================================================
+ERROR: test_recommendation_engine (unittest.loader._FailedTest.test_recommendation_engine)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_recommendation_engine
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\integration\test_recommendation_engine.py", line 16, in <module>
+    from recommendation_engine.engine import RecommendationEngine
+ModuleNotFoundError: No module named 'recommendation_engine'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+ERRORS:
+  test_recommendation_engine (unittest.loader._FailedTest.test_recommendation_engine): ImportError: Failed to import test module: test_recommendation_engine
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\integration\test_recommendation_engine.py", line 16, in <module>
+    from recommendation_engine.engine import RecommendationEngine
+ModuleNotFoundError: No module named 'recommendation_engine'
+
+
+
+GOLDEN DATASET TESTS
+--------------------
+Tests run: 1
+Failures: 0
+Errors: 1
+Success rate: 0.0%
+Execution time: 0.01s
+
+test_golden_datasets (unittest.loader._FailedTest.test_golden_datasets) ... ERROR
+
+======================================================================
+ERROR: test_golden_datasets (unittest.loader._FailedTest.test_golden_datasets)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_golden_datasets
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\golden_datasets\test_golden_datasets.py", line 18, in <module>
+    from recommendation_engine.engine import RecommendationEngine
+ModuleNotFoundError: No module named 'recommendation_engine'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+ERRORS:
+  test_golden_datasets (unittest.loader._FailedTest.test_golden_datasets): ImportError: Failed to import test module: test_golden_datasets
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\golden_datasets\test_golden_datasets.py", line 18, in <module>
+    from recommendation_engine.engine import RecommendationEngine
+ModuleNotFoundError: No module named 'recommendation_engine'
+
+
+
+PERFORMANCE TESTS
+-----------------
+Tests run: 1
+Failures: 0
+Errors: 1
+Success rate: 0.0%
+Execution time: 0.04s
+
+test_performance (unittest.loader._FailedTest.test_performance) ... ERROR
+
+======================================================================
+ERROR: test_performance (unittest.loader._FailedTest.test_performance)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_performance
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\performance\test_performance.py", line 21, in <module>
+    from recommendation_engine.engine import RecommendationEngine
+ModuleNotFoundError: No module named 'recommendation_engine'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+ERRORS:
+  test_performance (unittest.loader._FailedTest.test_performance): ImportError: Failed to import test module: test_performance
+Traceback (most recent call last):
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 396, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.13_3.13.2032.0_x64__qbz5n2kfra8p0\Lib\unittest\loader.py", line 339, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\bryan\Desktop\snapdev-apps\wandering-narwhal-zoom\tests\performance\test_performance.py", line 21, in <module>
+    from recommendation_engine.engine import RecommendationEngine
+ModuleNotFoundError: No module named 'recommendation_engine'
 
 

@@ -3,14 +3,188 @@ Categorization logic for the recommendation engine.
 
 This module implements the logic to categorize scored career recommendations
 into Safe Zone, Stretch Zone, and Adventure Zone based on configurable thresholds.
+It also includes career field categorization and user profile analysis.
 """
 
-from typing import List, Dict
+from typing import List, Dict, Optional
 from .models import (
-    Career, RecommendationScore, CareerRecommendation, 
+    Career, RecommendationScore, CareerRecommendation,
     RecommendationCategory, UserProfile
 )
 from .config import CategorizationThresholds
+
+
+# Standardized career field categories
+CAREER_FIELD_CATEGORIES = {
+    'technology': [
+        'software engineer', 'developer', 'programmer', 'data scientist', 'data analyst',
+        'machine learning', 'artificial intelligence', 'cybersecurity', 'devops', 'cloud',
+        'database administrator', 'systems administrator', 'network engineer', 'it support',
+        'technical writer', 'product manager', 'scrum master', 'agile', 'qa engineer',
+        'mobile developer', 'web developer', 'full stack', 'frontend', 'backend',
+        'ui/ux designer', 'user experience', 'user interface', 'software architect'
+    ],
+    
+    'business_finance': [
+        'business analyst', 'financial analyst', 'accountant', 'controller', 'cfo',
+        'investment banker', 'financial advisor', 'portfolio manager', 'risk analyst',
+        'management consultant', 'strategy consultant', 'operations manager',
+        'project manager', 'business development', 'corporate finance', 'treasury',
+        'market research', 'business intelligence', 'financial planner', 'auditor'
+    ],
+    
+    'sales_marketing': [
+        'sales representative', 'account executive', 'sales manager', 'business development',
+        'marketing coordinator', 'marketing manager', 'digital marketing specialist',
+        'social media manager', 'content creator', 'copywriter', 'brand manager',
+        'public relations', 'communications specialist', 'advertising', 'seo specialist',
+        'email marketing', 'growth marketing', 'product marketing', 'event coordinator',
+        'customer success', 'account manager', 'inside sales', 'outside sales'
+    ],
+    
+    'healthcare': [
+        'physician', 'doctor', 'nurse', 'registered nurse', 'nurse practitioner',
+        'physician assistant', 'medical assistant', 'pharmacist', 'pharmacy technician',
+        'physical therapist', 'occupational therapist', 'respiratory therapist',
+        'medical technologist', 'radiologic technologist', 'dental hygienist',
+        'healthcare administrator', 'medical coder', 'health information', 'clinical',
+        'surgeon', 'anesthesiologist', 'cardiologist', 'dermatologist', 'psychiatrist'
+    ],
+    
+    'education': [
+        'teacher', 'professor', 'instructor', 'tutor', 'principal', 'administrator',
+        'curriculum developer', 'instructional designer', 'education coordinator',
+        'academic advisor', 'librarian', 'school counselor', 'special education',
+        'early childhood education', 'elementary teacher', 'secondary teacher',
+        'higher education', 'training specialist', 'corporate trainer'
+    ],
+    
+    'skilled_trades': [
+        'electrician', 'plumber', 'carpenter', 'mechanic', 'technician', 'welder',
+        'hvac technician', 'automotive technician', 'aircraft mechanic', 'maintenance',
+        'construction worker', 'contractor', 'installer', 'repair technician',
+        'machinist', 'tool and die maker', 'millwright', 'pipefitter', 'roofer',
+        'painter', 'mason', 'heavy equipment operator'
+    ],
+    
+    'government_public_service': [
+        'policy analyst', 'government relations specialist', 'public affairs manager',
+        'regulatory affairs specialist', 'city planner', 'public administrator',
+        'legislative director', 'congressional staff director', 'senior executive service',
+        'legislative analyst', 'government analyst', 'federal', 'state', 'gs-',
+        'public policy', 'civil service', 'municipal', 'county', 'diplomat'
+    ],
+    
+    'legal_law': [
+        'lawyer', 'attorney', 'paralegal', 'legal assistant', 'judge', 'magistrate',
+        'legal counsel', 'corporate counsel', 'public defender', 'prosecutor',
+        'legal researcher', 'court reporter', 'legal secretary', 'compliance officer',
+        'contract specialist', 'intellectual property', 'patent attorney'
+    ],
+    
+    'creative_arts': [
+        'graphic designer', 'artist', 'photographer', 'videographer', 'animator',
+        'writer', 'editor', 'journalist', 'content creator', 'creative director',
+        'art director', 'musician', 'actor', 'producer', 'director', 'designer',
+        'illustrator', 'web designer', 'fashion designer', 'interior designer'
+    ],
+    
+    'hospitality_service': [
+        'hotel manager', 'restaurant manager', 'chef', 'cook', 'server', 'bartender',
+        'tourism director', 'tourism manager', 'travel agent', 'event planner',
+        'hospitality', 'customer service', 'retail manager', 'spa manager',
+        'recreation coordinator', 'tour guide', 'concierge'
+    ],
+    
+    'agriculture_environment': [
+        'farmer', 'agricultural specialist', 'environmental scientist', 'forester',
+        'conservation director', 'conservation manager', 'environmental director',
+        'environmental manager', 'sustainability', 'organic farm', 'ranch manager',
+        'agricultural engineer', 'soil scientist', 'wildlife biologist', 'park ranger'
+    ],
+    
+    'manufacturing_industrial': [
+        'production manager', 'quality control', 'manufacturing engineer',
+        'industrial engineer', 'plant manager', 'operations supervisor',
+        'assembly worker', 'machine operator', 'warehouse manager',
+        'logistics coordinator', 'supply chain', 'inventory manager'
+    ]
+}
+
+
+def get_career_field(career: Career) -> str:
+    """
+    Determine the career field for a given career.
+    
+    Args:
+        career: Career object to categorize
+        
+    Returns:
+        Career field category string
+    """
+    if career.career_field:
+        return career.career_field
+    
+    # Fallback to keyword-based categorization
+    career_text = (career.title + " " + career.description).lower()
+    
+    for field, keywords in CAREER_FIELD_CATEGORIES.items():
+        for keyword in keywords:
+            if keyword in career_text:
+                return field
+    
+    return 'other'
+
+
+def determine_user_career_field(user_profile: UserProfile) -> str:
+    """
+    Determine the user's primary career field based on their profile.
+    
+    This function analyzes the user's current role, resume text, and technical skills
+    to infer their primary career field by matching keywords against the defined
+    career field categories.
+    
+    Args:
+        user_profile: User's profile with career information
+        
+    Returns:
+        Primary career field category string
+    """
+    # Collect all text sources for analysis
+    text_sources = []
+    
+    # Add current role
+    if hasattr(user_profile, 'professional_data') and user_profile.professional_data:
+        for exp in user_profile.professional_data.experience:
+            text_sources.append(exp.title.lower())
+    
+    # Add resume text if available
+    if hasattr(user_profile, 'professional_data') and user_profile.professional_data:
+        if user_profile.professional_data.resume_skills:
+            text_sources.extend([skill.lower() for skill in user_profile.professional_data.resume_skills])
+    
+    # Add technical skills
+    if user_profile.skills:
+        text_sources.extend([skill.name.lower() for skill in user_profile.skills])
+    
+    # Combine all text for analysis
+    combined_text = " ".join(text_sources)
+    
+    # Score each career field based on keyword matches
+    field_scores = {}
+    for field, keywords in CAREER_FIELD_CATEGORIES.items():
+        score = 0
+        for keyword in keywords:
+            if keyword in combined_text:
+                # Weight longer keywords more heavily
+                score += len(keyword.split())
+        field_scores[field] = score
+    
+    # Return the field with the highest score
+    if field_scores and max(field_scores.values()) > 0:
+        return max(field_scores, key=field_scores.get)
+    
+    return 'other'
 
 
 class CategorizationEngine:

@@ -88,6 +88,29 @@ class ScoringConfig(BaseModel):
     recent_experience_bonus: float = Field(0.05, ge=0.0, le=0.2, description="Bonus for recent skill usage")
 
 
+class ConsistencyPenaltyConfig(BaseModel):
+    """
+    Configuration for consistency penalty based on career field mismatches.
+    
+    Attributes:
+        base_penalty: Base penalty for career field mismatch (0.0 to 1.0)
+        exploration_level_multiplier: Multiplier based on user's exploration level
+        max_penalty: Maximum penalty that can be applied
+    """
+    base_penalty: float = Field(0.3, ge=0.0, le=1.0, description="Base penalty for field mismatch")
+    exploration_level_multiplier: Dict[int, float] = Field(
+        default_factory=lambda: {
+            1: 2.0,    # Conservative users get high penalty
+            2: 1.5,    # Moderate penalty
+            3: 1.0,    # Base penalty
+            4: 0.7,    # Reduced penalty for adventurous users
+            5: 0.4     # Minimal penalty for maximum exploration
+        },
+        description="Penalty multipliers by exploration level (1-5)"
+    )
+    max_penalty: float = Field(0.6, ge=0.0, le=1.0, description="Maximum penalty that can be applied")
+
+
 class RecommendationConfig(BaseModel):
     """
     Main configuration class for the recommendation engine.
@@ -97,6 +120,7 @@ class RecommendationConfig(BaseModel):
         categorization_thresholds: Thresholds for recommendation categories
         filtering_config: Configuration for filtering logic
         scoring_config: Configuration for scoring algorithms
+        consistency_penalty_config: Configuration for career field consistency penalties
         max_recommendations: Maximum number of recommendations to return
         min_recommendations: Minimum number of recommendations to return
     """
@@ -104,8 +128,14 @@ class RecommendationConfig(BaseModel):
     categorization_thresholds: CategorizationThresholds = Field(default_factory=CategorizationThresholds)
     filtering_config: FilteringConfig = Field(default_factory=FilteringConfig)
     scoring_config: ScoringConfig = Field(default_factory=ScoringConfig)
+    consistency_penalty_config: ConsistencyPenaltyConfig = Field(default_factory=ConsistencyPenaltyConfig)
     max_recommendations: int = Field(20, ge=1, le=100, description="Maximum recommendations to return")
     min_recommendations: int = Field(5, ge=1, le=50, description="Minimum recommendations to return")
+    
+    # Multi-step architecture parameters
+    batch_size: int = Field(20, ge=5, le=50, description="Batch size for multi-call scoring")
+    top_n_candidates: int = Field(30, ge=10, le=100, description="Top candidates for final analysis")
+    prefilter_limit: int = Field(100, ge=50, le=500, description="Maximum careers after pre-filtering (reduced to prevent prompt overflow)")
     
     def validate_config(self):
         """Validate the entire configuration."""

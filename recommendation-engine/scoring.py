@@ -5,13 +5,14 @@ This module implements weighted scoring algorithms to rank career recommendation
 based on skill matching, interest alignment, salary compatibility, and experience.
 """
 
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 from datetime import datetime, timedelta
 from .models import (
     UserProfile, Career, RecommendationScore, SkillLevel, InterestLevel,
     UserSkill, RequiredSkill
 )
-from .config import ScoringConfig, ScoringWeights
+from .config import ScoringConfig, ScoringWeights, ConsistencyPenaltyConfig
+from .categorization import get_career_field, determine_user_career_field
 
 
 class ScoringEngine:
@@ -25,25 +26,28 @@ class ScoringEngine:
     - Experience level matching
     """
     
-    def __init__(self, scoring_config: ScoringConfig, scoring_weights: ScoringWeights):
+    def __init__(self, scoring_config: ScoringConfig, scoring_weights: ScoringWeights, consistency_penalty_config: Optional[ConsistencyPenaltyConfig] = None):
         """
         Initialize the scoring engine.
         
         Args:
             scoring_config: Configuration for scoring algorithms
             scoring_weights: Weights for different scoring components
+            consistency_penalty_config: Configuration for consistency penalties
         """
         self.config = scoring_config
         self.weights = scoring_weights
+        self.consistency_penalty_config = consistency_penalty_config
         self.skill_level_order = [SkillLevel.BEGINNER, SkillLevel.INTERMEDIATE, SkillLevel.ADVANCED, SkillLevel.EXPERT]
     
-    def score_career(self, user_profile: UserProfile, career: Career) -> RecommendationScore:
+    def score_career(self, user_profile: UserProfile, career: Career, exploration_level: int = 3) -> RecommendationScore:
         """
         Calculate comprehensive score for a career recommendation.
         
         Args:
             user_profile: User's profile with skills and preferences
             career: Career to score
+            exploration_level: User's exploration level (1-5)
             
         Returns:
             RecommendationScore with detailed scoring breakdown
@@ -62,36 +66,45 @@ class ScoringEngine:
             experience_score * self.weights.experience_match
         )
         
+        # Calculate consistency penalty
+        consistency_penalty = self._calculate_consistency_penalty(user_profile, career, exploration_level)
+        
+        # Apply consistency penalty to total score
+        final_score = max(0.0, total_score - consistency_penalty)
+        
         # Create detailed breakdown
         breakdown = {
             "skill_details": self._get_skill_score_details(user_profile, career),
             "interest_details": self._get_interest_score_details(user_profile, career),
             "salary_details": self._get_salary_score_details(user_profile, career),
-            "experience_details": self._get_experience_score_details(user_profile, career)
+            "experience_details": self._get_experience_score_details(user_profile, career),
+            "consistency_details": self._get_consistency_score_details(user_profile, career, exploration_level)
         }
         
         return RecommendationScore(
             career_id=career.career_id,
-            total_score=min(1.0, max(0.0, total_score)),  # Clamp to [0, 1]
+            total_score=min(1.0, final_score),  # Clamp to [0, 1]
             skill_match_score=skill_score,
             interest_match_score=interest_score,
             salary_compatibility_score=salary_score,
             experience_match_score=experience_score,
+            consistency_penalty=consistency_penalty,
             breakdown=breakdown
         )
     
-    def score_multiple_careers(self, user_profile: UserProfile, careers: List[Career]) -> List[RecommendationScore]:
+    def score_multiple_careers(self, user_profile: UserProfile, careers: List[Career], exploration_level: int = 3) -> List[RecommendationScore]:
         """
         Score multiple careers and return sorted by total score.
         
         Args:
             user_profile: User's profile
             careers: List of careers to score
+            exploration_level: User's exploration level (1-5)
             
         Returns:
             List of RecommendationScore objects sorted by total score (descending)
         """
-        scores = [self.score_career(user_profile, career) for career in careers]
+        scores = [self.score_career(user_profile, career, exploration_level) for career in careers]
         return sorted(scores, key=lambda x: x.total_score, reverse=True)
     
     def _calculate_skill_match_score(self, user_profile: UserProfile, career: Career) -> float:
@@ -451,3 +464,60 @@ class ScoringEngine:
             return "senior"
         else:
             return "expert"
+    
+    def _calculate_consistency_penalty(self, user_profile: UserProfile, career: Career, exploration_level: int) -> float:
+        """
+        Calculate consistency penalty for career field mismatch.
+        
+        Args:
+            user_profile: User's profile
+            career: Career being scored
+            exploration_level: User's exploration level (1-5)
+            
+        Returns:
+            Consistency penalty value (0.0 to max_penalty)
+        """
+        if not self.consistency_penalty_config:
+            return 0.0
+        
+        # Determine user's career field
+        user_field = determine_user_career_field(user_profile)
+        
+        # Determine career's field
+        career_field = get_career_field(career)
+        
+        # No penalty if fields match or if either is 'other'
+        if user_field == career_field or user_field == 'other' or career_field == 'other':
+            return 0.0
+        
+        # Calculate base penalty
+        base_penalty = self.consistency_penalty_config.base_penalty
+        
+        # Apply exploration level multiplier
+        multiplier = self.consistency_penalty_config.exploration_level_multiplier.get(exploration_level, 1.0)
+        penalty = base_penalty * multiplier
+        
+        # Apply maximum penalty limit
+        penalty = min(penalty, self.consistency_penalty_config.max_penalty)
+        
+        return penalty
+    
+    def _get_consistency_score_details(self, user_profile: UserProfile, career: Career, exploration_level: int) -> Dict:
+        """Get detailed breakdown of consistency scoring."""
+        user_field = determine_user_career_field(user_profile)
+        career_field = get_career_field(career)
+        penalty = self._calculate_consistency_penalty(user_profile, career, exploration_level)
+        
+        multiplier = 1.0
+        if self.consistency_penalty_config:
+            multiplier = self.consistency_penalty_config.exploration_level_multiplier.get(exploration_level, 1.0)
+        
+        return {
+            "user_field": user_field,
+            "career_field": career_field,
+            "fields_match": user_field == career_field,
+            "exploration_level": exploration_level,
+            "exploration_multiplier": multiplier,
+            "penalty_applied": penalty,
+            "penalty_reason": "Field mismatch" if penalty > 0 else "Fields match or no penalty config"
+        }

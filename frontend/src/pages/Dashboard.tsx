@@ -119,6 +119,7 @@ import {
 import { showSuccess } from "@/utils/toast";
 import jsPDF from 'jspdf';
 import { Logo } from "@/components/Logo";
+import DonationContainer from "@/components/DonationContainer";
 
 // Import types only - we'll use the backend API for recommendations
 import { type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
@@ -2463,6 +2464,11 @@ const Dashboard = () => {
                   </Card>
                 )}
               </div>
+              
+              {/* Donation Container */}
+              <div className="mt-8">
+                <DonationContainer />
+              </div>
             </TabsContent>
 
             {/* Enhanced Skills Gap Analysis Tab - WORKING ✅ - NOW WITH COLLAPSE/EXPAND FUNCTIONALITY ✅ */}
@@ -3064,6 +3070,11 @@ const Dashboard = () => {
                   </div>
                 </CardContent>
               </Card>
+              
+              {/* Donation Container */}
+              <div className="mt-8">
+                <DonationContainer />
+              </div>
             </TabsContent>
 
             {/* NEW: Saved Careers Tab - FULLY FUNCTIONAL ✅ */}
@@ -3185,6 +3196,11 @@ const Dashboard = () => {
                   )}
                 </CardContent>
               </Card>
+              
+              {/* Donation Container */}
+              <div className="mt-8">
+                <DonationContainer />
+              </div>
             </TabsContent>
           </Tabs>
         )}

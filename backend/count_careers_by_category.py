@@ -15,6 +15,10 @@ try:
     from business_finance_careers import BUSINESS_FINANCE_CAREERS
     from legal_law_careers import LEGAL_LAW_CAREERS
     from creative_arts_careers import CREATIVE_ARTS_CAREERS
+    from public_service_careers import PUBLIC_SERVICE_CAREERS
+    from hospitality_service_careers import HOSPITALITY_SERVICE_CAREERS
+    from manufacturing_industrial_careers import MANUFACTURING_INDUSTRIAL_CAREERS
+    from agriculture_environment_careers import AGRICULTURE_ENVIRONMENT_CAREERS
     
     print("Career counts by source module:")
     print(f"Healthcare: {len(HEALTHCARE_CAREERS)}")
@@ -23,12 +27,20 @@ try:
     print(f"Business & Finance: {len(BUSINESS_FINANCE_CAREERS)}")
     print(f"Legal & Law: {len(LEGAL_LAW_CAREERS)}")
     print(f"Creative & Arts: {len(CREATIVE_ARTS_CAREERS)}")
+    print(f"Public Service: {len(PUBLIC_SERVICE_CAREERS)}")
+    print(f"Hospitality & Service: {len(HOSPITALITY_SERVICE_CAREERS)}")
+    print(f"Manufacturing & Industrial: {len(MANUFACTURING_INDUSTRIAL_CAREERS)}")
+    print(f"Agriculture & Environment: {len(AGRICULTURE_ENVIRONMENT_CAREERS)}")
     
     # Count technology/engineering careers (those in main comprehensive_careers.py file)
-    main_careers = len(COMPREHENSIVE_CAREERS) - len(HEALTHCARE_CAREERS) - len(SKILLED_TRADES_CAREERS) - len(EDUCATION_CAREERS) - len(BUSINESS_FINANCE_CAREERS) - len(LEGAL_LAW_CAREERS) - len(CREATIVE_ARTS_CAREERS)
+    module_careers_count = (len(HEALTHCARE_CAREERS) + len(SKILLED_TRADES_CAREERS) + len(EDUCATION_CAREERS) +
+                           len(BUSINESS_FINANCE_CAREERS) + len(LEGAL_LAW_CAREERS) + len(CREATIVE_ARTS_CAREERS) +
+                           len(PUBLIC_SERVICE_CAREERS) + len(HOSPITALITY_SERVICE_CAREERS) +
+                           len(MANUFACTURING_INDUSTRIAL_CAREERS) + len(AGRICULTURE_ENVIRONMENT_CAREERS))
+    main_careers = len(COMPREHENSIVE_CAREERS) - module_careers_count
     print(f"Technology & Engineering (main file): {main_careers}")
     
-    total_from_modules = len(HEALTHCARE_CAREERS) + len(SKILLED_TRADES_CAREERS) + len(EDUCATION_CAREERS) + len(BUSINESS_FINANCE_CAREERS) + len(LEGAL_LAW_CAREERS) + len(CREATIVE_ARTS_CAREERS) + main_careers
+    total_from_modules = module_careers_count + main_careers
     print(f"\nTotal from modules: {total_from_modules}")
     print(f"Total in comprehensive: {len(COMPREHENSIVE_CAREERS)}")
     
