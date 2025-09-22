@@ -160,6 +160,37 @@ class CareerData:
         return cls(**data)
 
 
+import re
+
+
+def normalize_career_title(title: str) -> str:
+    """
+    Normalize the career title for consistent storage and lookup.
+    
+    - Converts to lowercase
+    - Removes common prepositions
+    - Replaces spaces and special characters with hyphens
+    - Removes duplicate hyphens
+    """
+    # Lowercase
+    title = title.lower()
+    
+    # Remove prepositions
+    prepositions = ["of", "and", "the"]
+    title = ' '.join([word for word in title.split() if word not in prepositions])
+    
+    # Replace spaces and special characters with hyphens
+    title = re.sub(r'[^a-z0-9]+', '-', title)
+    
+    # Remove leading/trailing hyphens
+    title = title.strip('-')
+    
+    # Remove duplicate hyphens
+    title = re.sub(r'-+', '-', title)
+    
+    return title
+
+
 class CareerDatabase:
     """
     Career database management class.
@@ -533,7 +564,7 @@ def migrate_frontend_careers_to_database(db: CareerDatabase, frontend_careers: L
             # Map frontend fields to database fields
             career_data = CareerData(
                 career_id=career_id,
-                title=career_dict.get('title', 'Unknown Career'),
+                title=normalize_career_title(career_dict.get('title', 'Unknown Career')),
                 description=career_dict.get('description', ''),
                 career_field=CareerField.OTHER,  # Will be determined by enhanced categorization
                 experience_level=ExperienceLevel(career_dict.get('experienceLevel', 'mid')),
