@@ -1,56 +1,65 @@
 #!/usr/bin/env python3
 """
-Extract careerType values from all *_careers.py files in the backend directory.
-This script scans all career files and compiles a list of unique careerType values.
+Extract career dictionaries from all *_careers.py files in the backend directory.
+This script scans all career files and compiles a single careers.json file.
 """
 
 import os
 import re
 import json
 from pathlib import Path
+import ast
 
-def extract_career_types_from_file(file_path):
+def extract_careers_from_file(file_path):
     """
-    Extract careerType values from a single Python career file.
+    Extracts career dictionary objects from a single Python career file.
     
     Args:
-        file_path (str): Path to the career file
+        file_path (str): Path to the career file.
         
     Returns:
-        list: List of careerType values found in the file
+        list: A list of career dictionary objects found in the file.
     """
-    career_types = []
+    careers = []
     
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
             
-        # Use regex to find all careerType values
-        # This pattern looks for "careerType": "value" with proper string handling
-        pattern = r'"careerType":\s*"([^"]+)"'
-        matches = re.findall(pattern, content)
-        
-        career_types.extend(matches)
-        
-        print(f"Found {len(matches)} careerType values in {os.path.basename(file_path)}")
-        
+        # Find the start of the list
+        # Find the start of the list
+        list_start_index = content.find('[')
+        if list_start_index == -1:
+            print(f"No list found in {os.path.basename(file_path)}")
+            return careers
+
+        # Extract the list content
+        list_content = content[list_start_index:]
+
+        try:
+            # Safely evaluate the string as a Python literal
+            evaluated_careers = ast.literal_eval(list_content)
+            if isinstance(evaluated_careers, list):
+                careers.extend(evaluated_careers)
+                print(f"Found {len(careers)} careers in {os.path.basename(file_path)}")
+        except (ValueError, SyntaxError) as e:
+            print(f"Error parsing list in {os.path.basename(file_path)}: {e}")
+            
     except Exception as e:
         print(f"Error processing {file_path}: {e}")
     
-    return career_types
+    return careers
 
 def main():
     """
-    Main function to extract all careerType values from backend career files.
+    Main function to extract all career objects and save them to careers.json.
     """
-    # Define the backend directory path
     backend_dir = Path("backend")
     
     if not backend_dir.exists():
         print("Error: backend directory not found!")
         return
     
-    # Find all *_careers.py files
     career_files = list(backend_dir.glob("*_careers.py"))
     
     if not career_files:
@@ -61,37 +70,28 @@ def main():
     for file in career_files:
         print(f"  - {file.name}")
     
-    print("\nExtracting careerType values...")
+    print("\nExtracting career objects...")
     
-    # Extract careerType values from all files
-    all_career_types = []
+    all_careers = []
     
     for career_file in career_files:
-        career_types = extract_career_types_from_file(career_file)
-        all_career_types.extend(career_types)
+        careers = extract_careers_from_file(career_file)
+        all_careers.extend(careers)
     
-    # Remove duplicates and sort
-    unique_career_types = sorted(list(set(all_career_types)))
+    print(f"\nTotal careers extracted: {len(all_careers)}")
     
-    print(f"\nTotal careerType values found: {len(all_career_types)}")
-    print(f"Unique careerType values: {len(unique_career_types)}")
-    
-    # Write to JSON file
-    output_file = "all_career_types.json"
+    output_file = "careers.json"
     
     try:
         with open(output_file, 'w', encoding='utf-8') as file:
-            json.dump(unique_career_types, file, indent=2, ensure_ascii=False)
+            json.dump(all_careers, file, indent=2, ensure_ascii=False)
         
-        print(f"\nSuccessfully wrote {len(unique_career_types)} unique career types to {output_file}")
+        print(f"\nSuccessfully wrote {len(all_careers)} careers to {output_file}")
         
-        # Display first 10 career types as a sample
-        print("\nSample career types:")
-        for i, career_type in enumerate(unique_career_types[:10]):
-            print(f"  {i+1}. {career_type}")
-        
-        if len(unique_career_types) > 10:
-            print(f"  ... and {len(unique_career_types) - 10} more")
+        # Display a sample of the first career object for verification
+        if all_careers:
+            print("\nSample career object:")
+            print(json.dumps(all_careers, indent=2))
             
     except Exception as e:
         print(f"Error writing to {output_file}: {e}")

@@ -4,16 +4,16 @@ Now includes multiple industry clusters for complete career coverage.
 """
 
 # Import additional career clusters
-from healthcare_careers import HEALTHCARE_CAREERS
-from skilled_trades_careers import SKILLED_TRADES_CAREERS
-from education_careers import EDUCATION_CAREERS
-from business_finance_careers import BUSINESS_FINANCE_CAREERS
-from legal_law_careers import LEGAL_LAW_CAREERS
-from creative_arts_careers import CREATIVE_ARTS_CAREERS
-from public_service_careers import PUBLIC_SERVICE_CAREERS
-from hospitality_service_careers import HOSPITALITY_SERVICE_CAREERS
-from manufacturing_industrial_careers import MANUFACTURING_INDUSTRIAL_CAREERS
-from agriculture_environment_careers import AGRICULTURE_ENVIRONMENT_CAREERS
+from .healthcare_careers import HEALTHCARE_CAREERS
+from .skilled_trades_careers import SKILLED_TRADES_CAREERS
+from .education_careers import EDUCATION_CAREERS
+from .business_finance_careers import BUSINESS_FINANCE_CAREERS
+from .legal_law_careers import LEGAL_LAW_CAREERS
+from .creative_arts_careers import CREATIVE_ARTS_CAREERS
+from .public_service_careers import PUBLIC_SERVICE_CAREERS
+from .hospitality_service_careers import HOSPITALITY_SERVICE_CAREERS
+from .manufacturing_industrial_careers import MANUFACTURING_INDUSTRIAL_CAREERS
+from .agriculture_environment_careers import AGRICULTURE_ENVIRONMENT_CAREERS
 
 # Combine all career databases
 COMPREHENSIVE_CAREERS = [
@@ -1070,7 +1070,17 @@ COMPREHENSIVE_CAREERS = [
         "minSalary": 125000,
         "maxSalary": 175000
     }
-] + HEALTHCARE_CAREERS + SKILLED_TRADES_CAREERS + EDUCATION_CAREERS + BUSINESS_FINANCE_CAREERS + LEGAL_LAW_CAREERS + CREATIVE_ARTS_CAREERS + PUBLIC_SERVICE_CAREERS + HOSPITALITY_SERVICE_CAREERS + MANUFACTURING_INDUSTRIAL_CAREERS + AGRICULTURE_ENVIRONMENT_CAREERS
+]
+COMPREHENSIVE_CAREERS.extend(HEALTHCARE_CAREERS)
+COMPREHENSIVE_CAREERS.extend(SKILLED_TRADES_CAREERS)
+COMPREHENSIVE_CAREERS.extend(EDUCATION_CAREERS)
+COMPREHENSIVE_CAREERS.extend(BUSINESS_FINANCE_CAREERS)
+COMPREHENSIVE_CAREERS.extend(LEGAL_LAW_CAREERS)
+COMPREHENSIVE_CAREERS.extend(CREATIVE_ARTS_CAREERS)
+COMPREHENSIVE_CAREERS.extend(PUBLIC_SERVICE_CAREERS)
+COMPREHENSIVE_CAREERS.extend(HOSPITALITY_SERVICE_CAREERS)
+COMPREHENSIVE_CAREERS.extend(MANUFACTURING_INDUSTRIAL_CAREERS)
+COMPREHENSIVE_CAREERS.extend(AGRICULTURE_ENVIRONMENT_CAREERS)
 
 def get_careers_by_experience_level(experience_years: int) -> list:
     """Filter careers by experience level with more inclusive ranges for better matching"""
@@ -1128,27 +1138,7 @@ def parse_salary_expectations(salary_str: str) -> tuple:
     
     if len(numbers) >= 2:
         # Handle ranges like "150,000 - 250,000" or "150k - 250k"
-        min_val = int(numbers[0])
-        max_val = int(numbers[1])
+        min_val = int(numbers)
+        max_val = int(numbers)
         
-        # Check if values are in thousands (like 150k) or full amounts (like 150000)
-        if min_val < 1000:  # Likely in thousands (150k format)
-            min_sal = min_val * 1000
-            max_sal = max_val * 1000
-        else:  # Already in full amounts (150000 format)
-            min_sal = min_val
-            max_sal = max_val
-            
-        print(f"💰 Parsed salary range: ${min_sal:,} - ${max_sal:,}")
-        return (min_sal, max_sal)
-        
-    elif len(numbers) == 1:
-        val = int(numbers[0])
-        if val < 1000:  # In thousands
-            sal = val * 1000
-        else:  # Full amount
-            sal = val
-        return (int(sal * 0.9), int(sal * 1.1))  # +/- 10%
-    else:
-        print("⚠️  No numbers found in salary string, using default range")
-        return (50000, 200000)  # Default range
+        # Check if values are in thousands (like 1
