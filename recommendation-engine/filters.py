@@ -7,8 +7,8 @@ based on user preferences, skills, and interests.
 
 from typing import List, Dict, Set, Optional
 from datetime import datetime, timedelta
-from .models import UserProfile, Career, Skill, SkillLevel, InterestLevel
-from .config import FilteringConfig
+from models import UserProfile, Career, Skill, SkillLevel, InterestLevel
+from config import FilteringConfig
 
 
 class FilterEngine:

@@ -9,11 +9,11 @@ in the original implementation.
 from typing import List, Dict, Optional
 import logging
 import json
-from .models import UserProfile, Career, Skill, CareerRecommendation
-from .config import RecommendationConfig, DEFAULT_CONFIG
-from .filters import FilterEngine
-from .scoring import ScoringEngine
-from .enhanced_categorization import EnhancedCategorizationEngine
+from models import UserProfile, Career, Skill, CareerRecommendation
+from config import RecommendationConfig, DEFAULT_CONFIG
+from filters import FilterEngine
+from scoring import ScoringEngine
+from enhanced_categorization import EnhancedCategorizationEngine
 
 # Set up logging
 logger = logging.getLogger(__name__)

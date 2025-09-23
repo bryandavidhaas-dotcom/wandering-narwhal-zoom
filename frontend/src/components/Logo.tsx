@@ -15,17 +15,22 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', className }) => {
   };
 
   const iconSizes = {
-    sm: 'h-5 w-5',
-    md: 'h-6 w-6', 
-    lg: 'h-8 w-8'
+    sm: 'h-7 w-7',
+    md: 'h-8 w-8',
+    lg: 'h-10 w-10'
   };
 
   return (
     <div className={cn('flex items-center space-x-2', className)}>
-      <Search className={cn('text-blue-600', iconSizes[size])} />
-      <span className={cn('font-semibold text-gray-900', sizeClasses[size])}>
-        Career Discovery
-      </span>
+      <Search className={cn('text-blue-600', iconSizes[size])} strokeWidth={3} />
+      <div className={cn('flex flex-col font-bold text-gray-900', sizeClasses[size])}>
+        <span className="uppercase">
+          C<span className="text-blue-600">A</span>REER
+        </span>
+        <span className="uppercase" style={{ marginLeft: '0.4rem' }}>
+          F<span className="text-blue-600">I</span>NDER
+        </span>
+      </div>
     </div>
   );
 };

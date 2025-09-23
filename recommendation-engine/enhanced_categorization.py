@@ -9,11 +9,11 @@ determination and better handling of seniority levels and role relationships.
 from typing import List, Dict, Optional, Tuple, Set
 import re
 from dataclasses import dataclass
-from .models import (
+from models import (
     Career, RecommendationScore, CareerRecommendation,
     RecommendationCategory, UserProfile
 )
-from .config import CategorizationThresholds
+from config import CategorizationThresholds
 
 
 @dataclass
