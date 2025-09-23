@@ -8,12 +8,12 @@ filtering, scoring, and categorization to generate career recommendations.
 from typing import List, Dict, Optional
 import logging
 import json
-from models import UserProfile, Career, Skill, CareerRecommendation
-from config import RecommendationConfig, DEFAULT_CONFIG
-from filters import FilterEngine
-from scoring import ScoringEngine
-from categorization import CategorizationEngine
-from career_database import normalize_career_title
+from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, RecommendationModel as CareerRecommendation
+from .config import RecommendationConfig, DEFAULT_CONFIG
+from .filters import FilterEngine
+from .scoring import ScoringEngine
+from .categorization import CategorizationEngine
+from .career_database import normalize_career_title
 
 # Set up logging
 logger = logging.getLogger(__name__)

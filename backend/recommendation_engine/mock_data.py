@@ -7,10 +7,10 @@ the recommendation engine functionality.
 
 from datetime import datetime, timedelta
 from typing import List
-from .models import (
-    UserProfile, Career, Skill, UserSkill, RequiredSkill, SalaryRange,
+from ..models import (
+    UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, UserSkill, RequiredSkill, SalaryRange,
     PersonalInfo, AssessmentResults, ProfessionalData, Experience,
-    SkillLevel, InterestLevel, Demand, ExperienceLevel
+    SkillLevel, InterestLevel, Demand
 )
 
 
