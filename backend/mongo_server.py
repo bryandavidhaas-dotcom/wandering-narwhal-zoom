@@ -14,10 +14,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import database and models
-from database import connect_to_mongo, close_mongo_connection
-from models import (
+from .database import connect_to_mongo, close_mongo_connection
+from .models import (
     UserProfileModel, CareerModel, RecommendationModel, SkillModel,
-    CreateUserProfileRequest, UpdateUserProfileRequest, 
+    CreateUserProfileRequest, UpdateUserProfileRequest,
     RecommendationRequest, RecommendationResponse,
     RecommendationCategory, SkillLevel, Demand
 )

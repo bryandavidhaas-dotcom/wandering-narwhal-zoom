@@ -7,11 +7,11 @@ It also includes career field categorization and user profile analysis.
 """
 
 from typing import List, Dict, Optional
-from .models import (
+from models import (
     Career, RecommendationScore, CareerRecommendation,
     RecommendationCategory, UserProfile
 )
-from .config import CategorizationThresholds
+from config import CategorizationThresholds
 
 
 # Standardized career field categories

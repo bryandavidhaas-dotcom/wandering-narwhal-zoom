@@ -2303,10 +2303,10 @@ const Dashboard = () => {
                         step={1}
                         className="w-full cursor-pointer"
                       />
-                      <div className="flex justify-between text-sm text-gray-500">
-                        <span>Safe Zone</span>
-                        <span>Stretch Zone</span>
-                        <span>Adventure Zone</span>
+                      <div className="relative flex justify-between text-sm text-gray-500">
+                        <span className="absolute start-0 top-0">Safe Zone</span>
+                        <span className="absolute start-1/2 top-0 -translate-x-1/2 transform">Stretch Zone</span>
+                        <span className="absolute end-0 top-0">Adventure Zone</span>
                       </div>
                     </div>
                     
