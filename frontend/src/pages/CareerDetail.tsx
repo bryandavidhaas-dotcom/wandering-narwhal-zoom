@@ -1159,38 +1159,41 @@ const CareerDetail = () => {
 
         {/* Detailed Content Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger 
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger
               value="overview"
               className="hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
             >
               Overview
             </TabsTrigger>
-            <TabsTrigger 
+            {/* TEMPORARILY COMMENTED OUT - Day in Life tab - Can be easily restored by uncommenting */}
+            {/*
+            <TabsTrigger
               value="day-in-life"
               className="hover:bg-green-50 hover:text-green-700 transition-colors duration-200"
             >
               Day in Life
             </TabsTrigger>
-            <TabsTrigger 
+            */}
+            <TabsTrigger
               value="skills"
               className="hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"
             >
               Skills & Learning
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="companies"
               className="hover:bg-orange-50 hover:text-orange-700 transition-colors duration-200"
             >
               Companies
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="progression"
               className="hover:bg-indigo-50 hover:text-indigo-700 transition-colors duration-200"
             >
               Career Path
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="networking"
               className="hover:bg-pink-50 hover:text-pink-700 transition-colors duration-200"
             >
@@ -1299,7 +1302,8 @@ const CareerDetail = () => {
             </Card>
           </TabsContent>
 
-          {/* FIXED: Day in Life Tab with career-specific content */}
+          {/* TEMPORARILY COMMENTED OUT - Day in Life Tab with career-specific content - Can be easily restored by uncommenting */}
+          {/*
           <TabsContent value="day-in-life" className="space-y-6">
             <Card>
               <CardHeader>
@@ -1319,6 +1323,7 @@ const CareerDetail = () => {
                 </div>
 
                 {/* Sample Schedule */}
+                {/*
                 <div className="mt-6 bg-gray-50 rounded-lg p-6">
                   <h4 className="font-semibold mb-4">Sample Daily Schedule</h4>
                   <div className="space-y-3">
@@ -1349,9 +1354,12 @@ const CareerDetail = () => {
                     </div>
                   </div>
                 </div>
+                */}
+              {/*
               </CardContent>
             </Card>
           </TabsContent>
+          */}
 
           {/* Skills & Learning Tab */}
           <TabsContent value="skills" className="space-y-6">
