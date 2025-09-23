@@ -12,47 +12,27 @@ from typing import List, Dict, Any, Optional
 import sys
 import os
 
-# Add the parent directory to the path to import the recommendation engine
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add the project root to the path to allow absolute imports
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-# Import using the actual directory name with hyphen
-import importlib.util
-import os
+from backend.recommendation_engine import engine, config
+from backend import models
+import motor.motor_asyncio
+from beanie import init_beanie
 
-# Load the recommendation engine module
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-engine_path = os.path.join(parent_dir, "recommendation-engine", "engine.py")
-models_path = os.path.join(parent_dir, "recommendation-engine", "models.py")
-mock_data_path = os.path.join(parent_dir, "recommendation-engine", "mock_data.py")
-config_path = os.path.join(parent_dir, "recommendation-engine", "config.py")
+async def init_db():
+    client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
+    await init_beanie(database=client.db_name, document_models=[models.SkillModel, models.CareerModel, models.UserProfileModel, models.RecommendationModel])
 
-# Load modules
-engine_spec = importlib.util.spec_from_file_location("engine", engine_path)
-engine_module = importlib.util.module_from_spec(engine_spec)
-engine_spec.loader.exec_module(engine_module)
 
-models_spec = importlib.util.spec_from_file_location("models", models_path)
-models_module = importlib.util.module_from_spec(models_spec)
-models_spec.loader.exec_module(models_module)
-
-mock_data_spec = importlib.util.spec_from_file_location("mock_data", mock_data_path)
-mock_data_module = importlib.util.module_from_spec(mock_data_spec)
-mock_data_spec.loader.exec_module(mock_data_module)
-
-config_spec = importlib.util.spec_from_file_location("config", config_path)
-config_module = importlib.util.module_from_spec(config_spec)
-config_spec.loader.exec_module(config_module)
 
 # Import the classes
-RecommendationEngine = engine_module.RecommendationEngine
-UserProfile = models_module.UserProfile
-Career = models_module.Career
-CareerRecommendation = models_module.CareerRecommendation
-MOCK_SKILLS = mock_data_module.MOCK_SKILLS
-MOCK_CAREERS = mock_data_module.MOCK_CAREERS
-MOCK_USER_PROFILE = mock_data_module.MOCK_USER_PROFILE
-RecommendationConfig = config_module.RecommendationConfig
-ScoringWeights = config_module.ScoringWeights
+RecommendationEngine = engine.RecommendationEngine
+UserProfile = models.UserProfileModel
+Career = models.CareerModel
+CareerRecommendation = models.RecommendationModel
+RecommendationConfig = config.RecommendationConfig
+ScoringWeights = config.ScoringWeights
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -71,7 +51,7 @@ app.add_middleware(
 )
 
 # Initialize the recommendation engine
-recommendation_engine = RecommendationEngine(skills_db=MOCK_SKILLS)
+recommendation_engine = None
 
 # Request/Response models
 class RecommendationRequest(BaseModel):
@@ -85,6 +65,15 @@ class RecommendationResponse(BaseModel):
 
 class HealthResponse(BaseModel):
     status: str
+@app.on_event("startup")
+async def on_startup():
+    await init_db()
+    from backend.recommendation_engine import mock_data
+    global recommendation_engine, MOCK_SKILLS, MOCK_CAREERS, MOCK_USER_PROFILE
+    MOCK_SKILLS = mock_data.MOCK_SKILLS
+    MOCK_CAREERS = mock_data.MOCK_CAREERS
+    MOCK_USER_PROFILE = mock_data.MOCK_USER_PROFILE
+    recommendation_engine = RecommendationEngine(skills_db=MOCK_SKILLS)
     message: str
     engine_status: str
 
@@ -304,4 +293,4 @@ async def get_recommendation_statistics():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

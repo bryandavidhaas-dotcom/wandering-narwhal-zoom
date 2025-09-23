@@ -7,12 +7,12 @@ based on skill matching, interest alignment, salary compatibility, and experienc
 
 from typing import List, Dict, Tuple, Optional
 from datetime import datetime, timedelta
-from models import (
-    UserProfile, Career, RecommendationScore, SkillLevel, InterestLevel,
+from ..models import (
+    UserProfileModel as UserProfile, CareerModel as Career, RecommendationScore, SkillLevel, InterestLevel,
     UserSkill, RequiredSkill
 )
-from config import ScoringConfig, ScoringWeights, ConsistencyPenaltyConfig
-from categorization import get_career_field, determine_user_career_field
+from .config import ScoringConfig, ScoringWeights, ConsistencyPenaltyConfig
+from .categorization import get_career_field, determine_user_career_field
 
 
 class ScoringEngine:

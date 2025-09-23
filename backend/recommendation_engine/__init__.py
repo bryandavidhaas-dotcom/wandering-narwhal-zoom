@@ -5,7 +5,7 @@ A modular recommendation engine for career matching based on user profiles,
 skills, interests, and preferences.
 """
 
-from .models import UserProfile, Career, Skill
+from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill
 from .engine import RecommendationEngine
 from .filters import FilterEngine
 from .scoring import ScoringEngine
