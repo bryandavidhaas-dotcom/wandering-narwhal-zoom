@@ -1112,7 +1112,7 @@ const getExplorationLevelInfo = (level: number) => {
     case 3:
       return {
         label: "Adventure Zone",
-        description: "Unexpected careers that could unlock hidden potential",
+        description: "Unexpected careers that could unlock hidden potential - these might be 'a bit wild' but could open new possibilities!",
         icon: <Zap className="h-4 w-4" />,
         color: "text-purple-600",
         bgColor: "bg-purple-50",
@@ -1714,7 +1714,7 @@ const Dashboard = () => {
           explorationLevel: explorationLevel[0]
         };
 
-        const response = await fetch('http://localhost:8000/api/recommendations', {
+        const response = await fetch('http://localhost:8002/api/recommendations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -2130,7 +2130,13 @@ const Dashboard = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <Logo size="lg" />
+            <button
+              onClick={() => navigate('/')}
+              className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+              aria-label="Go to home page"
+            >
+              <Logo size="lg" />
+            </button>
             
             <div className="flex items-center space-x-4">
               <Avatar>
@@ -2366,10 +2372,32 @@ const Dashboard = () => {
                                 <Badge variant="secondary" className="text-xs bg-blue-100 text-blue-800">
                                   {career.experienceLevel}
                                 </Badge>
+                                {/* NEW: Adventure Zone Visual Indicators ✅ */}
+                                {career.zone === 'adventure' && (
+                                  <Badge variant="outline" className="text-xs bg-purple-100 text-purple-800 border-purple-300">
+                                    🎯 Adventure Zone
+                                  </Badge>
+                                )}
+                                {career.requires_prerequisites && !career.has_required_background && (
+                                  <Badge variant="outline" className="text-xs bg-orange-100 text-orange-800 border-orange-300">
+                                    ⚠️ Prerequisites
+                                  </Badge>
+                                )}
                               </div>
                               <CardDescription className="text-sm text-gray-600 leading-relaxed">
                                 {career.description}
                               </CardDescription>
+                              {/* NEW: Prerequisite Warning for Adventure Zone ✅ */}
+                              {career.zone === 'adventure' && career.requires_prerequisites && !career.has_required_background && (
+                                <div className="mt-2 p-2 bg-orange-50 border border-orange-200 rounded-md">
+                                  <div className="flex items-start space-x-2">
+                                    <AlertCircle className="h-4 w-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                                    <div className="text-xs text-orange-800">
+                                      <span className="font-medium">Background Note:</span> This career typically requires specific background or experience that may not match your current profile. Consider it as an exploratory option that might need additional preparation.
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                             <div className="ml-3 text-right">
                               <Badge variant="secondary" className="bg-gray-100 text-gray-800 font-semibold px-2 py-1 text-sm">

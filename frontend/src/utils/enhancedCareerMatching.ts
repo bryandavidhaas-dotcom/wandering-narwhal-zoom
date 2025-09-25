@@ -156,6 +156,9 @@ export interface UserAssessmentData {
 // Legacy interface compatibility
 export interface CareerMatch extends APICareerRecommendation {
   // Add any additional fields needed for backward compatibility
+  zone?: string;
+  requires_prerequisites?: boolean;
+  has_required_background?: boolean;
 }
 
 /**
@@ -472,7 +475,7 @@ export class EnhancedCareerMatchingAPI {
 
       console.log('🚀 Making real API call to enhanced backend:', backendRequest);
 
-      const response = await fetch('http://localhost:8000/api/recommendations', {
+      const response = await fetch('http://localhost:8002/api/recommendations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -532,7 +535,11 @@ export class EnhancedCareerMatchingAPI {
       work_environment: career.workEnvironments || ['office'],
       remote_options: career.remoteOptions || 'Available',
       demand_level: 'high',
-      growth_outlook: 'positive'
+      growth_outlook: 'positive',
+      // NEW: Add zone and prerequisite fields for visual indicators
+      zone: career.zone || 'adventure',
+      requires_prerequisites: career.requires_prerequisites || false,
+      has_required_background: career.has_required_background !== false // Default to true unless explicitly false
     }));
 
     return {
@@ -734,4 +741,4 @@ console.log('🚀 Enhanced Career Matching API loaded - using REAL backend-drive
 console.log('✅ Removed 2000+ lines of hardcoded career templates');
 console.log('✅ Fixed inappropriate recommendation issues (SVP → Police Chief)');
 console.log('✅ Centralized all business logic in backend');
-console.log('✅ Connected to enhanced categorization system at http://localhost:8000');
+console.log('✅ Connected to enhanced categorization system at http://localhost:8002');

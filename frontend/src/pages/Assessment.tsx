@@ -1182,23 +1182,15 @@ const Assessment = () => {
                 Select 3-8 areas that genuinely interest you. Choose the ones that excite you most.
               </p>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                 {interestOptions.map((interest) => (
-                  <div 
-                    key={interest} 
-                    className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all hover:bg-gray-50 ${
-                      formData.interests.includes(interest) 
-                        ? 'border-blue-500 bg-blue-50' 
-                        : 'border-gray-200'
-                    }`}
-                    onClick={() => handleArrayToggle('interests', interest)}
-                  >
+                  <div key={interest} className="flex items-center space-x-3 p-2">
                     <Checkbox
                       id={`interest-${interest}`}
                       checked={formData.interests.includes(interest)}
                       onCheckedChange={() => handleArrayToggle('interests', interest)}
                     />
-                    <Label htmlFor={`interest-${interest}`} className="text-sm font-medium cursor-pointer">
+                    <Label htmlFor={`interest-${interest}`} className="text-sm">
                       {interest}
                     </Label>
                   </div>
@@ -1224,23 +1216,15 @@ const Assessment = () => {
                 Select 3-8 industries you'd be interested in working in. Think about where you'd like to apply your skills.
               </p>
               
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
                 {industryOptions.map((industry) => (
-                  <div 
-                    key={industry} 
-                    className={`flex items-center space-x-3 p-4 border rounded-lg cursor-pointer transition-all hover:bg-gray-50 ${
-                      formData.industries.includes(industry) 
-                        ? 'border-green-500 bg-green-50' 
-                        : 'border-gray-200'
-                    }`}
-                    onClick={() => handleArrayToggle('industries', industry)}
-                  >
+                  <div key={industry} className="flex items-center space-x-3 p-2">
                     <Checkbox
                       id={`industry-${industry}`}
                       checked={formData.industries.includes(industry)}
                       onCheckedChange={() => handleArrayToggle('industries', industry)}
                     />
-                    <Label htmlFor={`industry-${industry}`} className="text-sm font-medium cursor-pointer">
+                    <Label htmlFor={`industry-${industry}`} className="text-sm">
                       {industry}
                     </Label>
                   </div>
@@ -1298,16 +1282,15 @@ const Assessment = () => {
                   <SelectValue placeholder="Select salary range" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="under-30k">Under $30,000</SelectItem>
-                  <SelectItem value="30k-50k">$30,000 - $50,000</SelectItem>
-                  <SelectItem value="50k-70k">$50,000 - $70,000</SelectItem>
-                  <SelectItem value="70k-100k">$70,000 - $100,000</SelectItem>
-                  <SelectItem value="100k-150k">$100,000 - $150,000</SelectItem>
-                  <SelectItem value="150k-250k">$150,000 - $250,000</SelectItem>
-                  <SelectItem value="250k-plus">$250,000+</SelectItem>
-                  <SelectItem value="flexible">Flexible/Open to Discussion</SelectItem>
+                  <SelectItem value="0-30000">Under $30,000</SelectItem>
+                  <SelectItem value="30000-50000">$30,000 - $50,000</SelectItem>
+                  <SelectItem value="50000-70000">$50,000 - $70,000</SelectItem>
+                  <SelectItem value="70000-100000">$70,000 - $100,000</SelectItem>
+                  <SelectItem value="100000-150000">$100,000 - $150,000</SelectItem>
+                  <SelectItem value="150000-250000">$150,000 - $250,000</SelectItem>
+                  <SelectItem value="250000-999999">$250,000+</SelectItem>
+                  <SelectItem value="0-0">Flexible/Open to Discussion</SelectItem>
                 </SelectContent>
-              
               </Select>
             </div>
           </div>
@@ -1352,7 +1335,13 @@ const Assessment = () => {
           </Button>
           
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <Search className="h-8 w-8 text-blue-600" />
+            <button
+              onClick={() => navigate('/')}
+              className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg p-1"
+              aria-label="Go to home page"
+            >
+              <Search className="h-8 w-8 text-blue-600" />
+            </button>
             <span className="text-2xl font-bold text-gray-900">
               {isEditMode ? 'Edit Career Assessment' : 'Career Assessment'}
             </span>
