@@ -155,7 +155,13 @@ const Auth = () => {
           </Button>
           
           <div className="flex justify-center mb-4">
-            <Logo size="lg" />
+            <button
+              onClick={() => navigate('/')}
+              className="transition-opacity hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg"
+              aria-label="Go to home page"
+            >
+              <Logo size="lg" />
+            </button>
           </div>
         </div>
 

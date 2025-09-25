@@ -476,6 +476,39 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     filtered_careers = safety_filtered_careers
     print(f"🛡️  After safety filtering: {len(filtered_careers)} careers remain")
     
+    # NEW: PREREQUISITE CHECKING: Flag careers requiring specific backgrounds
+    # This doesn't block careers but adds metadata for Adventure Zone indicators
+    prerequisite_checked_careers = []
+    for career in filtered_careers:
+        try:
+            career_copy = career.copy()
+            
+            if requires_specific_background(career):
+                has_background = has_relevant_background_for_prerequisites(career, user_data, resume_insights)
+                career_copy["requires_prerequisites"] = True
+                career_copy["has_required_background"] = has_background
+                
+                if has_background:
+                    print(f"✅ PREREQUISITE CHECK PASSED: {career.get('title', '')} - user has relevant background")
+                else:
+                    print(f"⚠️  PREREQUISITE CHECK: {career.get('title', '')} - user lacks specific background (will show in Adventure Zone with warning)")
+            else:
+                career_copy["requires_prerequisites"] = False
+                career_copy["has_required_background"] = True
+            
+            prerequisite_checked_careers.append(career_copy)
+        except Exception as e:
+            print(f"❌ ERROR in prerequisite checking for career {career.get('title', 'Unknown')}: {str(e)}")
+            # Add career without prerequisite metadata if there's an error
+            career_copy = career.copy()
+            career_copy["requires_prerequisites"] = False
+            career_copy["has_required_background"] = True
+            prerequisite_checked_careers.append(career_copy)
+    
+    # Update filtered careers to use prerequisite-checked list
+    filtered_careers = prerequisite_checked_careers
+    print(f"🎯 After prerequisite checking: {len(filtered_careers)} careers remain")
+    
     # ENHANCED: Apply trades/medical filtering immediately after safety filtering
     # Check if user has minimal profile OR lacks relevant trades/medical background
     has_minimal_profile = (
@@ -603,13 +636,25 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
             filtered_careers = field_filtered_careers
             print(f"🔍 After field-based filtering: {len(filtered_careers)} careers remain")
     
-    # If no careers match strict criteria, relax salary requirements
+    # If no careers match strict criteria, relax OTHER requirements but MAINTAIN salary filtering
     if len(filtered_careers) < 3:
-        print("⚠️  Relaxing salary requirements to ensure minimum recommendations")
-        # Apply both safety and trades/medical filtering to the relaxed list
-        relaxed_careers = experience_filtered[:10]
+        print("⚠️  Relaxing experience requirements but MAINTAINING salary filtering to prevent inappropriate recommendations")
+        
+        # CRITICAL FIX: Apply salary filter to broader experience range instead of removing salary filter entirely
+        # Get careers with broader experience range but still within salary expectations
+        broader_experience_careers = []
+        for career in COMPREHENSIVE_CAREERS[:50]:  # Look at more careers
+            career_min = career.get("minSalary", 0)
+            career_max = career.get("maxSalary", 0)
+            # MAINTAIN salary compatibility check
+            if career_min <= max_salary and career_max >= min_salary:
+                broader_experience_careers.append(career)
+        
+        print(f"🔍 Broader experience + salary filter: {len(broader_experience_careers)} careers found")
+        
+        # Apply safety filtering to salary-compatible careers
         safety_filtered_relaxed = []
-        for career in relaxed_careers:
+        for career in broader_experience_careers:
             if is_safety_critical_career(career):
                 if has_relevant_background_for_safety_critical(career, user_data, resume_insights):
                     safety_filtered_relaxed.append(career)
@@ -632,10 +677,13 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         else:
             filtered_careers = safety_filtered_relaxed
     
-    # If still not enough, include broader experience range with safety filtering
-    # IMPROVED: For users with minimal profiles, prioritize general business/tech roles over trades
+    # FINAL FALLBACK: If still not enough, apply MINIMUM salary threshold to prevent extreme mismatches
     if len(filtered_careers) < 3:
-        print("⚠️  Expanding experience range to ensure recommendations")
+        print("⚠️  Final fallback: Applying minimum salary threshold to prevent extreme mismatches")
+        
+        # Calculate minimum acceptable salary (50% of user's minimum expectation)
+        minimum_threshold = max(min_salary * 0.5, 40000)  # Never go below $40k for executive-level users
+        print(f"💰 Minimum salary threshold: ${minimum_threshold:,.0f} (50% of user minimum: ${min_salary:,.0f})")
         
         # Check if user has minimal profile
         has_minimal_profile = (
@@ -658,6 +706,12 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
             trades_careers = []
             
             for career in COMPREHENSIVE_CAREERS[:30]:  # Look at more careers
+                # CRITICAL: Apply minimum salary threshold even in final fallback
+                career_max = career.get("maxSalary", 0)
+                if career_max < minimum_threshold:
+                    print(f"❌ SALARY THRESHOLD: Blocked {career.get('title', '')} - max salary ${career_max:,.0f} below threshold ${minimum_threshold:,.0f}")
+                    continue
+                
                 title_lower = career.get("title", "").lower()
                 is_general_role = any(keyword in title_lower for keyword in preferred_titles)
                 is_trades_role = any(keyword in title_lower for keyword in [
@@ -675,7 +729,14 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
             # Prioritize general careers for minimal profiles
             broad_careers = general_careers[:20] + trades_careers[:5]
         else:
-            broad_careers = COMPREHENSIVE_CAREERS[:25]
+            # For experienced users, apply salary threshold to all careers
+            broad_careers = []
+            for career in COMPREHENSIVE_CAREERS[:25]:
+                career_max = career.get("maxSalary", 0)
+                if career_max >= minimum_threshold:
+                    broad_careers.append(career)
+                else:
+                    print(f"❌ SALARY THRESHOLD: Blocked {career.get('title', '')} - max salary ${career_max:,.0f} below threshold ${minimum_threshold:,.0f}")
         
         safety_filtered_broad = []
         for career in broad_careers:
@@ -688,6 +749,8 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
             else:
                 safety_filtered_broad.append(career)
         filtered_careers = safety_filtered_broad
+        
+        print(f"🛡️  After final salary threshold filtering: {len(filtered_careers)} careers remain")
     
     # Enhanced scoring algorithm with career path consistency penalty
     scored_careers = []
@@ -955,7 +1018,7 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
         career_copy["matchReasons"] = match_reasons
         scored_careers.append(career_copy)
     
-    # Sort by relevance score
+    # Sort by relevance score (descending - highest match to lowest match)
     scored_careers.sort(key=lambda x: x["relevanceScore"], reverse=True)
     
     # NOTE: Trades/medical filtering has been moved to happen earlier in the pipeline (after safety filtering)
@@ -1126,6 +1189,10 @@ def generate_enhanced_recommendations(user_data: Dict[str, Any], exploration_lev
     for career in adventure_selected:
         career["zone"] = "adventure"
         recommendations.append(career)
+    
+    # CRITICAL: Sort final recommendations by relevance score (descending - highest to lowest)
+    # This ensures all recommendations are properly ordered regardless of zone
+    recommendations.sort(key=lambda x: x.get("relevanceScore", 0), reverse=True)
     
     # Final distribution summary
     safe_count = len([r for r in recommendations if r['zone'] == 'safe'])
@@ -2052,6 +2119,93 @@ def has_relevant_background_for_safety_critical(career: Dict[str, Any], user_dat
     # Default: For any other safety-critical career, require some relevant background
     # This is a conservative approach to prevent dangerous recommendations
     return False
+
+def requires_specific_background(career):
+    """
+    Check if a career requires specific background/prerequisites that most users won't have.
+    This is different from safety-critical filtering - these careers aren't dangerous,
+    but they have specific entry requirements.
+    """
+    title = career.get('title', '').lower()
+    
+    # Government/Law Enforcement careers requiring specific backgrounds
+    government_prerequisite_careers = [
+        'police chief', 'deputy secretary', 'federal agent', 'detective',
+        'sheriff', 'marshal', 'corrections officer', 'probation officer',
+        'border patrol agent', 'customs officer', 'immigration officer',
+        'secret service agent', 'fbi agent', 'cia analyst', 'nsa analyst',
+        'military officer', 'intelligence analyst', 'security clearance',
+        'homeland security', 'federal investigator', 'state trooper'
+    ]
+    
+    # Legal careers requiring law degree/bar admission
+    legal_prerequisite_careers = [
+        'judge', 'magistrate', 'prosecutor', 'district attorney',
+        'public defender', 'legal counsel', 'attorney', 'lawyer',
+        'law clerk', 'judicial clerk'
+    ]
+    
+    # Academic careers requiring advanced degrees in specific fields
+    academic_prerequisite_careers = [
+        'professor', 'associate professor', 'assistant professor',
+        'department chair', 'dean', 'provost', 'university president',
+        'research scientist', 'principal investigator'
+    ]
+    
+    all_prerequisite_careers = government_prerequisite_careers + legal_prerequisite_careers + academic_prerequisite_careers
+    
+    return any(prereq_career in title for prereq_career in all_prerequisite_careers)
+
+def has_relevant_background_for_prerequisites(career, user_data, resume_insights):
+    """
+    Check if user has relevant background for careers with specific prerequisites.
+    This is more lenient than safety checking - we look for any related experience.
+    """
+    title = career.get('title', '').lower()
+    
+    # Extract user background indicators
+    skills = user_data.get('skills', [])
+    skill_text = ' '.join(skills).lower() if skills else ''
+    
+    # Get resume indicators
+    experience_indicators = resume_insights.get('experience_indicators', [])
+    industry_indicators = resume_insights.get('industry_indicators', [])
+    roles = resume_insights.get('roles', [])
+    
+    all_background_text = (skill_text + ' ' +
+                          ' '.join(experience_indicators) + ' ' +
+                          ' '.join(industry_indicators) + ' ' +
+                          ' '.join(roles)).lower()
+    
+    # Government/Law Enforcement background indicators
+    if any(gov_term in title for gov_term in ['police', 'deputy', 'federal', 'government', 'state', 'public service']):
+        gov_indicators = [
+            'government', 'federal', 'state', 'public service', 'law enforcement',
+            'police', 'military', 'security', 'investigation', 'compliance',
+            'regulatory', 'policy', 'administration', 'civil service'
+        ]
+        return any(indicator in all_background_text for indicator in gov_indicators)
+    
+    # Legal background indicators
+    if any(legal_term in title for legal_term in ['judge', 'attorney', 'lawyer', 'legal', 'prosecutor']):
+        legal_indicators = [
+            'legal', 'law', 'attorney', 'lawyer', 'paralegal', 'litigation',
+            'contract', 'compliance', 'regulatory', 'policy', 'juris doctor',
+            'bar exam', 'legal research', 'legal writing'
+        ]
+        return any(indicator in all_background_text for indicator in legal_indicators)
+    
+    # Academic background indicators
+    if any(academic_term in title for academic_term in ['professor', 'dean', 'research', 'university']):
+        academic_indicators = [
+            'professor', 'teaching', 'research', 'academic', 'university',
+            'college', 'education', 'phd', 'doctorate', 'master', 'thesis',
+            'publication', 'grant', 'curriculum'
+        ]
+        return any(indicator in all_background_text for indicator in academic_indicators)
+    
+    # Default: assume no specific background required
+    return True
 
 if __name__ == "__main__":
     import uvicorn
