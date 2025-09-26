@@ -104,16 +104,51 @@ class CareerModel(Document):
     career_id: Indexed(str, unique=True)
     title: str
     description: str
-    required_skills: List[RequiredSkill] = Field(default_factory=list)
-    salary_range: SalaryRange
-    demand: Demand = Demand.MEDIUM
-    related_careers: List[str] = Field(default_factory=list)
-    growth_potential: Optional[str] = None
-    work_environment: Optional[str] = None
-    education_requirements: Optional[str] = None
+    requiredTechnicalSkills: List[str] = Field(default_factory=list)
+    requiredSoftSkills: List[str] = Field(default_factory=list)
+    preferredInterests: List[str] = Field(default_factory=list)
+    preferredIndustries: List[str] = Field(default_factory=list)
+    workDataWeight: float
+    workPeopleWeight: float
+    creativityWeight: float
+    problemSolvingWeight: float
+    leadershipWeight: float
+    learningPath: str
+    stretchLevel: str
+    careerType: str
+    requiresTechnical: bool
+    companies: List[str] = Field(default_factory=list)
+    dayInLife: str
+    experienceLevel: str
+    minYearsExperience: int
+    maxYearsExperience: int
+    salaryMin: int
+    salaryMax: int
+    remoteOptions: str
+    workEnvironments: List[str] = Field(default_factory=list)
+    requiredEducation: str
+    preferredEducation: str
+    valuedCertifications: List[str] = Field(default_factory=list)
+    requiredCertifications: List[str] = Field(default_factory=list)
+    workLifeBalanceRating: float
+    agePreference: str
+    locationFlexibility: str
+    transitionFriendly: bool
+    resumeKeywords: List[str] = Field(default_factory=list)
+    relatedJobTitles: List[str] = Field(default_factory=list)
+    valuedCompanies: List[str] = Field(default_factory=list)
+    preferredIndustryExperience: List[str] = Field(default_factory=list)
+    careerProgressionPatterns: List[str] = Field(default_factory=list)
+    alternativeQualifications: List[str] = Field(default_factory=list)
+    skillBasedEntry: bool
+    experienceCanSubstitute: bool
+    handsOnWorkWeight: float
+    physicalWorkWeight: float
+    outdoorWorkWeight: float
+    mechanicalAptitudeWeight: float
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
-    
+
     class Settings:
         name = "careers"
 

@@ -1,0 +1,29 @@
+[
+  {
+    "title": "Senior Product Manager",
+    "salaryRange": "$120,000 - $160,000",
+    "description": "Lead complex product initiatives, mentor junior PMs, drive product strategy for major features",
+    "requiredTechnicalSkills": ["Product Management", "Data Analysis", "User Research", "Agile/Scrum"],
+    "requiredSoftSkills": ["Leadership", "Communication", "Strategic Thinking", "Problem Solving"],
+    "preferredInterests": ["Technology & Software", "Business & Entrepreneurship", "Innovation"],
+    "preferredIndustries": ["Technology & Software", "Financial Services", "E-commerce"],
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 4,
+    "learningPath": "Advanced Product Management (3-4 months)",
+    "stretchLevel": "safe",
+    "careerType": "senior-product-manager",
+    "requiresTechnical": true,
+    "companies": ["Google", "Microsoft", "Amazon", "Meta", "Netflix", "Spotify"],
+    "dayInLife": "Product strategy, stakeholder management, data analysis, team collaboration",
+    "experienceLevel": "mid",
+    "minYearsExperience": 5,
+    "maxYearsExperience": 12,
+    "salaryMin": 120000,
+    "salaryMax": 160000,
+    "remoteOptions": "Remote available",
+    "workEnvironments": ["office", "hybrid", "remote"]
+  }
+]

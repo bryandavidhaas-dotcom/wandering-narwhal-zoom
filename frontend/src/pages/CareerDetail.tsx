@@ -778,61 +778,61 @@ const CareerDetail = () => {
 
   // FIXED: Load user data and find the specific career directly from templates
   useEffect(() => {
-    console.log('🔍 CareerDetail loading for careerType:', careerType);
-    
-    try {
-      const currentUser = localStorage.getItem('currentUser');
-      if (!currentUser) {
-        console.log('❌ No user found, redirecting to auth');
-        navigate('/auth');
-        return;
-      }
+    const fetchCareerData = async () => {
+      console.log('🔍 CareerDetail loading for careerType:', careerType);
       
-      const userData = JSON.parse(currentUser);
-      console.log('👤 User loaded:', userData.firstName, userData.lastName);
-      
-      if (!userData.profileCompleted || !userData.assessmentData) {
-        console.log('❌ Profile incomplete, redirecting to assessment');
-        navigate('/assessment');
-        return;
-      }
-      
-      setUser(userData);
+      try {
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+          console.log('❌ No user found, redirecting to auth');
+          navigate('/auth');
+          return;
+        }
+        
+        const userData = JSON.parse(currentUser);
+        console.log('👤 User loaded:', userData.firstName, userData.lastName);
+        
+        if (!userData.profileCompleted || !userData.assessmentData) {
+          console.log('❌ Profile incomplete, redirecting to assessment');
+          navigate('/assessment');
+          return;
+        }
+        
+        setUser(userData);
 
-      // FIXED: Find career directly in templates by careerType
-      console.log('🔍 Searching for career in templates...');
-      console.log('📊 Total templates available:', CAREER_TEMPLATES.length);
-      
-      const foundCareer = CAREER_TEMPLATES.find(template => {
-        console.log(`🔍 Checking template: ${template.careerType} === ${careerType}`);
-        return template.careerType === careerType;
-      });
-      
-      if (foundCareer) {
-        console.log('✅ Career found in templates:', foundCareer.title);
+        const response = await fetch(`http://localhost:8002/api/career/${careerType}`);
+        if (!response.ok) {
+          throw new Error(`API request failed: ${response.status}`);
+        }
+        const careerData = await response.json();
         
-        // Convert template to CareerMatch format with default values
-        const careerMatch: CareerMatch = {
-          ...foundCareer,
-          relevanceScore: 85, // Default score for direct template access
-          confidenceLevel: 80,
-          matchReasons: ['Direct career exploration', 'Matches your profile interests']
-        };
+        if (careerData) {
+          console.log('✅ Career found:', careerData.title);
+          
+          // Convert template to CareerMatch format with default values
+          const careerMatch: CareerMatch = {
+            ...careerData,
+            relevanceScore: 85, // Default score for direct template access
+            confidenceLevel: 80,
+            matchReasons: ['Direct career exploration', 'Matches your profile interests']
+          };
+          
+          setCareer(careerMatch);
+          console.log('✅ Career set successfully');
+        } else {
+          console.log('❌ Career not found');
+          setError(`Career "${careerType}" not found in our database`);
+        }
         
-        setCareer(careerMatch);
-        console.log('✅ Career set successfully');
-      } else {
-        console.log('❌ Career not found in templates');
-        console.log('🔍 Available careerTypes:', CAREER_TEMPLATES.map(t => t.careerType).slice(0, 10));
-        setError(`Career "${careerType}" not found in our database`);
+        setLoading(false);
+      } catch (err) {
+        console.error('❌ Error loading career data:', err);
+        setError('Failed to load career information');
+        setLoading(false);
       }
-      
-      setLoading(false);
-    } catch (err) {
-      console.error('❌ Error loading career data:', err);
-      setError('Failed to load career information');
-      setLoading(false);
-    }
+    };
+
+    fetchCareerData();
   }, [navigate, careerType]);
 
   // FIXED: Enhanced save career functionality with comprehensive error handling and debugging
@@ -1166,15 +1166,13 @@ const CareerDetail = () => {
             >
               Overview
             </TabsTrigger>
-            {/* TEMPORARILY COMMENTED OUT - Day in Life tab - Can be easily restored by uncommenting */}
-            {/*
-            <TabsTrigger
+            {/* COMMENTED OUT: Day in Life section - currently generic */}
+            {/* <TabsTrigger
               value="day-in-life"
               className="hover:bg-green-50 hover:text-green-700 transition-colors duration-200"
             >
               Day in Life
-            </TabsTrigger>
-            */}
+            </TabsTrigger> */}
             <TabsTrigger
               value="skills"
               className="hover:bg-purple-50 hover:text-purple-700 transition-colors duration-200"
@@ -1302,9 +1300,8 @@ const CareerDetail = () => {
             </Card>
           </TabsContent>
 
-          {/* TEMPORARILY COMMENTED OUT - Day in Life Tab with career-specific content - Can be easily restored by uncommenting */}
-          {/*
-          <TabsContent value="day-in-life" className="space-y-6">
+          {/* COMMENTED OUT: Day in Life content - currently generic */}
+          {/* <TabsContent value="day-in-life" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -1318,48 +1315,12 @@ const CareerDetail = () => {
               <CardContent>
                 <div className="prose max-w-none">
                   <p className="text-gray-700 leading-relaxed text-lg">
-                    {getCareerSpecificDayInLife(career.title)}
+                    {career.dayInLife}
                   </p>
                 </div>
-
-                {/* Sample Schedule */}
-                {/*
-                <div className="mt-6 bg-gray-50 rounded-lg p-6">
-                  <h4 className="font-semibold mb-4">Sample Daily Schedule</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="font-medium">9:00 AM</span>
-                      <span className="text-gray-600">Team standup and priority review</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="font-medium">10:00 AM</span>
-                      <span className="text-gray-600">Deep work on core projects</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="font-medium">1:00 PM</span>
-                      <span className="text-gray-600">Lunch and networking</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="font-medium">2:00 PM</span>
-                      <span className="text-gray-600">Collaborative sessions and meetings</span>
-                    </div>
-                    <div className="flex items-center space-x-3">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className="font-medium">4:00 PM</span>
-                      <span className="text-gray-600">Planning and documentation</span>
-                    </div>
-                  </div>
-                </div>
-                */}
-              {/*
               </CardContent>
             </Card>
-          </TabsContent>
-          */}
+          </TabsContent> */}
 
           {/* Skills & Learning Tab */}
           <TabsContent value="skills" className="space-y-6">
