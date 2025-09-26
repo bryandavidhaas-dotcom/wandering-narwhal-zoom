@@ -30,7 +30,7 @@ logger.info("FastAPI app initialized.")
 logger.info("Configuring CORS...")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5137", "http://localhost:3000", "http://localhost:5173"],
+    allow_origins=["http://localhost:5137", "http://localhost:3000", "http://localhost:5173", "https://wandering-narwhal-zoom-front-end.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
