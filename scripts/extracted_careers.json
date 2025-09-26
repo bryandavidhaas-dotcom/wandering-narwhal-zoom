@@ -1,0 +1,3662 @@
+[
+  {
+    "title": "Chief Executive Officer (CEO)",
+    "salaryRange": "$300,000 - $1,000,000+",
+    "description": "Lead entire organization, set strategic vision, manage board relationships, and drive company growth and performance",
+    "careerType": "chief-executive-officer",
+    "experienceLevel": "executive",
+    "learningPath": "Executive Leadership Development (12+ months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Board meetings, strategic planning, investor relations, organizational leadership",
+    "remoteOptions": "Limited - Executive presence required",
+    "requiredEducation": "masters",
+    "preferredEducation": "masters",
+    "agePreference": "40-60",
+    "locationFlexibility": "major-cities",
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 1,
+    "minYearsExperience": 20,
+    "maxYearsExperience": 40,
+    "salaryMin": 300000,
+    "salaryMax": 1000000,
+    "requiresTechnical": true,
+    "transitionFriendly": false,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Strategic Planning",
+      "Financial Management",
+      "Business Development",
+      "Market Analysis"
+    ],
+    "requiredSoftSkills": [
+      "Executive Leadership",
+      "Vision Setting",
+      "Decision Making",
+      "Communication"
+    ],
+    "preferredInterests": [
+      "Business & Entrepreneurship",
+      "Leadership",
+      "Strategy"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical"
+    ],
+    "companies": [
+      "Fortune 500 Companies",
+      "High-Growth Startups",
+      "Private Equity Portfolio Companies"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid"
+    ],
+    "valuedCertifications": [
+      "MBA",
+      "Executive Leadership"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "CEO",
+      "executive",
+      "leadership",
+      "strategy",
+      "P&L"
+    ],
+    "relatedJobTitles": [
+      "President",
+      "Managing Director",
+      "General Manager"
+    ],
+    "valuedCompanies": [
+      "Fortune 500",
+      "High-growth companies"
+    ],
+    "preferredIndustryExperience": [
+      "Executive leadership",
+      "P&L responsibility"
+    ],
+    "careerProgressionPatterns": [
+      "VP → SVP → President → CEO"
+    ],
+    "alternativeQualifications": [
+      "20+ years leadership",
+      "P&L responsibility",
+      "Board experience"
+    ]
+  },
+  {
+    "title": "Chief Technology Officer (CTO)",
+    "salaryRange": "$250,000 - $500,000",
+    "description": "Lead technology strategy, oversee engineering teams, drive technical innovation and architecture decisions",
+    "careerType": "chief-technology-officer",
+    "experienceLevel": "executive",
+    "learningPath": "Executive Technology Leadership (8-12 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Technology strategy, engineering leadership, architecture decisions, innovation planning",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "masters",
+    "agePreference": "35-55",
+    "locationFlexibility": "major-cities",
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 5,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 2,
+    "minYearsExperience": 18,
+    "maxYearsExperience": 30,
+    "salaryMin": 250000,
+    "salaryMax": 500000,
+    "requiresTechnical": true,
+    "transitionFriendly": false,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Technology Strategy",
+      "Software Architecture",
+      "Engineering Management",
+      "Cloud Platforms"
+    ],
+    "requiredSoftSkills": [
+      "Technical Leadership",
+      "Strategic Thinking",
+      "Team Building",
+      "Innovation"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Innovation",
+      "Engineering"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Uber"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid"
+    ],
+    "valuedCertifications": [
+      "AWS",
+      "Cloud Architecture",
+      "Executive Leadership"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "CTO",
+      "technology strategy",
+      "engineering leadership",
+      "architecture"
+    ],
+    "relatedJobTitles": [
+      "VP Engineering",
+      "Head of Technology",
+      "Chief Architect"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Technology leadership",
+      "Engineering management"
+    ],
+    "careerProgressionPatterns": [
+      "Senior Engineer → Engineering Manager → VP Engineering → CTO"
+    ],
+    "alternativeQualifications": [
+      "18+ years tech experience",
+      "Engineering leadership",
+      "Architecture expertise"
+    ]
+  },
+  {
+    "title": "VP of Product Management",
+    "salaryRange": "$200,000 - $350,000",
+    "description": "Lead product strategy across multiple product lines, manage senior product managers, drive product vision",
+    "careerType": "vp-product-management",
+    "experienceLevel": "executive",
+    "learningPath": "Executive Product Leadership (6-8 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Product strategy, team leadership, stakeholder management, roadmap planning",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "masters",
+    "agePreference": "35-50",
+    "locationFlexibility": "flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 2,
+    "minYearsExperience": 15,
+    "maxYearsExperience": 25,
+    "salaryMin": 200000,
+    "salaryMax": 350000,
+    "requiresTechnical": true,
+    "transitionFriendly": false,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Product Strategy",
+      "Data Analysis",
+      "User Research",
+      "Product Management"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Strategic Thinking",
+      "Communication",
+      "Mentoring"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Business & Entrepreneurship",
+      "Innovation"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Spotify"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Product Management",
+      "MBA",
+      "Agile/Scrum"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "VP product",
+      "product strategy",
+      "product leadership",
+      "roadmap"
+    ],
+    "relatedJobTitles": [
+      "Director of Product",
+      "Head of Product",
+      "Senior Product Manager"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta"
+    ],
+    "preferredIndustryExperience": [
+      "Product management",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "PM → Senior PM → Director → VP"
+    ],
+    "alternativeQualifications": [
+      "15+ years product experience",
+      "Team leadership",
+      "Strategic thinking"
+    ]
+  },
+  {
+    "title": "VP of Sales",
+    "salaryRange": "$180,000 - $300,000",
+    "description": "Lead sales organization, develop sales strategy, manage enterprise accounts and sales teams",
+    "careerType": "vp-sales",
+    "experienceLevel": "executive",
+    "learningPath": "Executive Sales Leadership (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Sales strategy, team leadership, enterprise deals, revenue planning",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "35-55",
+    "locationFlexibility": "flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 5,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 2,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 2,
+    "minYearsExperience": 15,
+    "maxYearsExperience": 25,
+    "salaryMin": 180000,
+    "salaryMax": 300000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Sales Strategy",
+      "CRM Systems",
+      "Sales Analytics",
+      "Revenue Operations"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Negotiation",
+      "Communication",
+      "Strategic Thinking"
+    ],
+    "preferredInterests": [
+      "Sales & Marketing",
+      "Business & Entrepreneurship",
+      "Leadership"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Manufacturing"
+    ],
+    "companies": [
+      "Salesforce",
+      "Oracle",
+      "Microsoft",
+      "IBM",
+      "Enterprise Software Companies"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "travel"
+    ],
+    "valuedCertifications": [
+      "Sales Leadership",
+      "CRM",
+      "Negotiation"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "VP sales",
+      "sales leadership",
+      "revenue",
+      "enterprise sales"
+    ],
+    "relatedJobTitles": [
+      "Sales Director",
+      "Head of Sales",
+      "Chief Revenue Officer"
+    ],
+    "valuedCompanies": [
+      "Salesforce",
+      "Oracle",
+      "Microsoft",
+      "Enterprise Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Sales leadership",
+      "Enterprise sales"
+    ],
+    "careerProgressionPatterns": [
+      "Sales Rep → Sales Manager → Sales Director → VP Sales"
+    ],
+    "alternativeQualifications": [
+      "15+ years sales experience",
+      "Team leadership",
+      "Revenue responsibility"
+    ]
+  },
+  {
+    "title": "Director of Engineering",
+    "salaryRange": "$160,000 - $220,000",
+    "description": "Lead engineering teams, set technical direction, manage software development lifecycle and engineering culture",
+    "careerType": "director-engineering",
+    "experienceLevel": "senior",
+    "learningPath": "Engineering Leadership Program (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Team leadership, technical strategy, architecture decisions, hiring and mentoring",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "32-50",
+    "locationFlexibility": "flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 10,
+    "maxYearsExperience": 18,
+    "salaryMin": 160000,
+    "salaryMax": 220000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Software Engineering",
+      "System Architecture",
+      "Team Management",
+      "Agile/Scrum"
+    ],
+    "requiredSoftSkills": [
+      "Technical Leadership",
+      "Team Building",
+      "Communication",
+      "Strategic Thinking"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Engineering",
+      "Leadership"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Uber"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "AWS",
+      "Leadership",
+      "Agile/Scrum"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "director engineering",
+      "engineering manager",
+      "technical leadership"
+    ],
+    "relatedJobTitles": [
+      "Engineering Manager",
+      "Head of Engineering",
+      "VP Engineering"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Software engineering",
+      "Technical leadership"
+    ],
+    "careerProgressionPatterns": [
+      "Senior Engineer → Engineering Manager → Director"
+    ],
+    "alternativeQualifications": [
+      "10+ years engineering",
+      "Team leadership",
+      "Technical expertise"
+    ]
+  },
+  {
+    "title": "Director of Product Management",
+    "salaryRange": "$150,000 - $200,000",
+    "description": "Lead product management organization, drive product strategy, manage multiple product lines",
+    "careerType": "director-product-management",
+    "experienceLevel": "senior",
+    "learningPath": "Product Leadership Program (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Product strategy, team leadership, roadmap planning, stakeholder management",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "masters",
+    "agePreference": "32-48",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 10,
+    "maxYearsExperience": 18,
+    "salaryMin": 150000,
+    "salaryMax": 200000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Product Strategy",
+      "Data Analysis",
+      "User Research",
+      "Product Management"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Strategic Thinking",
+      "Communication",
+      "Team Management"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Business & Entrepreneurship",
+      "Innovation"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Spotify"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Product Management",
+      "Agile/Scrum",
+      "MBA"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "director product",
+      "product strategy",
+      "product leadership"
+    ],
+    "relatedJobTitles": [
+      "Senior Product Manager",
+      "Head of Product",
+      "VP Product"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta"
+    ],
+    "preferredIndustryExperience": [
+      "Product management",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "PM → Senior PM → Director → VP"
+    ],
+    "alternativeQualifications": [
+      "10+ years product experience",
+      "Team leadership",
+      "Strategic thinking"
+    ]
+  },
+  {
+    "title": "Head of Product",
+    "salaryRange": "$180,000 - $250,000",
+    "description": "Lead product organization, set product vision and strategy, manage senior product managers across multiple product lines",
+    "careerType": "head-of-product",
+    "experienceLevel": "senior",
+    "learningPath": "Head of Product Program (4-8 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Strategic product planning, team leadership, stakeholder management, product vision development",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "masters",
+    "agePreference": "35-50",
+    "locationFlexibility": "flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 2,
+    "minYearsExperience": 12,
+    "maxYearsExperience": 20,
+    "salaryMin": 180000,
+    "salaryMax": 250000,
+    "requiresTechnical": true,
+    "transitionFriendly": false,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Product Strategy",
+      "Data Analysis",
+      "User Research",
+      "Product Management",
+      "Roadmap Planning"
+    ],
+    "requiredSoftSkills": [
+      "Executive Leadership",
+      "Strategic Thinking",
+      "Communication",
+      "Team Building",
+      "Vision Setting"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Business & Entrepreneurship",
+      "Innovation",
+      "Leadership"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce",
+      "SaaS"
+    ],
+    "companies": [
+      "Airbnb",
+      "Uber",
+      "Stripe",
+      "Slack",
+      "Zoom",
+      "Dropbox",
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Product Management",
+      "MBA",
+      "Agile/Scrum",
+      "Leadership"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "head of product",
+      "product leadership",
+      "product strategy",
+      "product vision",
+      "team leadership"
+    ],
+    "relatedJobTitles": [
+      "VP Product",
+      "Director of Product",
+      "Chief Product Officer",
+      "Senior Product Manager"
+    ],
+    "valuedCompanies": [
+      "Airbnb",
+      "Uber",
+      "Stripe",
+      "Slack",
+      "Zoom",
+      "Dropbox"
+    ],
+    "preferredIndustryExperience": [
+      "Product management",
+      "Technology",
+      "SaaS"
+    ],
+    "careerProgressionPatterns": [
+      "Senior PM → Principal PM → Director → Head of Product → VP Product"
+    ],
+    "alternativeQualifications": [
+      "12+ years product experience",
+      "Team leadership",
+      "Strategic product thinking"
+    ]
+  },
+  {
+    "title": "Senior Data Science Manager",
+    "salaryRange": "$140,000 - $190,000",
+    "description": "Lead data science teams, drive analytics strategy, manage machine learning initiatives",
+    "careerType": "senior-data-science-manager",
+    "experienceLevel": "senior",
+    "learningPath": "Data Science Leadership (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Team leadership, data strategy, model review, stakeholder management",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "masters",
+    "preferredEducation": "masters",
+    "agePreference": "30-45",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 5,
+    "workPeopleWeight": 4,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 4,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 10,
+    "maxYearsExperience": 18,
+    "salaryMin": 140000,
+    "salaryMax": 190000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Machine Learning",
+      "Python",
+      "SQL",
+      "Data Strategy",
+      "Team Management"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Communication",
+      "Strategic Thinking",
+      "Mentoring"
+    ],
+    "preferredInterests": [
+      "Data & Analytics",
+      "Technology & Software",
+      "Research"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Netflix",
+      "Uber",
+      "Airbnb",
+      "Meta"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Machine Learning",
+      "AWS",
+      "Leadership"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "data science manager",
+      "machine learning",
+      "analytics leadership"
+    ],
+    "relatedJobTitles": [
+      "Data Science Lead",
+      "Principal Data Scientist",
+      "Head of Analytics"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Netflix",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Data science",
+      "Analytics",
+      "Machine learning"
+    ],
+    "careerProgressionPatterns": [
+      "Data Scientist → Senior DS → DS Manager → Director"
+    ],
+    "alternativeQualifications": [
+      "10+ years data science",
+      "Team leadership",
+      "ML expertise"
+    ]
+  },
+  {
+    "title": "Sales Director",
+    "salaryRange": "$120,000 - $180,000",
+    "description": "Lead regional sales teams, manage enterprise accounts, drive revenue growth and sales strategy",
+    "careerType": "sales-director",
+    "experienceLevel": "senior",
+    "learningPath": "Sales Leadership Development (3-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Team leadership, enterprise sales, strategy development, performance management",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "32-50",
+    "locationFlexibility": "flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 5,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 2,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 10,
+    "maxYearsExperience": 18,
+    "salaryMin": 120000,
+    "salaryMax": 180000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Sales Management",
+      "CRM Systems",
+      "Sales Analytics",
+      "Territory Management"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Negotiation",
+      "Communication",
+      "Strategic Thinking"
+    ],
+    "preferredInterests": [
+      "Sales & Marketing",
+      "Business & Entrepreneurship",
+      "Leadership"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Manufacturing"
+    ],
+    "companies": [
+      "Salesforce",
+      "Oracle",
+      "Microsoft",
+      "IBM",
+      "Enterprise Companies"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "travel"
+    ],
+    "valuedCertifications": [
+      "Sales Leadership",
+      "CRM",
+      "Negotiation"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "sales director",
+      "sales management",
+      "enterprise sales",
+      "revenue"
+    ],
+    "relatedJobTitles": [
+      "Sales Manager",
+      "Regional Sales Manager",
+      "VP Sales"
+    ],
+    "valuedCompanies": [
+      "Salesforce",
+      "Oracle",
+      "Microsoft",
+      "Enterprise Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Sales",
+      "Account management",
+      "Business development"
+    ],
+    "careerProgressionPatterns": [
+      "Sales Rep → Sales Manager → Sales Director → VP Sales"
+    ],
+    "alternativeQualifications": [
+      "10+ years sales",
+      "Team leadership",
+      "Revenue responsibility"
+    ]
+  },
+  {
+    "title": "Senior Product Manager",
+    "salaryRange": "$120,000 - $160,000",
+    "description": "Lead complex product initiatives, mentor junior PMs, drive product strategy for major features",
+    "careerType": "senior-product-manager",
+    "experienceLevel": "mid",
+    "learningPath": "Advanced Product Management (3-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Product strategy, stakeholder management, data analysis, team collaboration",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "28-42",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 5,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 4,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 5,
+    "maxYearsExperience": 12,
+    "salaryMin": 120000,
+    "salaryMax": 160000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Product Management",
+      "Data Analysis",
+      "User Research",
+      "Agile/Scrum"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Communication",
+      "Strategic Thinking",
+      "Problem Solving"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Business & Entrepreneurship",
+      "Innovation"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Spotify"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Product Management",
+      "Agile/Scrum",
+      "Google Analytics"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "senior product manager",
+      "product strategy",
+      "roadmap",
+      "leadership"
+    ],
+    "relatedJobTitles": [
+      "Product Manager",
+      "Principal Product Manager",
+      "Director Product"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta"
+    ],
+    "preferredIndustryExperience": [
+      "Product management",
+      "Technology",
+      "Business analysis"
+    ],
+    "careerProgressionPatterns": [
+      "PM → Senior PM → Principal PM → Director"
+    ],
+    "alternativeQualifications": [
+      "5+ years product experience",
+      "Leadership skills",
+      "Strategic thinking"
+    ]
+  },
+  {
+    "title": "Senior Software Engineer",
+    "salaryRange": "$110,000 - $150,000",
+    "description": "Design and build complex software systems, mentor junior engineers, lead technical initiatives",
+    "careerType": "senior-software-engineer",
+    "experienceLevel": "mid",
+    "learningPath": "Advanced Software Engineering (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Software development, system design, code review, mentoring junior engineers",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "26-40",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 3,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 3,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 5,
+    "maxYearsExperience": 12,
+    "salaryMin": 110000,
+    "salaryMax": 150000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Software Development",
+      "System Design",
+      "Programming Languages",
+      "Architecture"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Communication",
+      "Mentoring",
+      "Technical Leadership"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Engineering",
+      "Problem Solving"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Uber"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "AWS",
+      "Cloud Platforms",
+      "Programming Languages"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "senior software engineer",
+      "software development",
+      "programming",
+      "architecture"
+    ],
+    "relatedJobTitles": [
+      "Software Engineer",
+      "Principal Engineer",
+      "Staff Engineer"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Software engineering",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "Engineer → Senior Engineer → Staff Engineer → Principal"
+    ],
+    "alternativeQualifications": [
+      "5+ years engineering",
+      "Technical expertise",
+      "System design skills"
+    ]
+  },
+  {
+    "title": "Senior Data Scientist",
+    "salaryRange": "$115,000 - $155,000",
+    "description": "Build advanced machine learning models, lead analytics projects, mentor junior data scientists",
+    "careerType": "senior-data-scientist",
+    "experienceLevel": "mid",
+    "learningPath": "Advanced Data Science (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Advanced modeling, research, mentoring, stakeholder presentations",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "masters",
+    "preferredEducation": "masters",
+    "agePreference": "28-42",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 5,
+    "workPeopleWeight": 3,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 3,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 5,
+    "maxYearsExperience": 12,
+    "salaryMin": 115000,
+    "salaryMax": 155000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Machine Learning",
+      "Python",
+      "SQL",
+      "Statistical Analysis",
+      "Data Visualization"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Communication",
+      "Mentoring",
+      "Critical Thinking"
+    ],
+    "preferredInterests": [
+      "Data & Analytics",
+      "Technology & Software",
+      "Research"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Netflix",
+      "Uber",
+      "Airbnb",
+      "Meta"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Machine Learning",
+      "Python",
+      "AWS",
+      "Google Cloud"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "senior data scientist",
+      "machine learning",
+      "python",
+      "analytics"
+    ],
+    "relatedJobTitles": [
+      "Data Scientist",
+      "Principal Data Scientist",
+      "ML Engineer"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Netflix",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Data science",
+      "Analytics",
+      "Research"
+    ],
+    "careerProgressionPatterns": [
+      "Data Scientist → Senior DS → Principal DS → DS Manager"
+    ],
+    "alternativeQualifications": [
+      "5+ years data science",
+      "ML expertise",
+      "Python proficiency"
+    ]
+  },
+  {
+    "title": "Engineering Manager",
+    "salaryRange": "$130,000 - $170,000",
+    "description": "Lead engineering teams, manage software development processes, drive technical and people management",
+    "careerType": "engineering-manager",
+    "experienceLevel": "mid",
+    "learningPath": "Engineering Management Program (3-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Team leadership, 1-on-1s, technical planning, hiring and performance management",
+    "remoteOptions": "Hybrid available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "30-45",
+    "locationFlexibility": "flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 5,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 5,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 6,
+    "maxYearsExperience": 12,
+    "salaryMin": 130000,
+    "salaryMax": 170000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Software Engineering",
+      "Team Management",
+      "Agile/Scrum",
+      "System Architecture"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Communication",
+      "Team Building",
+      "Strategic Thinking"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Leadership",
+      "Team Management"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Uber"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Leadership",
+      "Agile/Scrum",
+      "AWS"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "engineering manager",
+      "team leadership",
+      "software engineering",
+      "management"
+    ],
+    "relatedJobTitles": [
+      "Senior Software Engineer",
+      "Director of Engineering",
+      "Technical Lead"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Software engineering",
+      "Technical leadership"
+    ],
+    "careerProgressionPatterns": [
+      "Senior Engineer → Engineering Manager → Director"
+    ],
+    "alternativeQualifications": [
+      "6+ years engineering",
+      "Leadership experience",
+      "Team management"
+    ]
+  },
+  {
+    "title": "Product Manager",
+    "salaryRange": "$90,000 - $130,000",
+    "description": "Own product roadmap and strategy, work with engineering teams, drive product success through data-driven decisions",
+    "careerType": "product-manager",
+    "experienceLevel": "mid",
+    "learningPath": "Product Management Certification (3-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Product strategy, stakeholder meetings, data analysis, roadmap planning",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "25-38",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 4,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 3,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 3,
+    "maxYearsExperience": 8,
+    "salaryMin": 90000,
+    "salaryMax": 130000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Product Management",
+      "Data Analysis",
+      "User Research",
+      "Agile/Scrum"
+    ],
+    "requiredSoftSkills": [
+      "Communication",
+      "Strategic Thinking",
+      "Problem Solving",
+      "Leadership"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Business & Entrepreneurship",
+      "Innovation"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Spotify"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Product Management",
+      "Agile/Scrum",
+      "Google Analytics"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "product manager",
+      "product strategy",
+      "roadmap",
+      "user research"
+    ],
+    "relatedJobTitles": [
+      "Associate Product Manager",
+      "Business Analyst",
+      "Senior Product Manager"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta"
+    ],
+    "preferredIndustryExperience": [
+      "Product management",
+      "Business analysis",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "Business Analyst → PM → Senior PM → Director"
+    ],
+    "alternativeQualifications": [
+      "3+ years relevant experience",
+      "Analytical skills",
+      "Strategic thinking"
+    ]
+  },
+  {
+    "title": "Data Scientist",
+    "salaryRange": "$95,000 - $135,000",
+    "description": "Build machine learning models, analyze complex datasets, provide data-driven insights for business decisions",
+    "careerType": "data-scientist",
+    "experienceLevel": "mid",
+    "learningPath": "Data Science Bootcamp (4-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Model building, data analysis, stakeholder presentations, research",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "masters",
+    "agePreference": "25-38",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 5,
+    "workPeopleWeight": 3,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 3,
+    "maxYearsExperience": 8,
+    "salaryMin": 95000,
+    "salaryMax": 135000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Python",
+      "SQL",
+      "Machine Learning",
+      "Statistical Analysis",
+      "Data Visualization"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Communication",
+      "Critical Thinking",
+      "Collaboration"
+    ],
+    "preferredInterests": [
+      "Data & Analytics",
+      "Technology & Software",
+      "Research"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Netflix",
+      "Uber",
+      "Airbnb",
+      "Meta"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Machine Learning",
+      "Python",
+      "AWS",
+      "Google Cloud"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "data scientist",
+      "machine learning",
+      "python",
+      "analytics",
+      "sql"
+    ],
+    "relatedJobTitles": [
+      "Data Analyst",
+      "ML Engineer",
+      "Research Scientist"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Netflix",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Data analysis",
+      "Research",
+      "Analytics"
+    ],
+    "careerProgressionPatterns": [
+      "Data Analyst → Data Scientist → Senior DS → Principal DS"
+    ],
+    "alternativeQualifications": [
+      "3+ years data experience",
+      "ML skills",
+      "Python proficiency"
+    ]
+  },
+  {
+    "title": "Software Engineer",
+    "salaryRange": "$85,000 - $120,000",
+    "description": "Design, develop, and maintain software applications, collaborate with cross-functional teams",
+    "careerType": "software-engineer",
+    "experienceLevel": "mid",
+    "learningPath": "Software Engineering Bootcamp (3-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Software development, code review, debugging, feature implementation",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "22-35",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 3,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 2,
+    "maxYearsExperience": 8,
+    "salaryMin": 85000,
+    "salaryMax": 120000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Programming Languages",
+      "Software Development",
+      "Version Control",
+      "Testing"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Communication",
+      "Collaboration",
+      "Learning Agility"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Engineering",
+      "Problem Solving"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Netflix",
+      "Uber"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "AWS",
+      "Programming Languages",
+      "Cloud Platforms"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "software engineer",
+      "programming",
+      "development",
+      "coding"
+    ],
+    "relatedJobTitles": [
+      "Junior Software Engineer",
+      "Senior Software Engineer",
+      "Full Stack Developer"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Software development",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "Junior Engineer → Software Engineer → Senior Engineer"
+    ],
+    "alternativeQualifications": [
+      "2+ years programming",
+      "CS degree or bootcamp",
+      "Technical skills"
+    ]
+  },
+  {
+    "title": "Business Analyst",
+    "salaryRange": "$65,000 - $95,000",
+    "description": "Bridge business needs and technical solutions, analyze processes, recommend improvements",
+    "careerType": "business-analyst",
+    "experienceLevel": "mid",
+    "learningPath": "Business Analysis Certification (2-3 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Requirements gathering, data analysis, stakeholder meetings, process improvement",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "24-38",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 4,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 3,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 2,
+    "maxYearsExperience": 8,
+    "salaryMin": 65000,
+    "salaryMax": 95000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Excel/Spreadsheets",
+      "Data Analysis",
+      "Business Intelligence (BI)",
+      "SQL"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Critical Thinking",
+      "Communication",
+      "Strategic Thinking"
+    ],
+    "preferredInterests": [
+      "Business & Entrepreneurship",
+      "Data & Analytics",
+      "Consulting"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical",
+      "Consulting & Professional Services"
+    ],
+    "companies": [
+      "Deloitte",
+      "Accenture",
+      "PwC",
+      "IBM",
+      "Microsoft",
+      "Oracle"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Business Analysis",
+      "Six Sigma",
+      "Agile/Scrum"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "business analyst",
+      "requirements",
+      "process improvement",
+      "data analysis"
+    ],
+    "relatedJobTitles": [
+      "Data Analyst",
+      "Systems Analyst",
+      "Product Manager"
+    ],
+    "valuedCompanies": [
+      "Deloitte",
+      "Accenture",
+      "PwC",
+      "Consulting Firms"
+    ],
+    "preferredIndustryExperience": [
+      "Business analysis",
+      "Consulting",
+      "Process improvement"
+    ],
+    "careerProgressionPatterns": [
+      "Analyst → Business Analyst → Senior BA → Manager"
+    ],
+    "alternativeQualifications": [
+      "2+ years analytical experience",
+      "Process improvement skills",
+      "Business acumen"
+    ]
+  },
+  {
+    "title": "UX Designer",
+    "salaryRange": "$70,000 - $105,000",
+    "description": "Design user experiences, conduct user research, create wireframes and prototypes",
+    "careerType": "ux-designer",
+    "experienceLevel": "mid",
+    "learningPath": "UX Design Bootcamp (3-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "User research, wireframing, prototyping, design reviews, stakeholder collaboration",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "24-38",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 2,
+    "workPeopleWeight": 4,
+    "creativityWeight": 5,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 2,
+    "maxYearsExperience": 8,
+    "salaryMin": 70000,
+    "salaryMax": 105000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Figma",
+      "Adobe Creative Suite",
+      "User Research",
+      "Prototyping"
+    ],
+    "requiredSoftSkills": [
+      "Creativity",
+      "Communication",
+      "Problem Solving",
+      "Empathy"
+    ],
+    "preferredInterests": [
+      "Creative Arts & Design",
+      "Technology & Software",
+      "User Experience"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Design Agencies",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Design Agencies",
+      "Startups"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "UX Design",
+      "Figma",
+      "Adobe Certified",
+      "Google UX"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "ux designer",
+      "user experience",
+      "figma",
+      "user research",
+      "prototyping"
+    ],
+    "relatedJobTitles": [
+      "UI Designer",
+      "Product Designer",
+      "Visual Designer"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Design Agencies",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Design",
+      "Creative",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "Junior Designer → UX Designer → Senior Designer → Design Lead"
+    ],
+    "alternativeQualifications": [
+      "2+ years design experience",
+      "Strong portfolio",
+      "Design tool proficiency"
+    ]
+  },
+  {
+    "title": "Junior Data Analyst",
+    "salaryRange": "$50,000 - $70,000",
+    "description": "Support data analysis projects, create reports and visualizations, learn advanced analytics techniques",
+    "careerType": "junior-data-analyst",
+    "experienceLevel": "junior",
+    "learningPath": "Data Analytics Fundamentals (3-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Data extraction, report creation, basic analysis, learning new tools",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "22-30",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 5,
+    "workPeopleWeight": 2,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 1,
+    "maxYearsExperience": 4,
+    "salaryMin": 50000,
+    "salaryMax": 70000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Excel/Spreadsheets",
+      "SQL",
+      "Data Visualization",
+      "Basic Statistics"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Attention to Detail",
+      "Communication",
+      "Learning Agility"
+    ],
+    "preferredInterests": [
+      "Data & Analytics",
+      "Technology & Software",
+      "Research"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical"
+    ],
+    "companies": [
+      "Tech Startups",
+      "Mid-size Companies",
+      "Consulting Firms",
+      "Healthcare Organizations"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Google Analytics",
+      "Excel",
+      "SQL",
+      "Tableau"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "junior data analyst",
+      "data analysis",
+      "excel",
+      "sql",
+      "reporting"
+    ],
+    "relatedJobTitles": [
+      "Data Analyst",
+      "Reporting Analyst",
+      "Business Intelligence Analyst"
+    ],
+    "valuedCompanies": [
+      "Growing Companies",
+      "Tech Startups",
+      "Consulting Firms"
+    ],
+    "preferredIndustryExperience": [
+      "Any analytical work",
+      "Internships",
+      "Academic projects"
+    ],
+    "careerProgressionPatterns": [
+      "Junior Analyst → Data Analyst → Senior Analyst → Manager"
+    ],
+    "alternativeQualifications": [
+      "1+ years analytical experience",
+      "Strong Excel skills",
+      "SQL knowledge"
+    ]
+  },
+  {
+    "title": "Junior Software Engineer",
+    "salaryRange": "$65,000 - $85,000",
+    "description": "Develop software applications under guidance, learn best practices, contribute to team projects",
+    "careerType": "junior-software-engineer",
+    "experienceLevel": "junior",
+    "learningPath": "Software Engineering Fundamentals (3-6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Code development, bug fixes, learning new technologies, code reviews",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "22-28",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 3,
+    "creativityWeight": 4,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 1,
+    "maxYearsExperience": 4,
+    "salaryMin": 65000,
+    "salaryMax": 85000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Programming Languages",
+      "Version Control",
+      "Basic Software Development",
+      "Testing"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Learning Agility",
+      "Communication",
+      "Collaboration"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Engineering",
+      "Problem Solving"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Tech Startups",
+      "Mid-size Tech Companies",
+      "Consulting Firms"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Programming Languages",
+      "AWS",
+      "Cloud Platforms"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "junior software engineer",
+      "programming",
+      "development",
+      "coding"
+    ],
+    "relatedJobTitles": [
+      "Software Engineer",
+      "Developer",
+      "Full Stack Developer"
+    ],
+    "valuedCompanies": [
+      "Tech Companies",
+      "Startups",
+      "Growing Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Software development",
+      "Programming",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "Junior Engineer → Software Engineer → Senior Engineer"
+    ],
+    "alternativeQualifications": [
+      "1+ years programming",
+      "CS degree or bootcamp",
+      "Technical projects"
+    ]
+  },
+  {
+    "title": "Junior UX Designer",
+    "salaryRange": "$50,000 - $70,000",
+    "description": "Create wireframes and prototypes, support design projects, learn user research methods",
+    "careerType": "junior-ux-designer",
+    "experienceLevel": "junior",
+    "learningPath": "UX Design Fundamentals (3-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Wireframe creation, design system work, user research support, design iteration",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "22-30",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 2,
+    "workPeopleWeight": 4,
+    "creativityWeight": 5,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 1,
+    "maxYearsExperience": 4,
+    "salaryMin": 50000,
+    "salaryMax": 70000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Figma",
+      "Adobe Creative Suite",
+      "Wireframing",
+      "Prototyping"
+    ],
+    "requiredSoftSkills": [
+      "Creativity",
+      "Communication",
+      "Problem Solving",
+      "Attention to Detail"
+    ],
+    "preferredInterests": [
+      "Creative Arts & Design",
+      "Technology & Software",
+      "User Experience"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Design Agencies",
+      "E-commerce"
+    ],
+    "companies": [
+      "Design Agencies",
+      "Tech Startups",
+      "E-commerce Companies"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "UX Design",
+      "Figma",
+      "Adobe Certified",
+      "Google UX"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "junior ux designer",
+      "ux design",
+      "figma",
+      "wireframes",
+      "prototypes"
+    ],
+    "relatedJobTitles": [
+      "UX Designer",
+      "UI Designer",
+      "Product Designer"
+    ],
+    "valuedCompanies": [
+      "Design Agencies",
+      "Tech Companies",
+      "Startups"
+    ],
+    "preferredIndustryExperience": [
+      "Design",
+      "Creative",
+      "Technology"
+    ],
+    "careerProgressionPatterns": [
+      "Junior Designer → UX Designer → Senior Designer"
+    ],
+    "alternativeQualifications": [
+      "1+ years design experience",
+      "Strong portfolio",
+      "Design tool proficiency"
+    ]
+  },
+  {
+    "title": "Associate Product Manager",
+    "salaryRange": "$70,000 - $95,000",
+    "description": "Support product management activities, learn product strategy, assist with roadmap planning and user research",
+    "careerType": "associate-product-manager",
+    "experienceLevel": "entry",
+    "learningPath": "Associate Product Manager Program (6 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Product research, data analysis, stakeholder support, learning product strategy",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "22-28",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 4,
+    "workPeopleWeight": 4,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 3,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 2,
+    "salaryMin": 70000,
+    "salaryMax": 95000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Product Management Basics",
+      "Data Analysis",
+      "User Research",
+      "Agile/Scrum"
+    ],
+    "requiredSoftSkills": [
+      "Communication",
+      "Problem Solving",
+      "Learning Agility",
+      "Collaboration"
+    ],
+    "preferredInterests": [
+      "Technology & Software",
+      "Business & Entrepreneurship",
+      "Innovation"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "E-commerce"
+    ],
+    "companies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Meta",
+      "Tech Startups"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Product Management",
+      "Google Analytics",
+      "Agile/Scrum"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "associate product manager",
+      "product management",
+      "analytics",
+      "user research"
+    ],
+    "relatedJobTitles": [
+      "Product Analyst",
+      "Business Analyst",
+      "Program Manager"
+    ],
+    "valuedCompanies": [
+      "Google",
+      "Microsoft",
+      "Amazon",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Technology",
+      "Business analysis",
+      "Consulting"
+    ],
+    "careerProgressionPatterns": [
+      "APM → Product Manager → Senior PM"
+    ],
+    "alternativeQualifications": [
+      "Recent graduate",
+      "Analytical skills",
+      "Technology interest"
+    ]
+  },
+  {
+    "title": "Data Analyst",
+    "salaryRange": "$55,000 - $75,000",
+    "description": "Analyze data to support business decisions, create reports and dashboards, learn advanced analytics",
+    "careerType": "data-analyst",
+    "experienceLevel": "entry",
+    "learningPath": "Data Analytics Certification (2-4 months)",
+    "stretchLevel": "safe",
+    "dayInLife": "Data analysis, report creation, dashboard building, stakeholder presentations",
+    "remoteOptions": "Remote available",
+    "requiredEducation": "bachelors",
+    "preferredEducation": "bachelors",
+    "agePreference": "22-30",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 5,
+    "workPeopleWeight": 3,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 3,
+    "salaryMin": 55000,
+    "salaryMax": 75000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Excel/Spreadsheets",
+      "SQL",
+      "Data Visualization",
+      "Basic Statistics"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Communication",
+      "Attention to Detail",
+      "Critical Thinking"
+    ],
+    "preferredInterests": [
+      "Data & Analytics",
+      "Technology & Software",
+      "Research"
+    ],
+    "preferredIndustries": [
+      "Technology & Software",
+      "Financial Services",
+      "Healthcare & Medical"
+    ],
+    "companies": [
+      "Various Industries",
+      "Tech Companies",
+      "Consulting Firms",
+      "Healthcare"
+    ],
+    "workEnvironments": [
+      "office",
+      "hybrid",
+      "remote"
+    ],
+    "valuedCertifications": [
+      "Google Analytics",
+      "Excel",
+      "SQL",
+      "Tableau"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "data analyst",
+      "data analysis",
+      "excel",
+      "sql",
+      "reporting",
+      "analytics"
+    ],
+    "relatedJobTitles": [
+      "Business Analyst",
+      "Reporting Analyst",
+      "Data Scientist"
+    ],
+    "valuedCompanies": [
+      "All Industries",
+      "Tech Companies",
+      "Consulting Firms"
+    ],
+    "preferredIndustryExperience": [
+      "Any analytical work",
+      "Research",
+      "Academic projects"
+    ],
+    "careerProgressionPatterns": [
+      "Data Analyst → Senior Analyst → Data Scientist → Manager"
+    ],
+    "alternativeQualifications": [
+      "Recent graduate",
+      "Strong analytical skills",
+      "Excel/SQL knowledge"
+    ]
+  },
+  {
+    "title": "Apprentice Electrician",
+    "salaryRange": "$35,000 - $45,000",
+    "description": "Learn electrical installation, maintenance, and repair under supervision of licensed electricians. Start your journey in the electrical trades with hands-on training and classroom instruction.",
+    "careerType": "apprentice-electrician",
+    "experienceLevel": "entry",
+    "learningPath": "4-year apprenticeship program",
+    "stretchLevel": "safe",
+    "dayInLife": "Start your day at 6:30 AM with safety briefing and tool check. Morning involves learning wire installation techniques under journeyman supervision, practicing conduit bending, and studying electrical codes. Afternoon includes hands-on work installing outlets and switches, troubleshooting basic electrical issues, and attending trade school classes twice a week. End day by cleaning work area and preparing for tomorrow",
+    "remoteOptions": "None - hands-on trade work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "18-35",
+    "locationFlexibility": "local-area",
+    "workDataWeight": 2,
+    "workPeopleWeight": 3,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 3,
+    "mechanicalAptitudeWeight": 4,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 1,
+    "salaryMin": 35000,
+    "salaryMax": 45000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Basic Math",
+      "Hand Tools",
+      "Safety Procedures",
+      "Blueprint Reading"
+    ],
+    "requiredSoftSkills": [
+      "Attention to Detail",
+      "Problem Solving",
+      "Physical Stamina",
+      "Teamwork"
+    ],
+    "preferredInterests": [
+      "Technology",
+      "Building/Construction",
+      "Problem Solving",
+      "Hands-on Projects"
+    ],
+    "preferredIndustries": [
+      "Construction",
+      "Electrical Services",
+      "Manufacturing",
+      "Utilities"
+    ],
+    "companies": [
+      "Local Electrical Contractors",
+      "IBEW Union",
+      "Industrial Plants",
+      "Construction Companies"
+    ],
+    "workEnvironments": [
+      "construction",
+      "industrial",
+      "outdoor"
+    ],
+    "valuedCertifications": [
+      "OSHA 10",
+      "Basic Electrical Safety",
+      "First Aid/CPR"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "electrical",
+      "apprentice",
+      "construction",
+      "maintenance",
+      "wiring",
+      "tools",
+      "safety"
+    ],
+    "relatedJobTitles": [
+      "Construction Helper",
+      "Maintenance Assistant",
+      "Electrical Helper"
+    ],
+    "valuedCompanies": [
+      "Local Electrical Contractors",
+      "IBEW",
+      "Utility Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Construction",
+      "Manufacturing",
+      "Maintenance"
+    ],
+    "careerProgressionPatterns": [
+      "High School → Apprentice → Journeyman → Master Electrician"
+    ],
+    "alternativeQualifications": [
+      "High school diploma",
+      "Physical ability",
+      "Basic math skills",
+      "Willingness to learn"
+    ]
+  },
+  {
+    "title": "Journeyman Electrician",
+    "salaryRange": "$55,000 - $75,000",
+    "description": "Licensed electrician capable of installing, maintaining, and repairing electrical systems independently. Lead apprentices and handle complex electrical projects in residential, commercial, and industrial settings.",
+    "careerType": "journeyman-electrician",
+    "experienceLevel": "mid",
+    "learningPath": "Complete 4-year apprenticeship + licensing exam",
+    "stretchLevel": "safe",
+    "dayInLife": "Begin at 7:00 AM reviewing project plans and assigning tasks to apprentices. Morning involves installing complex electrical systems, troubleshooting power distribution issues, and ensuring code compliance. Afternoon includes leading a team on commercial wiring project, mentoring apprentices, and coordinating with other trades. Finish by completing daily reports and planning tomorrow",
+    "remoteOptions": "None - hands-on trade work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "trade-school",
+    "agePreference": "22-50",
+    "locationFlexibility": "regional",
+    "workDataWeight": 3,
+    "workPeopleWeight": 4,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 4,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 3,
+    "mechanicalAptitudeWeight": 5,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 4,
+    "maxYearsExperience": 10,
+    "salaryMin": 55000,
+    "salaryMax": 75000,
+    "requiresTechnical": true,
+    "transitionFriendly": false,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Electrical Code Knowledge",
+      "Blueprint Reading",
+      "Electrical Testing",
+      "Motor Controls"
+    ],
+    "requiredSoftSkills": [
+      "Leadership",
+      "Problem Solving",
+      "Communication",
+      "Time Management"
+    ],
+    "preferredInterests": [
+      "Technology",
+      "Building/Construction",
+      "Problem Solving",
+      "Mechanical Systems"
+    ],
+    "preferredIndustries": [
+      "Construction",
+      "Electrical Services",
+      "Manufacturing",
+      "Utilities"
+    ],
+    "companies": [
+      "Electrical Contractors",
+      "Industrial Plants",
+      "Utility Companies",
+      "Government Facilities"
+    ],
+    "workEnvironments": [
+      "construction",
+      "industrial",
+      "outdoor"
+    ],
+    "valuedCertifications": [
+      "Journeyman License",
+      "OSHA 30",
+      "NFPA 70E",
+      "Motor Control"
+    ],
+    "requiredCertifications": [
+      "Journeyman Electrician License"
+    ],
+    "resumeKeywords": [
+      "journeyman",
+      "licensed electrician",
+      "electrical systems",
+      "code compliance",
+      "leadership"
+    ],
+    "relatedJobTitles": [
+      "Electrical Technician",
+      "Maintenance Electrician",
+      "Industrial Electrician"
+    ],
+    "valuedCompanies": [
+      "Major Electrical Contractors",
+      "Industrial Plants",
+      "Utility Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Electrical Construction",
+      "Industrial Maintenance",
+      "Utilities"
+    ],
+    "careerProgressionPatterns": [
+      "Apprentice → Journeyman → Master Electrician → Electrical Contractor"
+    ],
+    "alternativeQualifications": [
+      "Completed apprenticeship",
+      "Journeyman license",
+      "4+ years experience"
+    ]
+  },
+  {
+    "title": "Plumbing Apprentice",
+    "salaryRange": "$32,000 - $42,000",
+    "description": "Learn plumbing installation, repair, and maintenance under licensed plumber supervision. Gain hands-on experience with pipes, fixtures, and water systems in residential and commercial settings.",
+    "careerType": "plumbing-apprentice",
+    "experienceLevel": "entry",
+    "learningPath": "4-5 year apprenticeship program",
+    "stretchLevel": "safe",
+    "dayInLife": "Start at 7:00 AM with tool preparation and safety review. Morning includes learning pipe installation techniques, practicing soldering and fitting connections, and assisting with drain cleaning. Afternoon involves hands-on work installing fixtures, learning water heater maintenance, and attending trade school classes. End day organizing tools and reviewing plumbing codes.",
+    "remoteOptions": "None - hands-on trade work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "18-35",
+    "locationFlexibility": "local-area",
+    "workDataWeight": 2,
+    "workPeopleWeight": 3,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 5,
+    "outdoorWorkWeight": 2,
+    "mechanicalAptitudeWeight": 4,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 1,
+    "salaryMin": 32000,
+    "salaryMax": 42000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Basic Math",
+      "Hand Tools",
+      "Pipe Fitting",
+      "Safety Procedures"
+    ],
+    "requiredSoftSkills": [
+      "Physical Stamina",
+      "Problem Solving",
+      "Attention to Detail",
+      "Reliability"
+    ],
+    "preferredInterests": [
+      "Building/Construction",
+      "Problem Solving",
+      "Hands-on Work",
+      "Mechanical Systems"
+    ],
+    "preferredIndustries": [
+      "Construction",
+      "Plumbing Services",
+      "Maintenance"
+    ],
+    "companies": [
+      "Local Plumbing Contractors",
+      "Construction Companies",
+      "Maintenance Services"
+    ],
+    "workEnvironments": [
+      "construction",
+      "residential",
+      "commercial"
+    ],
+    "valuedCertifications": [
+      "OSHA 10",
+      "Basic Plumbing Safety",
+      "First Aid"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "plumbing",
+      "apprentice",
+      "pipes",
+      "fixtures",
+      "construction",
+      "maintenance"
+    ],
+    "relatedJobTitles": [
+      "Construction Helper",
+      "Maintenance Helper",
+      "Pipe Fitter Helper"
+    ],
+    "valuedCompanies": [
+      "Local Plumbing Companies",
+      "Construction Contractors",
+      "Property Management"
+    ],
+    "preferredIndustryExperience": [
+      "Construction",
+      "Maintenance",
+      "Home Services"
+    ],
+    "careerProgressionPatterns": [
+      "High School → Apprentice → Journeyman → Master Plumber"
+    ],
+    "alternativeQualifications": [
+      "High school diploma",
+      "Physical fitness",
+      "Mechanical aptitude",
+      "Reliability"
+    ]
+  },
+  {
+    "title": "HVAC Technician",
+    "salaryRange": "$45,000 - $65,000",
+    "description": "Install, maintain, and repair heating, ventilation, and air conditioning systems. Work on residential and commercial HVAC equipment, troubleshoot system problems, and ensure optimal climate control performance.",
+    "careerType": "hvac-technician",
+    "experienceLevel": "mid",
+    "learningPath": "6-month to 2-year HVAC program + EPA certification",
+    "stretchLevel": "safe",
+    "dayInLife": "Begin at 8:00 AM checking service calls and loading truck with parts and tools. Morning involves diagnosing AC system problems, replacing faulty components, and performing routine maintenance. Afternoon includes installing new HVAC units, explaining system operation to customers, and completing service reports. End day restocking truck and planning next day",
+    "remoteOptions": "None - field service work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "trade-school",
+    "agePreference": "20-50",
+    "locationFlexibility": "regional",
+    "workDataWeight": 3,
+    "workPeopleWeight": 4,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 3,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 3,
+    "mechanicalAptitudeWeight": 5,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 1,
+    "maxYearsExperience": 8,
+    "salaryMin": 45000,
+    "salaryMax": 65000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "HVAC Systems",
+      "Electrical Basics",
+      "Refrigeration",
+      "System Diagnostics"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Customer Service",
+      "Physical Stamina",
+      "Attention to Detail"
+    ],
+    "preferredInterests": [
+      "Technology",
+      "Problem Solving",
+      "Mechanical Systems",
+      "Hands-on Projects"
+    ],
+    "preferredIndustries": [
+      "HVAC Services",
+      "Construction",
+      "Facilities Management"
+    ],
+    "companies": [
+      "HVAC Contractors",
+      "Property Management",
+      "Facilities Services",
+      "Retail Chains"
+    ],
+    "workEnvironments": [
+      "field service",
+      "construction",
+      "commercial"
+    ],
+    "valuedCertifications": [
+      "EPA 608",
+      "NATE Certification",
+      "OSHA 10",
+      "Refrigeration License"
+    ],
+    "requiredCertifications": [
+      "EPA 608 Certification"
+    ],
+    "resumeKeywords": [
+      "hvac",
+      "air conditioning",
+      "heating",
+      "refrigeration",
+      "maintenance",
+      "repair"
+    ],
+    "relatedJobTitles": [
+      "Maintenance Technician",
+      "Refrigeration Technician",
+      "Building Engineer"
+    ],
+    "valuedCompanies": [
+      "Major HVAC Contractors",
+      "Property Management Companies",
+      "Facilities Services"
+    ],
+    "preferredIndustryExperience": [
+      "HVAC",
+      "Maintenance",
+      "Construction",
+      "Facilities"
+    ],
+    "careerProgressionPatterns": [
+      "Helper → Technician → Senior Tech → Service Manager"
+    ],
+    "alternativeQualifications": [
+      "Trade school completion",
+      "EPA certification",
+      "Mechanical aptitude",
+      "Customer service skills"
+    ]
+  },
+  {
+    "title": "Customer Service Representative",
+    "salaryRange": "$28,000 - $38,000",
+    "description": "Handle customer inquiries, resolve complaints, and provide product information via phone, email, or chat. Build communication skills while learning business operations and customer relationship management.",
+    "careerType": "customer-service-rep",
+    "experienceLevel": "entry",
+    "learningPath": "On-the-job training + customer service certification",
+    "stretchLevel": "safe",
+    "dayInLife": "Start at 9:00 AM logging into phone system and reviewing daily goals. Morning involves answering customer calls, resolving billing issues, and updating customer accounts. Afternoon includes handling live chat support, escalating complex issues to supervisors, and participating in product training. End day completing call summaries and preparing for tomorrow",
+    "remoteOptions": "High - 70% of positions offer remote work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "18-45",
+    "locationFlexibility": "very-flexible",
+    "workDataWeight": 3,
+    "workPeopleWeight": 5,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 1,
+    "physicalWorkWeight": 1,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 3,
+    "salaryMin": 28000,
+    "salaryMax": 38000,
+    "requiresTechnical": false,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Computer Basics",
+      "Phone Systems",
+      "Data Entry",
+      "CRM Software"
+    ],
+    "requiredSoftSkills": [
+      "Communication",
+      "Patience",
+      "Problem Solving",
+      "Active Listening"
+    ],
+    "preferredInterests": [
+      "Helping People",
+      "Communication",
+      "Problem Solving"
+    ],
+    "preferredIndustries": [
+      "Retail",
+      "Healthcare",
+      "Financial Services",
+      "Technology"
+    ],
+    "companies": [
+      "Call Centers",
+      "Retail Companies",
+      "Banks",
+      "Insurance Companies",
+      "Tech Support"
+    ],
+    "workEnvironments": [
+      "office",
+      "remote",
+      "call center"
+    ],
+    "valuedCertifications": [
+      "Customer Service",
+      "Microsoft Office",
+      "Communication Skills"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "customer service",
+      "communication",
+      "problem solving",
+      "phone support",
+      "data entry"
+    ],
+    "relatedJobTitles": [
+      "Call Center Agent",
+      "Support Specialist",
+      "Client Services",
+      "Help Desk"
+    ],
+    "valuedCompanies": [
+      "Major Retailers",
+      "Banks",
+      "Insurance Companies",
+      "Tech Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Retail",
+      "Hospitality",
+      "Any customer-facing role"
+    ],
+    "careerProgressionPatterns": [
+      "CSR → Senior CSR → Team Lead → Supervisor → Manager"
+    ],
+    "alternativeQualifications": [
+      "High school diploma",
+      "Good communication skills",
+      "Computer literacy",
+      "Patience with customers"
+    ]
+  },
+  {
+    "title": "Retail Sales Associate",
+    "salaryRange": "$25,000 - $35,000",
+    "description": "Assist customers with product selection, process transactions, and maintain store appearance. Learn sales techniques, inventory management, and customer service skills that transfer to many industries.",
+    "careerType": "retail-sales-associate",
+    "experienceLevel": "entry",
+    "learningPath": "On-the-job training + retail management courses",
+    "stretchLevel": "safe",
+    "dayInLife": "Arrive at 10:00 AM for opening procedures and team briefing. Morning includes helping customers find products, processing returns and exchanges, and restocking merchandise. Afternoon involves working the register during busy periods, assisting with inventory counts, and learning about new products. End shift by cleaning work area and preparing store for closing.",
+    "remoteOptions": "None - in-person retail work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "16-40",
+    "locationFlexibility": "local-area",
+    "workDataWeight": 2,
+    "workPeopleWeight": 5,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 3,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 3,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 1,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 2,
+    "salaryMin": 25000,
+    "salaryMax": 35000,
+    "requiresTechnical": false,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Point of Sale Systems",
+      "Inventory Management",
+      "Basic Math",
+      "Product Knowledge"
+    ],
+    "requiredSoftSkills": [
+      "Customer Service",
+      "Communication",
+      "Teamwork",
+      "Reliability"
+    ],
+    "preferredInterests": [
+      "Helping People",
+      "Sales",
+      "Fashion/Products"
+    ],
+    "preferredIndustries": [
+      "Retail",
+      "Fashion",
+      "Electronics",
+      "Home Improvement"
+    ],
+    "companies": [
+      "Target",
+      "Walmart",
+      "Best Buy",
+      "Home Depot",
+      "Macy",
+      ","
+    ],
+    "workEnvironments": [
+      "retail",
+      "customer-facing"
+    ],
+    "valuedCertifications": [
+      "Customer Service",
+      "Sales Training",
+      "Product Knowledge"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "retail",
+      "sales",
+      "customer service",
+      "cash handling",
+      "inventory",
+      "teamwork"
+    ],
+    "relatedJobTitles": [
+      "Cashier",
+      "Sales Clerk",
+      "Store Associate",
+      "Customer Service"
+    ],
+    "valuedCompanies": [
+      "Major Retailers",
+      "Department Stores",
+      "Specialty Stores"
+    ],
+    "preferredIndustryExperience": [
+      "Any customer service",
+      "Food service",
+      "Hospitality"
+    ],
+    "careerProgressionPatterns": [
+      "Associate → Senior Associate → Team Lead → Assistant Manager → Store Manager"
+    ],
+    "alternativeQualifications": [
+      "High school diploma",
+      "Customer service attitude",
+      "Reliability",
+      "Basic math skills"
+    ]
+  },
+  {
+    "title": "Production Worker",
+    "salaryRange": "$30,000 - $42,000",
+    "description": "Operate manufacturing equipment, assemble products, and maintain quality standards in production environment. Learn manufacturing processes, safety procedures, and quality control while building toward supervisory roles.",
+    "careerType": "production-worker",
+    "experienceLevel": "entry",
+    "learningPath": "On-the-job training + manufacturing certifications",
+    "stretchLevel": "safe",
+    "dayInLife": "Clock in at 6:00 AM for shift briefing and safety review. Morning involves operating production machinery, monitoring quality standards, and following work instructions. Afternoon includes rotating to different stations, participating in continuous improvement activities, and maintaining equipment. End shift by cleaning work area and reporting production metrics.",
+    "remoteOptions": "None - manufacturing floor work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "18-55",
+    "locationFlexibility": "local-area",
+    "workDataWeight": 3,
+    "workPeopleWeight": 3,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 3,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 4,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 4,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 3,
+    "salaryMin": 30000,
+    "salaryMax": 42000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Machine Operation",
+      "Quality Control",
+      "Safety Procedures",
+      "Basic Maintenance"
+    ],
+    "requiredSoftSkills": [
+      "Attention to Detail",
+      "Reliability",
+      "Teamwork",
+      "Physical Stamina"
+    ],
+    "preferredInterests": [
+      "Manufacturing",
+      "Hands-on Work",
+      "Mechanical Systems"
+    ],
+    "preferredIndustries": [
+      "Manufacturing",
+      "Automotive",
+      "Food Production",
+      "Electronics"
+    ],
+    "companies": [
+      "Manufacturing Plants",
+      "Automotive Companies",
+      "Food Processors",
+      "Electronics Manufacturers"
+    ],
+    "workEnvironments": [
+      "manufacturing",
+      "industrial"
+    ],
+    "valuedCertifications": [
+      "OSHA 10",
+      "Forklift License",
+      "Quality Control",
+      "Lean Manufacturing"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "production",
+      "manufacturing",
+      "assembly",
+      "quality control",
+      "safety",
+      "machinery"
+    ],
+    "relatedJobTitles": [
+      "Assembly Worker",
+      "Machine Operator",
+      "Quality Inspector",
+      "Warehouse Worker"
+    ],
+    "valuedCompanies": [
+      "Manufacturing Companies",
+      "Automotive Plants",
+      "Food Processors"
+    ],
+    "preferredIndustryExperience": [
+      "Any hands-on work",
+      "Construction",
+      "Maintenance"
+    ],
+    "careerProgressionPatterns": [
+      "Production Worker → Lead Worker → Supervisor → Production Manager"
+    ],
+    "alternativeQualifications": [
+      "High school diploma",
+      "Physical ability",
+      "Reliability",
+      "Willingness to learn"
+    ]
+  },
+  {
+    "title": "Delivery Driver",
+    "salaryRange": "$32,000 - $48,000",
+    "description": "Transport goods and packages to customers, maintain delivery schedules, and provide excellent customer service. Build logistics knowledge and customer relationships while developing toward fleet management or logistics coordination roles.",
+    "careerType": "delivery-driver",
+    "experienceLevel": "entry",
+    "learningPath": "CDL training + logistics certifications",
+    "stretchLevel": "safe",
+    "dayInLife": "Start at 7:00 AM with vehicle inspection and route planning. Morning involves loading packages, following delivery schedule, and providing friendly customer service. Afternoon includes navigating traffic efficiently, handling special delivery requests, and maintaining delivery records. End day by returning vehicle, completing paperwork, and preparing for next day",
+    "remoteOptions": "None - driving/delivery work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "21-60",
+    "locationFlexibility": "local-regional",
+    "workDataWeight": 2,
+    "workPeopleWeight": 4,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 3,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 3,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 4,
+    "mechanicalAptitudeWeight": 3,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 5,
+    "salaryMin": 32000,
+    "salaryMax": 48000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Safe Driving",
+      "Route Planning",
+      "GPS Navigation",
+      "Vehicle Maintenance"
+    ],
+    "requiredSoftSkills": [
+      "Customer Service",
+      "Time Management",
+      "Reliability",
+      "Physical Stamina"
+    ],
+    "preferredInterests": [
+      "Driving",
+      "Customer Service",
+      "Independence"
+    ],
+    "preferredIndustries": [
+      "Logistics",
+      "E-commerce",
+      "Food Delivery",
+      "Package Delivery"
+    ],
+    "companies": [
+      "UPS",
+      "FedEx",
+      "Amazon",
+      "DoorDash",
+      "Local Delivery Services"
+    ],
+    "workEnvironments": [
+      "driving",
+      "customer-facing",
+      "outdoor"
+    ],
+    "valuedCertifications": [
+      "CDL License",
+      "DOT Physical",
+      "Defensive Driving",
+      "Customer Service"
+    ],
+    "requiredCertifications": [
+      "Valid Driver"
+    ],
+    "resumeKeywords": [
+      "delivery",
+      "driving",
+      "customer service",
+      "logistics",
+      "route planning",
+      "cdl"
+    ],
+    "relatedJobTitles": [
+      "Truck Driver",
+      "Courier",
+      "Route Driver",
+      "Package Handler"
+    ],
+    "valuedCompanies": [
+      "UPS",
+      "FedEx",
+      "Amazon",
+      "Local Delivery Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Any driving experience",
+      "Customer service",
+      "Physical work"
+    ],
+    "careerProgressionPatterns": [
+      "Driver → Senior Driver → Dispatcher → Fleet Manager"
+    ],
+    "alternativeQualifications": [
+      "Clean driving record",
+      "Customer service skills",
+      "Physical fitness",
+      "Reliability"
+    ]
+  },
+  {
+    "title": "Medical Assistant",
+    "salaryRange": "$32,000 - $42,000",
+    "description": "Support healthcare providers by taking vital signs, preparing patients for examinations, and handling administrative tasks. Gain healthcare experience while building toward nursing or other medical careers.",
+    "careerType": "medical-assistant",
+    "experienceLevel": "entry",
+    "learningPath": "9-month to 2-year medical assistant program",
+    "stretchLevel": "safe",
+    "dayInLife": "Arrive at 8:00 AM to prepare exam rooms and review patient schedules. Morning involves taking patient vital signs, updating medical records, and assisting with examinations. Afternoon includes scheduling appointments, handling insurance verification, and supporting medical procedures. End day by cleaning equipment and preparing for next day",
+    "remoteOptions": "Low - mostly in-person patient care",
+    "requiredEducation": "high-school",
+    "preferredEducation": "certificate",
+    "agePreference": "18-50",
+    "locationFlexibility": "local-area",
+    "workDataWeight": 3,
+    "workPeopleWeight": 5,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 3,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 2,
+    "physicalWorkWeight": 3,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 4,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 3,
+    "salaryMin": 32000,
+    "salaryMax": 42000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": false,
+    "experienceCanSubstitute": false,
+    "requiredTechnicalSkills": [
+      "Medical Terminology",
+      "Vital Signs",
+      "Electronic Health Records",
+      "Basic Medical Procedures"
+    ],
+    "requiredSoftSkills": [
+      "Compassion",
+      "Communication",
+      "Attention to Detail",
+      "Multitasking"
+    ],
+    "preferredInterests": [
+      "Healthcare",
+      "Helping People",
+      "Medical Science"
+    ],
+    "preferredIndustries": [
+      "Healthcare",
+      "Medical Clinics",
+      "Hospitals"
+    ],
+    "companies": [
+      "Medical Clinics",
+      "Hospitals",
+      "Urgent Care Centers",
+      "Specialty Practices"
+    ],
+    "workEnvironments": [
+      "medical facility",
+      "clinic",
+      "hospital"
+    ],
+    "valuedCertifications": [
+      "Medical Assistant Certification",
+      "CPR",
+      "First Aid",
+      "HIPAA Training"
+    ],
+    "requiredCertifications": [
+      "Medical Assistant Certification"
+    ],
+    "resumeKeywords": [
+      "medical assistant",
+      "healthcare",
+      "patient care",
+      "medical records",
+      "vital signs"
+    ],
+    "relatedJobTitles": [
+      "Healthcare Assistant",
+      "Clinical Assistant",
+      "Patient Care Technician"
+    ],
+    "valuedCompanies": [
+      "Hospitals",
+      "Medical Clinics",
+      "Healthcare Systems"
+    ],
+    "preferredIndustryExperience": [
+      "Healthcare",
+      "Customer service",
+      "Administrative work"
+    ],
+    "careerProgressionPatterns": [
+      "Medical Assistant → Senior MA → Office Manager → Practice Administrator"
+    ],
+    "alternativeQualifications": [
+      "Medical assistant certification",
+      "Healthcare experience",
+      "Compassionate nature",
+      "Detail-oriented"
+    ]
+  },
+  {
+    "title": "Automotive Technician",
+    "salaryRange": "$38,000 - $58,000",
+    "description": "Diagnose, repair, and maintain vehicles using advanced diagnostic equipment and hand tools. Work on engines, brakes, electrical systems, and other automotive components in dealerships or independent shops.",
+    "careerType": "automotive-technician",
+    "experienceLevel": "mid",
+    "learningPath": "2-year automotive program + ASE certification",
+    "stretchLevel": "safe",
+    "dayInLife": "Start at 8:00 AM reviewing work orders and gathering tools. Morning involves diagnosing engine problems using computer scanners, replacing brake pads, and performing oil changes. Afternoon includes electrical system troubleshooting, explaining repairs to customers, and completing detailed service reports. End day by cleaning workspace and preparing for tomorrow",
+    "remoteOptions": "None - hands-on automotive work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "trade-school",
+    "agePreference": "18-50",
+    "locationFlexibility": "local-area",
+    "workDataWeight": 2,
+    "workPeopleWeight": 3,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 5,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 1,
+    "mechanicalAptitudeWeight": 5,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 1,
+    "maxYearsExperience": 8,
+    "salaryMin": 38000,
+    "salaryMax": 58000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Automotive Repair",
+      "Engine Diagnostics",
+      "Electrical Systems",
+      "Brake Systems"
+    ],
+    "requiredSoftSkills": [
+      "Problem Solving",
+      "Attention to Detail",
+      "Customer Service",
+      "Physical Stamina"
+    ],
+    "preferredInterests": [
+      "Automotive",
+      "Mechanical Systems",
+      "Problem Solving",
+      "Technology"
+    ],
+    "preferredIndustries": [
+      "Automotive",
+      "Transportation",
+      "Manufacturing"
+    ],
+    "companies": [
+      "Auto Dealerships",
+      "Independent Repair Shops",
+      "Quick Lube Chains",
+      "Fleet Services"
+    ],
+    "workEnvironments": [
+      "automotive shop",
+      "indoor",
+      "commercial"
+    ],
+    "valuedCertifications": [
+      "ASE Certification",
+      "Automotive Service Excellence",
+      "Manufacturer Training"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "automotive",
+      "mechanic",
+      "repair",
+      "diagnostics",
+      "maintenance",
+      "ase"
+    ],
+    "relatedJobTitles": [
+      "Auto Mechanic",
+      "Service Technician",
+      "Automotive Specialist"
+    ],
+    "valuedCompanies": [
+      "Auto Dealerships",
+      "Jiffy Lube",
+      "Valvoline Instant Oil Change",
+      "Independent Shops"
+    ],
+    "preferredIndustryExperience": [
+      "Automotive",
+      "Mechanical",
+      "Manufacturing"
+    ],
+    "careerProgressionPatterns": [
+      "Lube Tech → Technician → Master Tech → Service Manager"
+    ],
+    "alternativeQualifications": [
+      "Automotive training",
+      "Mechanical aptitude",
+      "Problem-solving skills",
+      "Customer service experience"
+    ]
+  },
+  {
+    "title": "Welder",
+    "salaryRange": "$40,000 - $60,000",
+    "description": "Join metal parts using various welding techniques including MIG, TIG, and stick welding. Work in construction, manufacturing, or fabrication shops creating structural components and repairing metal equipment.",
+    "careerType": "welder",
+    "experienceLevel": "mid",
+    "learningPath": "6-month to 2-year welding program + AWS certification",
+    "stretchLevel": "safe",
+    "dayInLife": "Begin at 7:00 AM with safety equipment check and reviewing blueprints. Morning involves setting up welding equipment, preparing metal surfaces, and welding structural components. Afternoon includes quality inspection of welds, grinding and finishing work, and maintaining welding equipment. End day by cleaning workspace and securing equipment.",
+    "remoteOptions": "None - hands-on welding work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "trade-school",
+    "agePreference": "18-55",
+    "locationFlexibility": "regional",
+    "workDataWeight": 1,
+    "workPeopleWeight": 2,
+    "creativityWeight": 3,
+    "problemSolvingWeight": 4,
+    "leadershipWeight": 2,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 4,
+    "outdoorWorkWeight": 3,
+    "mechanicalAptitudeWeight": 4,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 1,
+    "maxYearsExperience": 10,
+    "salaryMin": 40000,
+    "salaryMax": 60000,
+    "requiresTechnical": true,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredTechnicalSkills": [
+      "Welding",
+      "MIG/TIG Welding",
+      "Metal Fabrication",
+      "Blueprint Reading"
+    ],
+    "requiredSoftSkills": [
+      "Attention to Detail",
+      "Physical Stamina",
+      "Safety Consciousness",
+      "Hand-Eye Coordination"
+    ],
+    "preferredInterests": [
+      "Mechanical Systems",
+      "Building/Construction",
+      "Hands-on Projects",
+      "Manufacturing"
+    ],
+    "preferredIndustries": [
+      "Construction",
+      "Manufacturing",
+      "Automotive",
+      "Aerospace"
+    ],
+    "companies": [
+      "Construction Companies",
+      "Manufacturing Plants",
+      "Fabrication Shops",
+      "Shipyards"
+    ],
+    "workEnvironments": [
+      "manufacturing",
+      "construction",
+      "industrial"
+    ],
+    "valuedCertifications": [
+      "AWS Welding Certification",
+      "OSHA 10",
+      "Structural Welding"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "welding",
+      "fabrication",
+      "mig",
+      "tig",
+      "construction",
+      "manufacturing"
+    ],
+    "relatedJobTitles": [
+      "Fabricator",
+      "Metal Worker",
+      "Structural Welder",
+      "Pipe Welder"
+    ],
+    "valuedCompanies": [
+      "Construction Companies",
+      "Manufacturing Plants",
+      "Fabrication Shops"
+    ],
+    "preferredIndustryExperience": [
+      "Construction",
+      "Manufacturing",
+      "Metal Working"
+    ],
+    "careerProgressionPatterns": [
+      "Helper → Welder → Lead Welder → Welding Inspector"
+    ],
+    "alternativeQualifications": [
+      "Welding training",
+      "Manual dexterity",
+      "Attention to detail",
+      "Safety consciousness"
+    ]
+  },
+  {
+    "title": "Construction Laborer",
+    "salaryRange": "$28,000 - $40,000",
+    "description": "Perform various physical tasks at construction sites including digging, lifting, carrying materials, and assisting skilled tradespeople. Entry-level position that provides pathway to specialized construction trades.",
+    "careerType": "construction-laborer",
+    "experienceLevel": "entry",
+    "learningPath": "On-the-job training + OSHA safety certification",
+    "stretchLevel": "safe",
+    "dayInLife": "Start at 6:30 AM with safety briefing and tool distribution. Morning involves digging trenches, moving materials, and assisting carpenters with framing. Afternoon includes cleaning work areas, operating basic equipment, and helping with concrete pours. End day by securing tools and preparing site for next day",
+    "remoteOptions": "None - construction site work",
+    "requiredEducation": "high-school",
+    "preferredEducation": "high-school",
+    "agePreference": "18-50",
+    "locationFlexibility": "local-regional",
+    "workDataWeight": 1,
+    "workPeopleWeight": 3,
+    "creativityWeight": 2,
+    "problemSolvingWeight": 2,
+    "leadershipWeight": 1,
+    "handsOnWorkWeight": 5,
+    "physicalWorkWeight": 5,
+    "outdoorWorkWeight": 5,
+    "mechanicalAptitudeWeight": 2,
+    "workLifeBalanceRating": 3,
+    "minYearsExperience": 0,
+    "maxYearsExperience": 2,
+    "salaryMin": 28000,
+    "salaryMax": 40000,
+    "requiresTechnical": false,
+    "transitionFriendly": true,
+    "skillBasedEntry": true,
+    "experienceCanSubstitute": true,
+    "requiredSoftSkills": [
+      "Physical Stamina",
+      "Teamwork",
+      "Reliability",
+      "Following Instructions"
+    ],
+    "preferredInterests": [
+      "Building/Construction",
+      "Physical Work",
+      "Outdoor Work",
+      "Hands-on Projects"
+    ],
+    "preferredIndustries": [
+      "Construction",
+      "Infrastructure",
+      "Building Trades"
+    ],
+    "companies": [
+      "Construction Companies",
+      "General Contractors",
+      "Infrastructure Projects",
+      "Road Construction"
+    ],
+    "workEnvironments": [
+      "construction",
+      "outdoor",
+      "industrial"
+    ],
+    "valuedCertifications": [
+      "OSHA 10",
+      "Construction Safety",
+      "First Aid"
+    ],
+    "requiredCertifications": [],
+    "resumeKeywords": [
+      "construction",
+      "laborer",
+      "physical work",
+      "safety",
+      "teamwork"
+    ],
+    "relatedJobTitles": [
+      "Construction Helper",
+      "General Laborer",
+      "Construction Worker"
+    ],
+    "valuedCompanies": [
+      "Construction Companies",
+      "General Contractors",
+      "Infrastructure Companies"
+    ],
+    "preferredIndustryExperience": [
+      "Any physical work",
+      "Landscaping",
+      "Moving/Warehouse"
+    ],
+    "careerProgressionPatterns": [
+      "Laborer → Skilled Helper → Apprentice → Journeyman"
+    ],
+    "alternativeQualifications": [
+      "Physical fitness",
+      "Reliability",
+      "Willingness to learn",
+      "Safety consciousness"
+    ]
+  }
+]

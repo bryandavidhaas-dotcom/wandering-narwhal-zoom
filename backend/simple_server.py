@@ -9,15 +9,25 @@ from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 from enum import Enum
 from datetime import datetime
+import json
+import os
+import logging
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logger.info("Initializing FastAPI app...")
 # Initialize FastAPI app
 app = FastAPI(
     title="Career Recommendation API",
     description="API for career recommendations based on user profiles",
     version="1.0.0"
 )
+logger.info("FastAPI app initialized.")
 
 # Configure CORS
+logger.info("Configuring CORS...")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5137", "http://localhost:3000", "http://localhost:5173"],
@@ -25,8 +35,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+logger.info("CORS configured.")
 
 # Simple data models
+logger.info("Defining data models...")
 class SkillLevel(str, Enum):
     BEGINNER = "beginner"
     INTERMEDIATE = "intermediate"
@@ -43,85 +55,18 @@ class RecommendationCategory(str, Enum):
     SAFE_ZONE = "safe_zone"
     STRETCH_ZONE = "stretch_zone"
     ADVENTURE_ZONE = "adventure_zone"
+logger.info("Data models defined.")
 
-# Mock data
-MOCK_CAREERS = [
-    {
-        "career_id": "career_1",
-        "title": "Data Scientist",
-        "description": "Analyzes complex data to help organizations make informed decisions.",
-        "salary_range": {"min": 90000, "max": 140000, "currency": "USD"},
-        "required_skills": ["Python", "Data Analysis", "Machine Learning", "SQL"],
-        "category": "safe_zone",
-        "score": 0.85,
-        "confidence": 0.9,
-        "reasons": [
-            "Strong match for your Python and data analysis skills",
-            "Salary range aligns with your expectations",
-            "High demand in current job market"
-        ]
-    },
-    {
-        "career_id": "career_2",
-        "title": "Machine Learning Engineer",
-        "description": "Designs and implements machine learning systems and algorithms.",
-        "salary_range": {"min": 100000, "max": 160000, "currency": "USD"},
-        "required_skills": ["Python", "Machine Learning", "TensorFlow", "Deep Learning"],
-        "category": "stretch_zone",
-        "score": 0.72,
-        "confidence": 0.75,
-        "reasons": [
-            "Good foundation in Python and ML basics",
-            "Would benefit from additional deep learning experience",
-            "Excellent growth potential"
-        ]
-    },
-    {
-        "career_id": "career_3",
-        "title": "Full Stack Developer",
-        "description": "Develops both front-end and back-end components of web applications.",
-        "salary_range": {"min": 70000, "max": 120000, "currency": "USD"},
-        "required_skills": ["JavaScript", "React", "Node.js", "HTML", "CSS"],
-        "category": "adventure_zone",
-        "score": 0.58,
-        "confidence": 0.6,
-        "reasons": [
-            "Opportunity to learn web development technologies",
-            "Transferable problem-solving skills",
-            "Growing field with many opportunities"
-        ]
-    },
-    {
-        "career_id": "career_4",
-        "title": "Data Analyst",
-        "description": "Interprets data and turns it into information for business decisions.",
-        "salary_range": {"min": 60000, "max": 90000, "currency": "USD"},
-        "required_skills": ["SQL", "Excel", "Data Visualization", "Statistics"],
-        "category": "safe_zone",
-        "score": 0.78,
-        "confidence": 0.85,
-        "reasons": [
-            "Great entry point for data career",
-            "Builds on analytical thinking skills",
-            "Strong job market demand"
-        ]
-    },
-    {
-        "career_id": "career_5",
-        "title": "DevOps Engineer",
-        "description": "Manages infrastructure and deployment pipelines for software applications.",
-        "salary_range": {"min": 85000, "max": 130000, "currency": "USD"},
-        "required_skills": ["AWS", "Docker", "Kubernetes", "CI/CD", "Linux"],
-        "category": "adventure_zone",
-        "score": 0.45,
-        "confidence": 0.5,
-        "reasons": [
-            "High-demand field with excellent growth",
-            "Would require significant upskilling",
-            "Great for systematic thinkers"
-        ]
-    }
-]
+# Load career data from JSON file
+try:
+    logger.info("Loading career data from JSON file...")
+    CAREER_DATA_PATH = os.path.join(os.path.dirname(__file__), 'career_data.json')
+    with open(CAREER_DATA_PATH, 'r') as f:
+        CAREER_DATA = json.load(f)
+    logger.info("Career data loaded successfully.")
+except Exception as e:
+    logger.error(f"Error loading career data: {e}")
+    CAREER_DATA = []
 
 # Request/Response models
 class RecommendationRequest(BaseModel):
@@ -237,15 +182,77 @@ async def get_careers():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching careers: {str(e)}")
 
-@app.get("/careers/{career_id}")
-async def get_career_detail(career_id: str):
-    """Get detailed information about a specific career."""
+@app.get("/api/career/{career_type}")
+async def get_career_detail(career_type: str):
+    """Get detailed information about a specific career using the same comprehensive database as recommendations."""
     try:
-        career = next((c for c in MOCK_CAREERS if c["career_id"] == career_id), None)
-        if not career:
-            raise HTTPException(status_code=404, detail="Career not found")
+        # Import the comprehensive career database (same as used in recommendations)
+        try:
+            from comprehensive_careers import COMPREHENSIVE_CAREERS
+        except ImportError:
+            # Fallback to relative import
+            import sys
+            import os
+            sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+            from comprehensive_careers import COMPREHENSIVE_CAREERS
         
-        return career
+        # First try to find in comprehensive careers database (same as dashboard uses)
+        career = next((c for c in COMPREHENSIVE_CAREERS if c.get("careerType") == career_type), None)
+        if career:
+            # Return the same detailed career data that the dashboard uses
+            return career
+        
+        # If not found in comprehensive database, try existing CAREER_DATA as fallback
+        career = next((c for c in CAREER_DATA if c.get("careerType") == career_type), None)
+        if career:
+            return career
+        
+        # If still not found, generate dynamic career data (fallback)
+        career_titles = {
+            "vp-product": "VP of Product",
+            "director-product-management": "Director of Product Management",
+            "senior-product-manager": "Senior Product Manager",
+            "product-manager": "Product Manager",
+            "junior-product-manager": "Junior Product Manager",
+            "head-of-product": "Head of Product"
+        }
+        
+        title = career_titles.get(career_type, career_type.replace("-", " ").title())
+        
+        # Generate appropriate salary ranges based on seniority
+        if "vp" in career_type.lower() or "head" in career_type.lower():
+            salary_min, salary_max = 200000, 300000
+            exp_level = "executive"
+        elif "director" in career_type.lower():
+            salary_min, salary_max = 150000, 200000
+            exp_level = "senior"
+        elif "senior" in career_type.lower():
+            salary_min, salary_max = 120000, 160000
+            exp_level = "senior"
+        elif "junior" in career_type.lower():
+            salary_min, salary_max = 80000, 110000
+            exp_level = "junior"
+        else:
+            salary_min, salary_max = 100000, 140000
+            exp_level = "mid"
+        
+        dynamic_career = {
+            "title": title,
+            "careerType": career_type,
+            "description": f"Lead and manage {title.lower()} responsibilities with strategic focus",
+            "salaryRange": f"${salary_min:,} - ${salary_max:,}",
+            "requiredTechnicalSkills": ["Product Management", "Strategy", "Data Analysis", "User Research"],
+            "requiredSoftSkills": ["Leadership", "Communication", "Strategic Thinking", "Problem Solving"],
+            "companies": ["Google", "Microsoft", "Amazon", "Meta", "Netflix"],
+            "experienceLevel": exp_level,
+            "salaryMin": salary_min,
+            "salaryMax": salary_max,
+            "workEnvironments": ["office", "hybrid", "remote"],
+            "remoteOptions": "Remote available",
+            "dayInLife": f"Strategic planning, team management, stakeholder collaboration for {title.lower()} role"
+        }
+        
+        return dynamic_career
         
     except HTTPException:
         raise
