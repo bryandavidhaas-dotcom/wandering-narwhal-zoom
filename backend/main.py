@@ -11,18 +11,11 @@ from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import sys
 import os
-
-# Add the project root to the path to allow absolute imports
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from backend.database import init_db
 from backend.recommendation_engine import engine, config
 from backend import models
-import motor.motor_asyncio
-from beanie import init_beanie
-
-async def init_db():
-    client = motor.motor_asyncio.AsyncIOMotorClient("mongodb://localhost:27017")
-    await init_beanie(database=client.db_name, document_models=[models.SkillModel, models.CareerModel, models.UserProfileModel, models.RecommendationModel])
 
 
 
@@ -67,15 +60,18 @@ class HealthResponse(BaseModel):
     status: str
 @app.on_event("startup")
 async def on_startup():
-    await init_db()
-    from backend.recommendation_engine import mock_data
-    global recommendation_engine, MOCK_SKILLS, MOCK_CAREERS, MOCK_USER_PROFILE
-    MOCK_SKILLS = mock_data.MOCK_SKILLS
-    MOCK_CAREERS = mock_data.MOCK_CAREERS
-    MOCK_USER_PROFILE = mock_data.MOCK_USER_PROFILE
-    recommendation_engine = RecommendationEngine(skills_db=MOCK_SKILLS)
-    message: str
-    engine_status: str
+    print("Starting up the application...")
+    try:
+        await init_db()
+        print("Database initialization successful.")
+    except Exception as e:
+        print(f"Error during database initialization: {e}")
+        # Depending on the use case, you might want to exit the application
+        # For now, we'll just log the error.
+    
+    global recommendation_engine
+    recommendation_engine = RecommendationEngine(skills_db=[])
+    print("Recommendation engine initialized.")
 
 @app.get("/", response_model=Dict[str, str])
 async def root():
@@ -90,22 +86,7 @@ async def root():
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
     """Health check endpoint."""
-    try:
-        # Test the recommendation engine
-        test_recs = recommendation_engine.get_recommendations(
-            user_profile=MOCK_USER_PROFILE,
-            available_careers=MOCK_CAREERS[:2],
-            limit=1
-        )
-        engine_status = "healthy" if test_recs else "degraded"
-    except Exception as e:
-        engine_status = f"error: {str(e)}"
-    
-    return HealthResponse(
-        status="healthy",
-        message="API is running",
-        engine_status=engine_status
-    )
+    return HealthResponse(status="healthy")
 
 @app.post("/recommendations", response_model=RecommendationResponse)
 async def get_recommendations(request: RecommendationRequest):
@@ -293,4 +274,5 @@ async def get_recommendation_statistics():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.environ.get("API_PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)

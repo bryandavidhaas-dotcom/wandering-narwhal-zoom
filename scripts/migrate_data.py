@@ -90,7 +90,7 @@ class CareerDataMigrator:
             mongo_uri: MongoDB connection string
             database_name: Name of the database to use
         """
-        self.mongo_uri = mongo_uri or os.getenv('MONGODB_URL', 'mongodb://localhost:27017/')
+        self.mongo_uri = os.getenv('MONGODB_URL', 'mongodb://localhost:27017/')
         self.database_name = database_name
         self.client: Optional[MongoClient] = None
         self.db: Optional[Database] = None
