@@ -84,6 +84,9 @@ export interface CareerMatch extends CareerTemplate {
   relevanceScore: number;
   confidenceLevel: number;
   matchReasons: string[];
+  zone?: string;
+  requires_prerequisites?: boolean;
+  has_required_background?: boolean;
 }
 
 export interface UserAssessmentData {

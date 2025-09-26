@@ -50,6 +50,7 @@ import { showSuccess, showError } from "@/utils/toast";
 import { generateCareerRecommendations, type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
 import jsPDF from 'jspdf';
 import { Logo } from "@/components/Logo";
+import { buildApiUrl } from "@/config/api";
 
 interface User {
   id: string;
@@ -800,7 +801,7 @@ const CareerDetail = () => {
         
         setUser(userData);
 
-        const response = await fetch(`http://localhost:8002/api/career/${careerType}`);
+        const response = await fetch(buildApiUrl(`/api/career/${careerType}`));
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status}`);
         }
