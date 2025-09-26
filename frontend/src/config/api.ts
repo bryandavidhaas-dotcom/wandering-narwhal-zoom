@@ -14,8 +14,8 @@ const getApiBaseUrl = (): string => {
   
   // Default to localhost:8002 for development (enhanced server with salary filtering)
   // In production, this should be set via environment variables
-  return 'http://localhost:8002';
   console.log(`[API Config] Using API Base URL: ${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8002'}`);
+  return 'http://localhost:8002';
 };
 
 // Export the API configuration

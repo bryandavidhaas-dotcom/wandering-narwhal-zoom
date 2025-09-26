@@ -3,6 +3,7 @@ MongoDB models using Beanie ODM for the career recommendation system.
 """
 
 from beanie import Document, Indexed
+import uuid
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
@@ -101,7 +102,7 @@ class SkillModel(Document):
         name = "skills"
 
 class CareerModel(Document):
-    career_id: Indexed(str, unique=True)
+    career_id: Optional[str] = Field(default_factory=lambda: str(uuid.uuid4()), unique=True)
     title: str
     description: str
     requiredTechnicalSkills: List[str] = Field(default_factory=list)

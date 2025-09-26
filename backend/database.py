@@ -11,44 +11,24 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-class Database:
-    client: Optional[AsyncIOMotorClient] = None
-    database = None
+async def init_db():
+    """Initializes the database connection and Beanie."""
+    mongo_url = os.getenv("MONGODB_URL")
+    if not mongo_url:
+        raise ValueError("MONGODB_URL environment variable not set.")
 
-# Database instance
-db = Database()
+    client = AsyncIOMotorClient(mongo_url)
+    db_name = os.getenv("MONGODB_DATABASE", "career_platform")
+    
+    from .models import SkillModel, CareerModel, UserProfileModel, RecommendationModel
 
-async def connect_to_mongo():
-    """Create database connection"""
-    mongodb_url = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
-    database_name = os.getenv("MONGODB_DATABASE", "career_recommendations")
-    
-    # Create Motor client
-    db.client = AsyncIOMotorClient(mongodb_url)
-    db.database = db.client[database_name]
-    
-    # Import models for Beanie initialization
-    from .models import UserProfileModel, CareerModel, RecommendationModel, SkillModel
-    
-    # Initialize Beanie with the models
     await init_beanie(
-        database=db.database,
+        database=client[db_name],
         document_models=[
+            SkillModel,
+            CareerModel,
             UserProfileModel,
-            CareerModel, 
             RecommendationModel,
-            SkillModel
-        ]
+        ],
     )
-    
-    print(f"Connected to MongoDB: {mongodb_url}/{database_name}")
-
-async def close_mongo_connection():
-    """Close database connection"""
-    if db.client:
-        db.client.close()
-        print("Disconnected from MongoDB")
-
-def get_database():
-    """Get database instance"""
-    return db.database
+    print(f"Successfully connected to MongoDB database: {db_name}")
