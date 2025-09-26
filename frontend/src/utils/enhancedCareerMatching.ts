@@ -5,6 +5,8 @@
  * All business logic has been moved to the backend unified API.
  */
 
+import { API_URLS } from "@/config/api";
+
 // API Types - these match the backend API structure
 export interface APIUserProfile {
   user_id: string;
@@ -475,7 +477,7 @@ export class EnhancedCareerMatchingAPI {
 
       console.log('🚀 Making real API call to enhanced backend:', backendRequest);
 
-      const response = await fetch('http://localhost:8002/api/recommendations', {
+      const response = await fetch(API_URLS.RECOMMENDATIONS, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -741,4 +743,4 @@ console.log('🚀 Enhanced Career Matching API loaded - using REAL backend-drive
 console.log('✅ Removed 2000+ lines of hardcoded career templates');
 console.log('✅ Fixed inappropriate recommendation issues (SVP → Police Chief)');
 console.log('✅ Centralized all business logic in backend');
-console.log('✅ Connected to enhanced categorization system at http://localhost:8002');
+console.log(`✅ Connected to enhanced categorization system at ${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8002'}`);
