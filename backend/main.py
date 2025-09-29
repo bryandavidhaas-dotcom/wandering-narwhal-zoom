@@ -59,8 +59,42 @@ mock_data = MockDataStore()
 
 # Request/Response models
 class RecommendationRequest(BaseModel):
-    user_profile: Dict[str, Any]
+    user_profile: Optional[Dict[str, Any]] = None
     limit: Optional[int] = 10
+    
+    # Frontend compatibility fields - these will be used if user_profile is not provided
+    age: Optional[str] = None
+    location: Optional[str] = None
+    educationLevel: Optional[str] = None
+    certifications: Optional[List[str]] = []
+    currentSituation: Optional[str] = None
+    currentRole: Optional[str] = None
+    experience: Optional[str] = None
+    resumeText: Optional[str] = None
+    linkedinProfile: Optional[str] = None
+    technicalSkills: Optional[List[str]] = []
+    softSkills: Optional[List[str]] = []
+    workingWithData: Optional[int] = 3
+    workingWithPeople: Optional[int] = 3
+    creativeTasks: Optional[int] = 3
+    problemSolving: Optional[int] = 3
+    leadership: Optional[int] = 3
+    physicalHandsOnWork: Optional[int] = 3
+    outdoorWork: Optional[int] = 3
+    mechanicalAptitude: Optional[int] = 3
+    interests: Optional[List[str]] = []
+    industries: Optional[List[str]] = []
+    workEnvironment: Optional[str] = None
+    careerGoals: Optional[str] = None
+    workLifeBalance: Optional[str] = None
+    salaryExpectations: Optional[str] = None
+    handsOnWork: Optional[int] = 3
+    physicalWork: Optional[int] = 3
+    explorationLevel: Optional[int] = 1
+    otherTradesCert: Optional[str] = ""
+    otherTechCert: Optional[str] = ""
+    otherBusinessCert: Optional[str] = ""
+    otherHealthcareCert: Optional[str] = ""
 
 class RecommendationResponse(BaseModel):
     recommendations: List[Dict[str, Any]]
@@ -176,6 +210,50 @@ async def get_recommendations(request: RecommendationRequest):
     try:
         if not mock_data.initialized:
             raise HTTPException(status_code=503, detail="Mock data not initialized")
+        
+        # Handle both old format (user_profile) and new format (direct fields)
+        if request.user_profile:
+            # Old format - use user_profile
+            user_data = request.user_profile
+        else:
+            # New format - build user_profile from direct fields
+            user_data = {
+                "age": request.age,
+                "location": request.location,
+                "educationLevel": request.educationLevel,
+                "certifications": request.certifications,
+                "currentSituation": request.currentSituation,
+                "currentRole": request.currentRole,
+                "experience": request.experience,
+                "resumeText": request.resumeText,
+                "linkedinProfile": request.linkedinProfile,
+                "technicalSkills": request.technicalSkills,
+                "softSkills": request.softSkills,
+                "workingWithData": request.workingWithData,
+                "workingWithPeople": request.workingWithPeople,
+                "creativeTasks": request.creativeTasks,
+                "problemSolving": request.problemSolving,
+                "leadership": request.leadership,
+                "physicalHandsOnWork": request.physicalHandsOnWork,
+                "outdoorWork": request.outdoorWork,
+                "mechanicalAptitude": request.mechanicalAptitude,
+                "interests": request.interests,
+                "industries": request.industries,
+                "workEnvironment": request.workEnvironment,
+                "careerGoals": request.careerGoals,
+                "workLifeBalance": request.workLifeBalance,
+                "salaryExpectations": request.salaryExpectations,
+                "handsOnWork": request.handsOnWork,
+                "physicalWork": request.physicalWork,
+                "explorationLevel": request.explorationLevel,
+                "otherTradesCert": request.otherTradesCert,
+                "otherTechCert": request.otherTechCert,
+                "otherBusinessCert": request.otherBusinessCert,
+                "otherHealthcareCert": request.otherHealthcareCert
+            }
+            
+        print(f"🚀 Received recommendation request")
+        print(f"📊 User profile: experience={user_data.get('experience')}, skills={len(user_data.get('technicalSkills', []))}, exploration_level={user_data.get('explorationLevel')}")
             
         # For now, return simplified mock recommendations
         rec_data = []
