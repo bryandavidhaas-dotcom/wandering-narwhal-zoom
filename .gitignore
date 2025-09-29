@@ -215,3 +215,6 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+backend/pyproject.toml
+backend/uv.lock
+frontend/package-lock.json
