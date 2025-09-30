@@ -121,7 +121,6 @@ import { showSuccess } from "@/utils/toast";
 import jsPDF from 'jspdf';
 import { Logo } from "@/components/Logo";
 import DonationContainer from "@/components/DonationContainer";
-import { API_URLS } from "@/config/api";
 
 // Import types only - we'll use the backend API for recommendations
 import { type CareerMatch, CAREER_TEMPLATES } from "@/utils/careerMatching";
@@ -1724,7 +1723,7 @@ const Dashboard = () => {
           explorationLevel: explorationLevel[0]
         };
 
-        const response = await fetch(API_URLS.RECOMMENDATIONS, {
+        const response = await fetch('http://localhost:8002/api/recommendations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

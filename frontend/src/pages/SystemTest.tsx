@@ -17,7 +17,7 @@ import {
   Database,
   Settings
 } from "lucide-react";
-import { generateCareerRecommendations, CAREER_TEMPLATES } from "@/utils/careerMatching";
+import { generateCareerRecommendations } from "@/utils/enhancedCareerMatching";
 import { useNavigate } from "react-router-dom";
 import { showSuccess, showError } from "@/utils/toast";
 
