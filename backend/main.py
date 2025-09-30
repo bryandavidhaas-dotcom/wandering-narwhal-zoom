@@ -14,13 +14,13 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from backend.database import init_db
-from backend.recommendation_engine import engine, config
+from backend.recommendation_engine import enhanced_engine, config
 from backend import models
 
 
 
 # Import the classes
-RecommendationEngine = engine.RecommendationEngine
+RecommendationEngine = enhanced_engine.EnhancedRecommendationEngine
 UserProfile = models.UserProfileModel
 Career = models.CareerModel
 CareerRecommendation = models.RecommendationModel
@@ -178,7 +178,7 @@ async def on_startup():
     
     print("Mock data initialized.")
     
-    recommendation_engine = RecommendationEngine(skills_db=[])
+    recommendation_engine = RecommendationEngine()
     print("Recommendation engine initialized.")
 
 @app.get("/", response_model=Dict[str, str])
@@ -255,33 +255,21 @@ async def get_recommendations(request: RecommendationRequest):
         print(f"🚀 Received recommendation request")
         print(f"📊 User profile: experience={user_data.get('experience')}, skills={len(user_data.get('technicalSkills', []))}, exploration_level={user_data.get('explorationLevel')}")
             
-        # For now, return simplified mock recommendations
+        # Call the recommendation engine
+        all_careers = await models.CareerModel.find_all().to_list()
+        recommendations = recommendation_engine.get_recommendations(
+            user_profile=UserProfile(**user_data),
+            available_careers=all_careers,
+            limit=request.limit
+        )
+
+        # Format the response
         rec_data = []
         categories = {"safe_zone": 0, "stretch_zone": 0, "adventure_zone": 0}
-        
-        # Simple mock recommendations based on the careers
-        for i, career in enumerate(mock_data.careers[:request.limit]):
-            category = "safe_zone" if i == 0 else "stretch_zone" if i == 1 else "adventure_zone"
-            categories[category] += 1
-            
-            rec_data.append({
-                "career_id": career["career_id"],
-                "title": career["title"],
-                "description": career["description"],
-                "category": category,
-                "score": {
-                    "total": 0.8 - (i * 0.1),
-                    "skill_match": 0.9 - (i * 0.1),
-                    "interest_match": 0.7 - (i * 0.1),
-                    "salary_compatibility": 0.8,
-                    "experience_match": 0.6
-                },
-                "confidence": 0.85 - (i * 0.05),
-                "reasons": [f"Good match for {career['title']}", "Strong skill alignment", "Salary compatible"],
-                "salary_range": career["salary_range"],
-                "required_skills": career["required_skills"]
-            })
-        
+        for rec in recommendations:
+            rec_data.append(rec.dict())
+            categories[rec.category] += 1
+
         return RecommendationResponse(
             recommendations=rec_data,
             total_count=len(rec_data),
@@ -412,5 +400,6 @@ async def get_recommendation_statistics():
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("API_PORT", 8000))
+    # port = int(os.environ.get("API_PORT", 8002))
+    port=8002
     uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
