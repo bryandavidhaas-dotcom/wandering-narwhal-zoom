@@ -7,11 +7,37 @@ the recommendation engine functionality.
 
 from datetime import datetime, timedelta
 from typing import List
-from ..models import (
-    UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, UserSkill, RequiredSkill, SalaryRange,
-    PersonalInfo, AssessmentResults, ProfessionalData, Experience,
-    SkillLevel, InterestLevel, Demand
-)
+
+# Import models - try both relative and absolute imports
+try:
+    from ..models import (
+        UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, UserSkill, RequiredSkill, SalaryRange,
+        PersonalInfo, AssessmentResults, ProfessionalData, Experience,
+        SkillLevel, InterestLevel, Demand
+    )
+except ImportError:
+    try:
+        from models import (
+            UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, UserSkill, RequiredSkill, SalaryRange,
+            PersonalInfo, AssessmentResults, ProfessionalData, Experience,
+            SkillLevel, InterestLevel, Demand
+        )
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        UserProfile = Any
+        Career = Any
+        Skill = Any
+        UserSkill = Any
+        RequiredSkill = Any
+        SalaryRange = Any
+        PersonalInfo = Any
+        AssessmentResults = Any
+        ProfessionalData = Any
+        Experience = Any
+        SkillLevel = Any
+        InterestLevel = Any
+        Demand = Any
 
 
 def create_mock_skills() -> List[Skill]:

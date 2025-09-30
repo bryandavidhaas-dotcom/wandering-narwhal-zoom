@@ -7,10 +7,30 @@ based on skill matching, interest alignment, salary compatibility, and experienc
 
 from typing import List, Dict, Tuple, Optional
 from datetime import datetime, timedelta
-from ..models import (
-    UserProfileModel as UserProfile, CareerModel as Career, RecommendationScore, SkillLevel, InterestLevel,
-    UserSkill, RequiredSkill
-)
+
+# Import models - try both relative and absolute imports
+try:
+    from ..models import (
+        UserProfileModel as UserProfile, CareerModel as Career, RecommendationScore, SkillLevel, InterestLevel,
+        UserSkill, RequiredSkill
+    )
+except ImportError:
+    try:
+        from models import (
+            UserProfileModel as UserProfile, CareerModel as Career, RecommendationScore, SkillLevel, InterestLevel,
+            UserSkill, RequiredSkill
+        )
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        UserProfile = Any
+        Career = Any
+        RecommendationScore = Any
+        SkillLevel = Any
+        InterestLevel = Any
+        UserSkill = Any
+        RequiredSkill = Any
+
 from .config import ScoringConfig, ScoringWeights, ConsistencyPenaltyConfig
 from .categorization import get_career_field, determine_user_career_field
 

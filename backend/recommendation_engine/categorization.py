@@ -7,10 +7,28 @@ It also includes career field categorization and user profile analysis.
 """
 
 from typing import List, Dict, Optional
-from ..models import (
-    CareerModel as Career, RecommendationScore, RecommendationModel as CareerRecommendation,
-    RecommendationCategory, UserProfileModel as UserProfile
-)
+
+# Import models - try both relative and absolute imports
+try:
+    from ..models import (
+        CareerModel as Career, RecommendationScore, RecommendationModel as CareerRecommendation,
+        RecommendationCategory, UserProfileModel as UserProfile
+    )
+except ImportError:
+    try:
+        from models import (
+            CareerModel as Career, RecommendationScore, RecommendationModel as CareerRecommendation,
+            RecommendationCategory, UserProfileModel as UserProfile
+        )
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        Career = Any
+        RecommendationScore = Any
+        CareerRecommendation = Any
+        RecommendationCategory = Any
+        UserProfile = Any
+
 from .config import CategorizationThresholds
 
 

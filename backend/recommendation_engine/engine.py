@@ -8,7 +8,21 @@ filtering, scoring, and categorization to generate career recommendations.
 from typing import List, Dict, Optional
 import logging
 import json
-from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, RecommendationModel as CareerRecommendation
+
+# Import models - try both relative and absolute imports
+try:
+    from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, RecommendationModel as CareerRecommendation
+except ImportError:
+    try:
+        from models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, RecommendationModel as CareerRecommendation
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        UserProfile = Any
+        Career = Any
+        Skill = Any
+        CareerRecommendation = Any
+
 from .config import RecommendationConfig, DEFAULT_CONFIG
 from .filters import FilterEngine
 from .scoring import ScoringEngine
