@@ -115,69 +115,7 @@ async def on_startup():
         # For now, we'll just log the error.
     
     # Initialize simple mock data (using dictionaries instead of Beanie Documents)
-    global mock_data, recommendation_engine
-    
-    # Simple mock data as dictionaries
-    mock_data.skills = [
-        {"skill_id": "skill_1", "name": "Python", "category": "Programming Language"},
-        {"skill_id": "skill_2", "name": "Machine Learning", "category": "Technical Skill"},
-        {"skill_id": "skill_3", "name": "Data Analysis", "category": "Technical Skill"},
-        {"skill_id": "skill_4", "name": "JavaScript", "category": "Programming Language"},
-        {"skill_id": "skill_5", "name": "SQL", "category": "Database"}
-    ]
-    
-    mock_data.careers = [
-        {
-            "career_id": "career_1",
-            "title": "Data Scientist",
-            "description": "Analyzes complex data to extract insights and build predictive models",
-            "salary_range": {"min": 90000, "max": 140000, "currency": "USD"},
-            "required_skills": [
-                {"name": "Python", "proficiency": "advanced", "is_mandatory": True},
-                {"name": "Machine Learning", "proficiency": "intermediate", "is_mandatory": True},
-                {"name": "Data Analysis", "proficiency": "advanced", "is_mandatory": True}
-            ],
-            "demand": "high"
-        },
-        {
-            "career_id": "career_2",
-            "title": "Software Engineer",
-            "description": "Designs and develops software applications and systems",
-            "salary_range": {"min": 80000, "max": 130000, "currency": "USD"},
-            "required_skills": [
-                {"name": "Python", "proficiency": "advanced", "is_mandatory": True},
-                {"name": "JavaScript", "proficiency": "intermediate", "is_mandatory": True}
-            ],
-            "demand": "high"
-        },
-        {
-            "career_id": "career_3",
-            "title": "Data Analyst",
-            "description": "Collects and analyzes data to support business decisions",
-            "salary_range": {"min": 60000, "max": 90000, "currency": "USD"},
-            "required_skills": [
-                {"name": "Data Analysis", "proficiency": "advanced", "is_mandatory": True},
-                {"name": "SQL", "proficiency": "intermediate", "is_mandatory": True}
-            ],
-            "demand": "medium"
-        }
-    ]
-    
-    mock_data.user_profile = {
-        "user_id": "user_123",
-        "skills": [
-            {"name": "Python", "level": "advanced", "years_experience": 3},
-            {"name": "Data Analysis", "level": "intermediate", "years_experience": 2},
-            {"name": "SQL", "level": "intermediate", "years_experience": 2}
-        ],
-        "interests": ["Technology", "Data Science", "Problem Solving"],
-        "salary_expectations": {"min": 80000, "max": 120000, "currency": "USD"}
-    }
-    
-    mock_data.initialized = True
-    
-    print("Mock data initialized.")
-    
+    global recommendation_engine
     recommendation_engine = RecommendationEngine()
     print("Recommendation engine initialized.")
 
@@ -208,9 +146,6 @@ async def get_recommendations(request: RecommendationRequest):
         Recommendations with categories and metadata
     """
     try:
-        if not mock_data.initialized:
-            raise HTTPException(status_code=503, detail="Mock data not initialized")
-        
         # Handle both old format (user_profile) and new format (direct fields)
         if request.user_profile:
             # Old format - use user_profile
@@ -284,8 +219,8 @@ async def get_recommendations_by_category():
     """Get recommendations organized by category."""
     try:
         categorized = recommendation_engine.get_recommendations_by_category(
-            user_profile=MOCK_USER_PROFILE,
-            available_careers=MOCK_CAREERS,
+            user_profile=models.UserProfileModel(**mock_data.user_profile),
+            available_careers=mock_data.careers,
             limit_per_category=5
         )
         
