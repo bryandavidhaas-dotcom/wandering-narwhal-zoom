@@ -285,7 +285,14 @@ async def get_career(career_id: str):
             # Log the first 5 career_ids from the dataset for comparison
             sample_ids = [c.get('career_id', 'N/A') for c in MONGODB_CAREERS[:5]]
             logger.info(f"--- DEBUG: Sample career_ids in MONGODB_CAREERS: {sample_ids} ---")
-            raise HTTPException(status_code=404, detail="Career not found")
+            # Temporarily return debug info in the error
+            sample_ids = [c.get('career_id', 'N/A') for c in MONGODB_CAREERS[:5]]
+            debug_info = {
+                "message": "Career not found",
+                "searched_for_id": career_id,
+                "sample_ids_in_dataset": sample_ids
+            }
+            raise HTTPException(status_code=404, detail=debug_info)
         
         logger.info(f"--- DEBUG: Career with id '{career_id}' FOUND. Title: {career.get('title')} ---")
         return career
