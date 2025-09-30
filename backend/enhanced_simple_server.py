@@ -145,7 +145,7 @@ async def get_recommendations(request: UserProfileRequest):
             # Use enhanced recommendation engine
             recommendations = recommendation_engine.get_recommendations(
                 user_profile=request.dict(),
-                career_data=career_data,
+                career_data=MONGODB_CAREERS,
                 limit=10
             )
         else:
@@ -322,14 +322,6 @@ async def get_skills(skip: int = 0, limit: int = 100):
     except Exception as e:
         logger.error(f"Error fetching skills: {e}")
         raise HTTPException(status_code=500, detail=f"Error fetching skills: {str(e)}")
-
-@app.get("/debug/career_data")
-async def get_debug_career_data():
-    """Temporary debug endpoint to inspect career data"""
-    return {
-        "total_careers": len(career_data),
-        "careers": career_data
-    }
 
 if __name__ == "__main__":
     import uvicorn
