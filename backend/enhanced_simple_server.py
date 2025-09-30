@@ -326,7 +326,7 @@ async def get_skills(skip: int = 0, limit: int = 100):
 if __name__ == "__main__":
     import uvicorn
     host = os.getenv("API_HOST", "0.0.0.0")
-    port = int(os.getenv("API_PORT", 8002))
+    port = 8002
     
     logger.info(f"Starting enhanced server with MongoDB integration on {host}:{port}")
     uvicorn.run(app, host=host, port=port, reload=False)
