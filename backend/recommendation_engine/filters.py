@@ -7,7 +7,22 @@ based on user preferences, skills, and interests.
 
 from typing import List, Dict, Set, Optional
 from datetime import datetime, timedelta
-from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, SkillLevel, InterestLevel
+
+# Import models - try both relative and absolute imports
+try:
+    from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, SkillLevel, InterestLevel
+except ImportError:
+    try:
+        from models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, SkillLevel, InterestLevel
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        UserProfile = Any
+        Career = Any
+        Skill = Any
+        SkillLevel = Any
+        InterestLevel = Any
+
 from .config import FilteringConfig
 
 

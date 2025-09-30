@@ -9,11 +9,37 @@ determination and better handling of seniority levels and role relationships.
 from typing import List, Dict, Optional, Tuple, Set
 import re
 from dataclasses import dataclass
-from models import (
-    Career, RecommendationScore, CareerRecommendation,
-    RecommendationCategory, UserProfile
-)
-from config import CategorizationThresholds
+
+# Import models - try both relative and absolute imports
+try:
+    from ..models import (
+        Career, RecommendationScore, CareerRecommendation,
+        RecommendationCategory, UserProfile
+    )
+except ImportError:
+    try:
+        from models import (
+            Career, RecommendationScore, CareerRecommendation,
+            RecommendationCategory, UserProfile
+        )
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        Career = Any
+        RecommendationScore = Any
+        CareerRecommendation = Any
+        RecommendationCategory = Any
+        UserProfile = Any
+
+try:
+    from .config import CategorizationThresholds
+except ImportError:
+    try:
+        from config import CategorizationThresholds
+    except ImportError:
+        # Fallback
+        from typing import Any
+        CategorizationThresholds = Any
 
 
 @dataclass

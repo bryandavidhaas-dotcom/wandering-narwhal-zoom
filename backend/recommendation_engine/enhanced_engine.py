@@ -14,6 +14,20 @@ from .filters import FilterEngine
 from .scoring import ScoringEngine
 from .enhanced_categorization import EnhancedCategorizationEngine
 
+# Import models - try both relative and absolute imports
+try:
+    from ..models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, RecommendationModel as CareerRecommendation
+except ImportError:
+    try:
+        from models import UserProfileModel as UserProfile, CareerModel as Career, SkillModel as Skill, RecommendationModel as CareerRecommendation
+    except ImportError:
+        # Fallback: define basic types if models can't be imported
+        from typing import Any
+        UserProfile = Any
+        Career = Any
+        Skill = Any
+        CareerRecommendation = Any
+
 # Set up logging
 logger = logging.getLogger(__name__)
 
