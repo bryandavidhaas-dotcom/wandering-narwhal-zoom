@@ -213,6 +213,61 @@ async def get_recommendations(request: RecommendationRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating recommendations: {str(e)}")
 
+# Alternative endpoint that accepts the flat structure the frontend is sending
+@app.post("/recommendations/flat", response_model=RecommendationResponse)
+async def get_recommendations_flat(request_data: Dict[str, Any]):
+    """
+    Get career recommendations for a user profile (flat structure).
+    
+    Args:
+        request_data: Flat dictionary with assessment data
+        
+    Returns:
+        Recommendations with categories and metadata
+    """
+    try:
+        if not mock_data.initialized:
+            raise HTTPException(status_code=503, detail="Mock data not initialized")
+            
+        # Extract limit from request or use default
+        limit = request_data.get('limit', 10)
+        
+        # For now, return simplified mock recommendations
+        rec_data = []
+        categories = {"safe_zone": 0, "stretch_zone": 0, "adventure_zone": 0}
+        
+        # Simple mock recommendations based on the careers
+        for i, career in enumerate(mock_data.careers[:limit]):
+            category = "safe_zone" if i == 0 else "stretch_zone" if i == 1 else "adventure_zone"
+            categories[category] += 1
+            
+            rec_data.append({
+                "career_id": career["career_id"],
+                "title": career["title"],
+                "description": career["description"],
+                "category": category,
+                "score": {
+                    "total": 0.8 - (i * 0.1),
+                    "skill_match": 0.9 - (i * 0.1),
+                    "interest_match": 0.7 - (i * 0.1),
+                    "salary_compatibility": 0.8,
+                    "experience_match": 0.6
+                },
+                "confidence": 0.85 - (i * 0.05),
+                "reasons": [f"Good match for {career['title']}", "Strong skill alignment", "Salary compatible"],
+                "salary_range": career["salary_range"],
+                "required_skills": career["required_skills"]
+            })
+        
+        return RecommendationResponse(
+            recommendations=rec_data,
+            total_count=len(rec_data),
+            categories=categories
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating recommendations: {str(e)}")
+
 @app.get("/recommendations/categories")
 async def get_recommendations_by_category():
     """Get recommendations organized by category."""
@@ -266,6 +321,84 @@ async def get_careers():
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching careers: {str(e)}")
+
+@app.get("/career/{career_type}")
+async def get_career_by_type(career_type: str):
+    """Get a specific career by type (slug)."""
+    try:
+        if not mock_data.initialized:
+            raise HTTPException(status_code=503, detail="Mock data not initialized")
+        
+        # Convert career_type slug to title format
+        # e.g., "delivery-driver" -> "Delivery Driver"
+        title = career_type.replace("-", " ").title()
+        
+        # Find career by title match
+        career = None
+        for c in mock_data.careers:
+            if c["title"].lower() == title.lower():
+                career = c
+                break
+        
+        # If not found, try to find by partial match
+        if not career:
+            for c in mock_data.careers:
+                if career_type.lower() in c["title"].lower().replace(" ", "-"):
+                    career = c
+                    break
+        
+        # If still not found, create a mock career for the requested type
+        if not career:
+            career = {
+                "career_id": f"career_{career_type.replace('-', '_')}",
+                "title": title,
+                "description": f"Professional role as a {title.lower()} with opportunities for growth and development.",
+                "salary_range": {"min": 40000, "max": 70000, "currency": "USD"},
+                "demand": "medium",
+                "required_skills": [
+                    {"name": "Communication", "proficiency": "intermediate", "is_mandatory": True},
+                    {"name": "Problem Solving", "proficiency": "intermediate", "is_mandatory": True}
+                ]
+            }
+        
+        # Convert backend format to frontend expected format
+        frontend_career = {
+            "career_id": career["career_id"],
+            "title": career["title"],
+            "description": career["description"],
+            "salaryRange": f"${career['salary_range']['min']:,} - ${career['salary_range']['max']:,}",
+            "requiredTechnicalSkills": [],
+            "requiredSoftSkills": [],
+            "preferredInterests": ["Professional Development", "Problem Solving"],
+            "preferredIndustries": ["Logistics", "Transportation", "Customer Service"],
+            "workDataWeight": 0.3,
+            "workPeopleWeight": 0.7,
+            "creativityWeight": 0.2,
+            "problemSolvingWeight": 0.6,
+            "leadershipWeight": 0.3,
+            "learningPath": "Start with basic delivery skills, then advance to route optimization and customer service excellence.",
+            "stretchLevel": "safe_zone",
+            "careerType": career_type,
+            "demand": career.get("demand", "medium"),
+            "salary_range": career["salary_range"]
+        }
+        
+        # Separate technical and soft skills
+        for skill in career.get("required_skills", []):
+            skill_name = skill["name"]
+            if skill_name in ["Communication", "Problem Solving", "Customer Service", "Time Management", "Organization"]:
+                frontend_career["requiredSoftSkills"].append(skill_name)
+            else:
+                frontend_career["requiredTechnicalSkills"].append(skill_name)
+        
+        # Ensure we have at least some skills
+        if not frontend_career["requiredTechnicalSkills"] and not frontend_career["requiredSoftSkills"]:
+            frontend_career["requiredSoftSkills"] = ["Communication", "Problem Solving"]
+        
+        return frontend_career
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching career: {str(e)}")
 
 @app.get("/skills")
 async def get_skills():

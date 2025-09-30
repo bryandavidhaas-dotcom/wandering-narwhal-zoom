@@ -13,7 +13,7 @@ const getApiBaseUrl = (): string => {
   }
   
   // In production, this should be set via environment variables
-  const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8002';
+  const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
   console.log(`[API Config] Using API Base URL: ${apiUrl}`);
   return apiUrl;
 };
@@ -22,7 +22,8 @@ const getApiBaseUrl = (): string => {
 export const API_CONFIG = {
   BASE_URL: getApiBaseUrl(),
   ENDPOINTS: {
-    RECOMMENDATIONS: '/api/recommendations',
+    RECOMMENDATIONS: '/recommendations/flat',
+    CAREER: '/career',
     HEALTH: '/health',
     // Add more endpoints as needed
   }
@@ -36,6 +37,7 @@ export const buildApiUrl = (endpoint: string): string => {
 // Export commonly used API URLs
 export const API_URLS = {
   RECOMMENDATIONS: buildApiUrl(API_CONFIG.ENDPOINTS.RECOMMENDATIONS),
+  CAREER: buildApiUrl(API_CONFIG.ENDPOINTS.CAREER),
   HEALTH: buildApiUrl(API_CONFIG.ENDPOINTS.HEALTH),
 } as const;
 

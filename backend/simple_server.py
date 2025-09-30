@@ -131,29 +131,53 @@ async def health_check():
         engine_status="healthy"
     )
 
-@app.post("/recommendations", response_model=RecommendationResponse)
-async def get_recommendations(request: RecommendationRequest):
+@app.post("/recommendations")
+async def get_recommendations(request: DirectRecommendationRequest):
     """
-    Get career recommendations for a user profile.
+    Get career recommendations for a user profile - accepts direct frontend format.
     """
     try:
-        # For demo purposes, return mock recommendations
-        # In production, this would use the actual recommendation engine
-        recommendations = MOCK_CAREERS[:request.limit] if request.limit else MOCK_CAREERS
+        print(f"🚀 Received recommendation request from frontend via /recommendations")
+        print(f"📊 User profile: experience={request.experience}, skills={len(request.technicalSkills or [])}, exploration_level={request.explorationLevel}")
         
-        # Count categories
-        categories = {"safe_zone": 0, "stretch_zone": 0, "adventure_zone": 0}
-        for rec in recommendations:
-            categories[rec["category"]] += 1
+        # Convert frontend data to our format and generate enhanced recommendations
+        user_data = {
+            "age": request.age,
+            "location": request.location,
+            "education_level": request.educationLevel,
+            "certifications": request.certifications or [],
+            "current_situation": request.currentSituation,
+            "current_role": request.currentRole,
+            "experience": request.experience,
+            "resume_text": request.resumeText,
+            "linkedin_profile": request.linkedinProfile,
+            "technical_skills": request.technicalSkills or [],
+            "soft_skills": request.softSkills or [],
+            "working_with_data": request.workingWithData,
+            "working_with_people": request.workingWithPeople,
+            "creative_tasks": request.creativeTasks,
+            "problem_solving": request.problemSolving,
+            "leadership": request.leadership,
+            "physical_hands_on_work": request.physicalHandsOnWork,
+            "outdoor_work": request.outdoorWork,
+            "mechanical_aptitude": request.mechanicalAptitude,
+            "interests": request.interests or [],
+            "industries": request.industries or [],
+            "work_environment": request.workEnvironment,
+            "career_goals": request.careerGoals,
+            "work_life_balance": request.workLifeBalance,
+            "salary_expectations": request.salaryExpectations
+        }
         
-        return RecommendationResponse(
-            recommendations=recommendations,
-            total_count=len(recommendations),
-            categories=categories
-        )
+        # Generate enhanced recommendations using the same function as /api/recommendations
+        enhanced_recommendations = generate_enhanced_recommendations(user_data, request.explorationLevel or 1)
+        
+        print(f"✅ Generated {len(enhanced_recommendations)} recommendations")
+        return enhanced_recommendations
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error generating recommendations: {str(e)}")
+        print(f"❌ Error in /recommendations: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate recommendations: {str(e)}")
 
 @app.get("/recommendations/categories")
 async def get_recommendations_by_category():
@@ -181,6 +205,11 @@ async def get_careers():
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching careers: {str(e)}")
+
+@app.get("/career/{career_type}")
+async def get_career_detail_simple(career_type: str):
+    """Get detailed information about a specific career (without /api prefix)."""
+    return await get_career_detail(career_type)
 
 @app.get("/api/career/{career_type}")
 async def get_career_detail(career_type: str):

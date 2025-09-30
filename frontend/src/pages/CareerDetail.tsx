@@ -801,7 +801,7 @@ const CareerDetail = () => {
         
         setUser(userData);
 
-        const response = await fetch(buildApiUrl(`/api/career/${careerType}`));
+        const response = await fetch(buildApiUrl(`/career/${careerType}`));
         if (!response.ok) {
           throw new Error(`API request failed: ${response.status}`);
         }
@@ -1335,7 +1335,7 @@ const CareerDetail = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {[...career.requiredTechnicalSkills, ...career.requiredSoftSkills].slice(0, 6).map((skill, index) => (
+                    {[...(career.requiredTechnicalSkills || []), ...(career.requiredSoftSkills || [])].slice(0, 6).map((skill, index) => (
                       <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <span className="font-medium">{skill}</span>
                         <Badge variant="outline">Required</Badge>
