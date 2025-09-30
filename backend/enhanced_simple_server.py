@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import os
 import json
 from dotenv import load_dotenv
@@ -18,7 +18,13 @@ load_dotenv()
 
 # Import comprehensive career data and recommendation engine
 from comprehensive_careers import COMPREHENSIVE_CAREERS
-from recommendation_engine.enhanced_engine import EnhancedRecommendationEngine
+
+# Try to import the recommendation engine, fallback if not available
+try:
+    from recommendation_engine.enhanced_engine import EnhancedRecommendationEngine
+except ImportError as e:
+    print(f"Warning: Could not import EnhancedRecommendationEngine: {e}")
+    EnhancedRecommendationEngine = None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -63,8 +69,12 @@ logger.info("Data models defined.")
 # Initialize recommendation engine
 logger.info("Initializing recommendation engine...")
 try:
-    recommendation_engine = EnhancedRecommendationEngine()
-    logger.info("Recommendation engine initialized successfully.")
+    if EnhancedRecommendationEngine:
+        recommendation_engine = EnhancedRecommendationEngine()
+        logger.info("Recommendation engine initialized successfully.")
+    else:
+        logger.warning("EnhancedRecommendationEngine not available, using fallback mode.")
+        recommendation_engine = None
 except Exception as e:
     logger.error(f"Failed to initialize recommendation engine: {e}")
     # Fallback to basic functionality
@@ -105,8 +115,8 @@ def convert_to_mongodb_format(career_data):
         "max_years_experience": career_data.get("maxExperienceYears", 5),
         "companies": career_data.get("companies", []),
         "learning_path": career_data.get("learningPath", "Self-directed learning"),
-        "created_at": datetime.utcnow().isoformat(),
-        "updated_at": datetime.utcnow().isoformat()
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
     }
 
 # Convert all careers to MongoDB format
@@ -204,7 +214,7 @@ async def get_mongodb_recommendations(request: Dict[str, Any]):
             "total_count": len(recommendations),
             "categories": {"safe_zone": 0, "stretch_zone": 0, "adventure_zone": 0},
             "cached": False,
-            "generated_at": datetime.utcnow().isoformat()
+            "generated_at": datetime.now(timezone.utc).isoformat()
         }
         
         for rec in recommendations:
@@ -232,7 +242,7 @@ async def get_mongodb_recommendations(request: Dict[str, Any]):
                     "max": rec.get("maxSalary", 80000),
                     "currency": "USD"
                 },
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.now(timezone.utc).isoformat()
             }
             
             mongodb_response["recommendations"].append(mongodb_rec)
@@ -293,7 +303,7 @@ async def get_skills(skip: int = 0, limit: int = 100):
                 "skill_id": skill.lower().replace(" ", "_").replace("/", "_"),
                 "name": skill,
                 "category": "general",
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.now(timezone.utc).isoformat()
             }
             for skill in sorted(all_skills)
         ]
@@ -319,4 +329,4 @@ if __name__ == "__main__":
     port = int(os.getenv("API_PORT", 8002))
     
     logger.info(f"Starting enhanced server with MongoDB integration on {host}:{port}")
-    uvicorn.run(app, host=host, port=port, reload=True)
+    uvicorn.run(app, host=host, port=port, reload=False)
