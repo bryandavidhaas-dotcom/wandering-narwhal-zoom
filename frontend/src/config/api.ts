@@ -22,9 +22,10 @@ const getApiBaseUrl = (): string => {
 export const API_CONFIG = {
   BASE_URL: getApiBaseUrl(),
   ENDPOINTS: {
-    RECOMMENDATIONS: '/api/recommendations',
+    RECOMMENDATIONS: '/recommendation',
     HEALTH: '/health',
-    // Add more endpoints as needed
+    AI_RECOMMENDATIONS: '/ai/recommendations',
+    AI_TUNE: '/ai/tune',
   }
 } as const;
 

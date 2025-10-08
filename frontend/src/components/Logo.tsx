@@ -3,7 +3,7 @@ import { Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   variant?: 'light' | 'dark';
 }
@@ -12,13 +12,15 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', className, variant = 'l
   const sizeClasses = {
     sm: 'text-lg',
     md: 'text-xl',
-    lg: 'text-2xl'
+    lg: 'text-2xl',
+    xl: 'text-3xl'
   };
 
   const iconSizes = {
     sm: 'h-7 w-7',
     md: 'h-8 w-8',
-    lg: 'h-10 w-10'
+    lg: 'h-10 w-10',
+    xl: 'h-12 w-12'
   };
 
   const textColor = variant === 'dark' ? 'text-white' : 'text-gray-900';
@@ -30,7 +32,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', className, variant = 'l
         <span className="uppercase">
           C<span className="text-blue-600">A</span>REER
         </span>
-        <span className="uppercase" style={{ marginLeft: '0.4rem' }}>
+        <span className="uppercase" style={{ marginLeft: '0.45rem' }}>
           F<span className="text-blue-600">I</span>NDER
         </span>
       </div>

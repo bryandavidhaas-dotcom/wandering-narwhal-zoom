@@ -9,10 +9,8 @@ import Auth from "./pages/Auth";
 import Assessment from "./pages/Assessment";
 import Dashboard from "./pages/Dashboard";
 import CareerDetail from "./pages/CareerDetail";
-import SystemCheck from "./pages/SystemCheck";
-import CareerTemplateCheck from "./pages/CareerTemplateCheck";
-import SystemTest from "./pages/SystemTest";
 import NotFound from "./pages/NotFound";
+import HealthCheck from "./pages/HealthCheck";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,10 +36,8 @@ const App = () => {
             <Route path="/auth" element={<Auth />} />
             <Route path="/assessment" element={<Assessment />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/career/:careerType" element={<CareerDetail />} />
-            <Route path="/system-check" element={<SystemCheck />} />
-            <Route path="/career-template-check" element={<CareerTemplateCheck />} />
-            <Route path="/system-test" element={<SystemTest />} />
+            <Route path="/career/:id" element={<CareerDetail />} />
+            <Route path="/health-check" element={<HealthCheck />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

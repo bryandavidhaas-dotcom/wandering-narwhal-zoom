@@ -392,8 +392,8 @@ class ScoringEngine:
                 user_skill = user_skills_dict[skill_name]
                 details["matched_skills"].append({
                     "name": required_skill.name,
-                    "user_level": user_skill.level.value,
-                    "required_level": required_skill.proficiency.value,
+                    "user_level": user_skill.level if isinstance(user_skill.level, str) else user_skill.level.value,
+                    "required_level": required_skill.proficiency if isinstance(required_skill.proficiency, str) else required_skill.proficiency.value,
                     "is_certified": user_skill.is_certified
                 })
             else:
@@ -418,7 +418,7 @@ class ScoringEngine:
             if interest.lower() in career_text:
                 details["matched_interests"].append({
                     "interest": interest,
-                    "level": level.value
+                    "level": level if isinstance(level, str) else level.value
                 })
         
         return details

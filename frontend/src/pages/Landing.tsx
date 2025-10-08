@@ -5,46 +5,44 @@ import { ArrowRight, Users, Target, TrendingUp, Network, FileText, CheckCircle, 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/Logo";
+import { siteStats } from "@/config/siteStats";
 
 const Landing = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [isProfileComplete, setIsProfileComplete] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Check user state on component mount
   useEffect(() => {
-    try {
-      console.log('🏠 Landing page loading...');
-      console.log('📍 Current URL:', window.location.href);
-      
-      const currentUser = localStorage.getItem('currentUser');
-      console.log('👤 Raw user data from localStorage:', currentUser);
-      
-      if (currentUser) {
-        try {
-          const userData = JSON.parse(currentUser);
-          console.log('✅ Parsed user data:', userData);
+    console.log('Checking user state...');
+    const currentUser = localStorage.getItem('currentUser');
+    console.log('currentUser from localStorage:', currentUser);
+    if (currentUser) {
+      try {
+        const userData = JSON.parse(currentUser);
+        console.log('Parsed userData:', userData);
+        if (userData && userData.firstName) {
           setUser(userData);
-          
-          // Check if profile is complete
-          if (userData.assessmentData && userData.profileCompleted) {
-            console.log('✅ Profile is complete');
-            setIsProfileComplete(true);
-          } else {
-            console.log('❌ Profile is incomplete');
-            setIsProfileComplete(false);
-          }
-        } catch (parseError) {
-          console.error('❌ Error parsing user data:', parseError);
-          // Clear corrupted data
+          setIsLoggedIn(true);
+          setIsProfileComplete(userData.assessmentData && userData.profileCompleted);
+          console.log('User is logged in.');
+        } else {
+          // Invalid user data, clear it
           localStorage.removeItem('currentUser');
+          setIsLoggedIn(false);
+          console.log('Invalid user data. User is not logged in.');
         }
-      } else {
-        console.log('❌ No user data found');
+      } catch (error) {
+        // JSON parsing error, clear invalid data
+        localStorage.removeItem('currentUser');
+        setIsLoggedIn(false);
+        console.log('Error parsing user data. User is not logged in.');
       }
-    } catch (error) {
-      console.error('❌ Error in Landing useEffect:', error);
+    } else {
+      setIsLoggedIn(false);
+      console.log('No currentUser in localStorage. User is not logged in.');
     }
   }, []);
 
@@ -143,6 +141,15 @@ const Landing = () => {
     } finally {
       setIsNavigating(false);
     }
+  };
+
+  const handleLogout = () => {
+    console.log('Logging out...');
+    localStorage.removeItem('currentUser');
+    setUser(null);
+    setIsLoggedIn(false);
+    setIsProfileComplete(false);
+    console.log('User logged out.');
   };
 
   // Dynamic button text based on user state
@@ -279,7 +286,17 @@ const Landing = () => {
       {/* Header */}
       <header className="container mx-auto px-4 py-6">
         <div className="flex justify-between items-center">
-          <Logo size="lg" />
+          <Logo size="xl" />
+          
+          {/* Dynamic welcome message for logged-in users */}
+          {isLoggedIn && user && (
+            <div className="hidden lg:block">
+              <p className="text-lg text-blue-700 font-semibold">
+                Welcome back, {user.firstName}! Ready to explore more career options?
+              </p>
+            </div>
+          )}
+
           <div className="flex space-x-2">
             <Button
               variant="ghost"
@@ -289,13 +306,22 @@ const Landing = () => {
               {isNavigating ? "Loading..." : getAssessmentButtonText()}
             </Button>
             {user ? (
-              <Button
-                variant="outline"
-                onClick={handleDashboardClick}
-                disabled={isNavigating}
-              >
-                {isNavigating ? "Loading..." : "Dashboard"}
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  onClick={handleDashboardClick}
+                  disabled={isNavigating}
+                >
+                  {isNavigating ? "Loading..." : "Dashboard"}
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={handleLogout}
+                  disabled={isNavigating}
+                >
+                  {isNavigating ? "Logging out..." : "Sign Out"}
+                </Button>
+              </>
             ) : (
               <Button
                 variant="outline"
@@ -309,22 +335,13 @@ const Landing = () => {
         </div>
       </header>
 
+
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-16 text-center">
-        <Badge className="mb-4" variant="secondary">
-          <Brain className="h-4 w-4 mr-1" />
+        <Badge className="mb-4 text-lg" variant="secondary">
+          <Brain className="h-5 w-5 mr-2" />
           AI-Powered Career Finder
         </Badge>
-        
-        {/* Dynamic welcome message for logged-in users */}
-        {user && (
-          <div className="mb-4">
-            <p className="text-lg text-blue-600 font-medium">
-              Welcome back, {user.firstName}! 
-              {isProfileComplete ? ' Ready to explore more career options?' : ' Ready to complete your assessment?'}
-            </p>
-          </div>
-        )}
         
         <h1 className="text-5xl font-bold text-gray-900 mb-6 max-w-4xl mx-auto">
           Find Your Next Career Opportunity
@@ -344,15 +361,6 @@ const Landing = () => {
             {!isNavigating && <ArrowRight className="ml-2 h-5 w-5" />}
           </Button>
         </div>
-        <p className="text-sm text-gray-500 mt-4">
-          {user ? (
-            isProfileComplete ? 
-              "Explore new career paths • Update your preferences anytime" :
-              "Complete your 5-minute assessment • No credit card required"
-          ) : (
-            "5-minute AI assessment • No credit card required"
-          )}
-        </p>
       </section>
 
       {/* AI Differentiator Section */}
@@ -369,29 +377,29 @@ const Landing = () => {
           <div className="grid md:grid-cols-3 gap-6 text-center">
             <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/20">
               <div className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                361
+                {siteStats.uniqueCareers.toLocaleString()}
               </div>
-              <p className="text-base font-semibold mb-3 text-white">Careers in Database</p>
+              <p className="text-base font-semibold mb-3 text-white">Unique Careers in Database</p>
               <p className="text-sm text-white/90 leading-relaxed">
                 Spanning 11 major job categories from technology to healthcare to skilled trades
               </p>
             </div>
             <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/20">
               <div className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                25,270
+                {siteStats.dataPointsAnalyzed.toLocaleString()}
               </div>
               <p className="text-base font-semibold mb-3 text-white">Data Points Analyzed</p>
               <p className="text-sm text-white/90 leading-relaxed">
-                Every recommendation considers 70+ factors including skills, experience, salary, and growth potential
+                Analysis includes 17+ factors per career and over 160 data points from your unique profile
               </p>
             </div>
             <div className="bg-white/20 rounded-xl p-6 backdrop-blur-sm border border-white/20">
               <div className="text-5xl font-bold mb-3 text-white drop-shadow-lg">
-                2,166
+                {siteStats.skillConnections.toLocaleString()}
               </div>
               <p className="text-base font-semibold mb-3 text-white">Skill-Career Connections</p>
               <p className="text-sm text-white/90 leading-relaxed">
-                Advanced AI maps thousands of skill combinations across 361 careers to find your perfect match
+                Advanced AI maps thousands of skill combinations across {siteStats.uniqueCareers} unique careers to find your perfect match
               </p>
             </div>
           </div>
@@ -583,7 +591,7 @@ const Landing = () => {
               Comprehensive Career Coverage
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered system covers <span className="font-semibold text-blue-600">361 careers</span> across major industries,
+              Our AI-powered system covers <span className="font-semibold text-blue-600">{siteStats.uniqueCareers} unique careers</span> across major industries,
               with more being added regularly to ensure comprehensive career exploration.
             </p>
           </div>
@@ -604,77 +612,77 @@ const Landing = () => {
                       <Brain className="h-4 w-4 mr-1" />
                       Technology & Engineering
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">57 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Technology & Engineering"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <User className="h-4 w-4 mr-1" />
                       Healthcare & Medical
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">40 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Healthcare & Medical"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Building2 className="h-4 w-4 mr-1" />
                       Skilled Trades & Construction
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">40 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Skilled Trades & Construction"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <GraduationCap className="h-4 w-4 mr-1" />
                       Education & Training
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">40 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Education & Training"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <TrendingUp className="h-4 w-4 mr-1" />
                       Business & Finance
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">44 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Business & Finance"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Award className="h-4 w-4 mr-1" />
                       Legal & Law
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">19 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Legal & Law"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Briefcase className="h-4 w-4 mr-1" />
                       Creative & Arts
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">26 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Creative & Arts"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Users className="h-4 w-4 mr-1" />
                       Public Service & Government
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">30 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Public Service & Government"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Building2 className="h-4 w-4 mr-1" />
                       Hospitality & Service
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">21 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Hospitality & Service"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Zap className="h-4 w-4 mr-1" />
                       Manufacturing & Industrial
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">22 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Manufacturing & Industrial"]} careers</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Badge variant="outline" className="bg-white border-green-300 text-green-700 text-base px-3 py-1">
                       <Map className="h-4 w-4 mr-1" />
                       Agriculture & Environment
                     </Badge>
-                    <span className="text-base text-green-600 font-semibold">22 careers</span>
+                    <span className="text-base text-green-600 font-semibold">{siteStats.careerCategoryCounts["Agriculture & Environment"]} careers</span>
                   </div>
                 </div>
               </CardContent>

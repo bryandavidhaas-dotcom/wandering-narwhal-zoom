@@ -5,7 +5,7 @@
  * All business logic has been moved to the backend unified API.
  */
 
-import { API_URLS } from "@/config/api";
+import { API_URLS, buildApiUrl, API_CONFIG } from "@/config/api";
 
 // API Types - these match the backend API structure
 export interface APIUserProfile {
@@ -446,43 +446,26 @@ export class EnhancedCareerMatchingAPI {
   private async makeAPICall(request: APIRecommendationRequest): Promise<APIRecommendationResponse> {
     try {
       // Convert to the format expected by the backend
-      const backendRequest = {
-        age: request.user_profile.user_id, // Using user_id as age placeholder
-        location: request.user_profile.location || '',
-        educationLevel: request.user_profile.education_level || 'bachelors',
-        certifications: request.user_profile.certifications || [],
-        currentSituation: 'employed', // Default value
-        currentRole: request.user_profile.current_role || '',
-        experience: this.convertExperienceYearsToString(request.user_profile.experience_years || 0),
-        resumeText: request.user_profile.resume_text || '',
-        linkedinProfile: request.user_profile.linkedin_profile || '',
-        technicalSkills: request.user_profile.technical_skills || [],
-        softSkills: request.user_profile.soft_skills || [],
-        workingWithData: request.user_profile.working_with_data || 3,
-        workingWithPeople: request.user_profile.working_with_people || 3,
-        creativeTasks: request.user_profile.creative_tasks || 3,
-        problemSolving: request.user_profile.problem_solving || 3,
-        leadership: request.user_profile.leadership || 3,
-        physicalHandsOnWork: request.user_profile.physical_hands_on_work || 3,
-        outdoorWork: request.user_profile.outdoor_work || 3,
-        mechanicalAptitude: request.user_profile.mechanical_aptitude || 3,
-        interests: request.user_profile.interests || [],
-        industries: request.user_profile.industries || [],
-        workEnvironment: request.user_profile.remote_work_preference || 'flexible',
-        careerGoals: request.user_profile.career_goals || '',
-        workLifeBalance: this.convertWorkLifeBalanceToString(request.user_profile.work_life_balance_importance || 3),
-        salaryExpectations: this.convertSalaryExpectationsToString(request.user_profile.salary_expectations),
-        explorationLevel: request.exploration_level || 1
+      const aiRequest = {
+        skills: request.user_profile.technical_skills || [],
+        experience: [request.user_profile.current_role || ''],
+        career_goals: [request.user_profile.career_goals || ''],
+        preferences: {
+            "location": request.user_profile.location,
+            "salary": request.user_profile.salary_expectations,
+            "work_life_balance": request.user_profile.work_life_balance_importance,
+            "remote_work": request.user_profile.remote_work_preference
+        }
       };
 
-      console.log('🚀 Making real API call to enhanced backend:', backendRequest);
+      console.log('🚀 Making API call to AI backend:', aiRequest);
 
-      const response = await fetch(API_URLS.RECOMMENDATIONS, {
+      const response = await fetch(buildApiUrl(API_CONFIG.ENDPOINTS.AI_RECOMMENDATIONS), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(backendRequest)
+        body: JSON.stringify(aiRequest)
       });
 
       if (!response.ok) {
@@ -505,50 +488,46 @@ export class EnhancedCareerMatchingAPI {
   /**
    * Convert backend response to expected API format
    */
-  private convertBackendResponseToAPIFormat(backendResponse: any[], request: APIRecommendationRequest): APIRecommendationResponse {
-    const recommendations: APICareerRecommendation[] = backendResponse.map(career => ({
-      career_id: career.careerType || career.career_id || `career_${Math.random()}`,
-      title: career.title,
-      description: career.description,
-      career_field: career.careerField || 'unknown',
-      experience_level: career.experienceLevel || 'mid',
-      salary_min: career.salaryMin || career.minSalary || 0,
-      salary_max: career.salaryMax || career.maxSalary || 0,
+  private convertBackendResponseToAPIFormat(backendResponse: any, request: APIRecommendationRequest): APIRecommendationResponse {
+    const recommendations: APICareerRecommendation[] = backendResponse.recommendations.map((rec: any) => ({
+      career_id: rec.job_title.toLowerCase().replace(/ /g, '_'),
+      title: rec.job_title,
+      description: rec.description,
+      career_field: 'unknown',
+      experience_level: 'mid',
+      salary_min: 0,
+      salary_max: 0,
       salary_currency: 'USD',
-      relevance_score: (career.relevanceScore || 0) / 100, // Convert from 0-100 to 0-1
-      confidence_level: 0.8, // Default confidence
-      category: career.zone || 'adventure',
-      match_reasons: career.matchReasons || [],
+      relevance_score: 0.9,
+      confidence_level: 0.9,
+      category: 'safe_zone',
+      match_reasons: [],
       skill_analysis: {
-        matched_skills: career.requiredTechnicalSkills?.slice(0, 3) || [],
-        missing_skills: career.requiredTechnicalSkills?.slice(3) || [],
-        skill_match_score: (career.relevanceScore || 0) / 100
+        matched_skills: [],
+        missing_skills: [],
+        skill_match_score: 0.9
       },
       field_analysis: {
-        user_field: career.userField || 'unknown',
-        career_field: career.careerField || 'unknown',
-        field_transition: career.userField === career.careerField ? 'same_field' : 'field_change',
-        user_field_confidence: 0.8,
-        career_field_confidence: 0.8
+        user_field: 'unknown',
+        career_field: 'unknown',
+        field_transition: 'same_field',
+        user_field_confidence: 0.9,
+        career_field_confidence: 0.9
       },
-      required_skills: career.requiredTechnicalSkills || [],
-      learning_path: career.learningPath || 'Standard career progression',
-      companies: career.companies || career.valuedCompanies || [],
-      work_environment: career.workEnvironments || ['office'],
-      remote_options: career.remoteOptions || 'Available',
+      required_skills: rec.requirements,
+      learning_path: 'Standard career progression',
+      companies: [rec.company],
+      work_environment: ['office'],
+      remote_options: 'Available',
       demand_level: 'high',
       growth_outlook: 'positive',
-      // NEW: Add zone and prerequisite fields for visual indicators
-      zone: career.zone || 'adventure',
-      requires_prerequisites: career.requires_prerequisites || false,
-      has_required_background: career.has_required_background !== false // Default to true unless explicitly false
     }));
 
     return {
       recommendations,
       user_analysis: {
-        primary_career_field: 'business_finance', // Will be determined by backend
-        field_confidence: 0.8,
+        primary_career_field: 'unknown',
+        field_confidence: 0.9,
         experience_summary: {
           years: request.user_profile.experience_years || 0,
           current_role: request.user_profile.current_role || '',
@@ -561,25 +540,21 @@ export class EnhancedCareerMatchingAPI {
           top_technical_skills: request.user_profile.technical_skills?.slice(0, 5) || []
         },
         work_preferences: {
-          data_oriented: (request.user_profile.working_with_data || 3) >= 4,
-          people_oriented: (request.user_profile.working_with_people || 3) >= 4,
-          creative_oriented: (request.user_profile.creative_tasks || 3) >= 4,
-          leadership_oriented: (request.user_profile.leadership || 3) >= 4,
-          hands_on_oriented: (request.user_profile.physical_hands_on_work || 3) >= 4
+            data_oriented: false,
+            people_oriented: false,
+            creative_oriented: false,
+            leadership_oriented: false,
+            hands_on_oriented: false
         },
         career_focus: {
-          industries: request.user_profile.industries || [],
-          interests: request.user_profile.interests || [],
-          goals: request.user_profile.career_goals || ''
+            industries: [],
+            interests: [],
+            goals: ''
         }
       },
       request_metadata: {
         exploration_level: request.exploration_level || 1,
-        filters_applied: {
-          career_fields: request.career_fields,
-          experience_levels: request.experience_levels,
-          salary_range: request.salary_range
-        },
+        filters_applied: {},
         timestamp: new Date().toISOString()
       },
       total_careers_considered: recommendations.length,

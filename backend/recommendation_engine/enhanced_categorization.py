@@ -11,25 +11,17 @@ import re
 from dataclasses import dataclass
 
 # Import models - try both relative and absolute imports
+# This structure helps avoid circular imports and path issues
 try:
-    from ..models import (
-        Career, RecommendationScore, CareerRecommendation,
-        RecommendationCategory, UserProfile
-    )
+    from .. import models
 except ImportError:
-    try:
-        from models import (
-            Career, RecommendationScore, CareerRecommendation,
-            RecommendationCategory, UserProfile
-        )
-    except ImportError:
-        # Fallback: define basic types if models can't be imported
-        from typing import Any
-        Career = Any
-        RecommendationScore = Any
-        CareerRecommendation = Any
-        RecommendationCategory = Any
-        UserProfile = Any
+    import models
+
+Career = models.CareerModel
+RecommendationScore = models.RecommendationScore
+CareerRecommendation = models.RecommendationModel
+RecommendationCategory = models.RecommendationCategory
+UserProfile = models.UserProfileModel
 
 try:
     from .config import CategorizationThresholds
@@ -523,13 +515,15 @@ class EnhancedCategorizationEngine:
                 score, category, user_field_confidence, career_field_confidence
             )
             
-            recommendation = CareerRecommendation(
-                career=career,
-                score=score,
-                category=category,
-                reasons=reasons,
-                confidence=confidence
-            )
+            recommendation = {
+                "user_id": user_profile.user_id,
+                "career_id": career.career_id,
+                "career": career,
+                "score": score,
+                "category": category,
+                "reasons": reasons,
+                "confidence": confidence
+            }
             
             recommendations.append(recommendation)
         
