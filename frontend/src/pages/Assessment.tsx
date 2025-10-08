@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
@@ -60,9 +59,11 @@ import {
 } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 import { Logo } from "@/components/Logo";
+import PostAssessmentChat from "./PostAssessmentChat";
 
 const Assessment = () => {
   const navigate = useNavigate();
+  const [assessmentComplete, setAssessmentComplete] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 4;
   const [activeResumeTab, setActiveResumeTab] = useState("upload");
@@ -114,14 +115,14 @@ const Assessment = () => {
     softSkills: [] as string[],
     
     // Step 3: Work Preferences Only
-    workingWithData: [3],
-    workingWithPeople: [3],
-    creativeTasks: [3],
-    problemSolving: [3],
-    leadership: [3],
-    physicalHandsOnWork: [3],
-    outdoorWork: [3],
-    mechanicalAptitude: [3],
+    workingWithData: 3,
+    workingWithPeople: 3,
+    creativeTasks: 3,
+    problemSolving: 3,
+    leadership: 3,
+    physicalHandsOnWork: 3,
+    outdoorWork: 3,
+    mechanicalAptitude: 3,
     
     // Step 4: Interests, Industries, Goals & Expectations
     interests: [] as string[],
@@ -217,8 +218,8 @@ const Assessment = () => {
           setActiveResumeTab("upload");
           const fileMatch = existingData.resumeText.match(/\[(PDF Resume|Word Document): ([^\]]+)\]/);
           if (fileMatch) {
-            setUploadedFileName(fileMatch[2]);
-            setUploadedFileType(fileMatch[1].includes('PDF') ? 'application/pdf' : 'application/msword');
+            setUploadedFileName(fileMatch);
+            setUploadedFileType(fileMatch.includes('PDF') ? 'application/pdf' : 'application/msword');
           }
         }
       }
@@ -240,7 +241,7 @@ const Assessment = () => {
   const handleArrayToggle = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
-      [field]: prev[field as keyof typeof prev].includes(value)
+      [field]: (prev[field as keyof typeof prev] as string[]).includes(value)
         ? (prev[field as keyof typeof prev] as string[]).filter(item => item !== value)
         : [...(prev[field as keyof typeof prev] as string[]), value]
     }));
@@ -338,111 +339,51 @@ const Assessment = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      showError('You must be logged in to submit an assessment.');
+      navigate('/auth');
+      return;
+    }
+
+    const processedData = {
+      ...formData,
+      workingWithData: formData.workingWithData,
+      workingWithPeople: formData.workingWithPeople,
+      creativeTasks: formData.creativeTasks,
+      problemSolving: formData.problemSolving,
+      leadership: formData.leadership,
+      physicalHandsOnWork: formData.physicalHandsOnWork,
+      outdoorWork: formData.outdoorWork,
+      mechanicalAptitude: formData.mechanicalAptitude,
+    };
+
     try {
-      const currentUserData = localStorage.getItem('currentUser');
-      if (!currentUserData) {
-        showError('Please log in to save your assessment');
-        navigate('/auth');
-        return;
-      }
-
-      const currentUser = JSON.parse(currentUserData);
-      
-      // FIXED: Properly consolidate certifications
-      let allCertifications = [...formData.certifications];
-      
-      if (formData.certifications.includes('Other - Trades') && formData.otherTradesCert.trim()) {
-        allCertifications.push(`Other Trades: ${formData.otherTradesCert.trim()}`);
-      }
-      if (formData.certifications.includes('Other - Tech') && formData.otherTechCert.trim()) {
-        allCertifications.push(`Other Tech: ${formData.otherTechCert.trim()}`);
-      }
-      if (formData.certifications.includes('Other - Business') && formData.otherBusinessCert.trim()) {
-        allCertifications.push(`Other Business: ${formData.otherBusinessCert.trim()}`);
-      }
-      if (formData.certifications.includes('Other - Healthcare') && formData.otherHealthcareCert.trim()) {
-        allCertifications.push(`Other Healthcare: ${formData.otherHealthcareCert.trim()}`);
-      }
-      
-      // FIXED: Proper work environment inference
-      let inferredWorkEnvironment = 'flexible';
-      if (formData.outdoorWork[0] >= 4) {
-        inferredWorkEnvironment = 'outdoor';
-      } else if (formData.physicalHandsOnWork[0] >= 4) {
-        inferredWorkEnvironment = 'hands-on';
-      } else if (formData.physicalHandsOnWork[0] <= 2 && formData.outdoorWork[0] <= 2) {
-        inferredWorkEnvironment = 'office';
-      }
-      
-      // CRITICAL: Ensure all data is properly structured for the matching algorithm
-      const processedData = {
-        ...formData,
-        certifications: allCertifications,
-        
-        // CRITICAL: Convert slider arrays to numbers for algorithm compatibility
-        workingWithData: formData.workingWithData[0],
-        workingWithPeople: formData.workingWithPeople[0],
-        creativeTasks: formData.creativeTasks[0],
-        problemSolving: formData.problemSolving[0],
-        leadership: formData.leadership[0],
-        
-        // CRITICAL: Ensure all work preference fields are available
-        physicalHandsOnWork: formData.physicalHandsOnWork[0],
-        handsOnWork: formData.physicalHandsOnWork[0], // Backward compatibility
-        physicalWork: formData.physicalHandsOnWork[0], // Backward compatibility
-        outdoorWork: formData.outdoorWork[0],
-        mechanicalAptitude: formData.mechanicalAptitude[0],
-        
-        // CRITICAL: Set work environment for matching
-        workEnvironment: inferredWorkEnvironment,
-        
-        // CRITICAL: Ensure resume and LinkedIn are preserved
-        resumeText: formData.resumeText || '',
-        linkedinProfile: formData.linkedinProfile || ''
-      };
-      
-      console.log('💾 Saving processed assessment data:', {
-        experience: processedData.experience,
-        workingWithData: processedData.workingWithData,
-        workingWithPeople: processedData.workingWithPeople,
-        leadership: processedData.leadership,
-        resumeLength: processedData.resumeText.length,
-        linkedinProfile: processedData.linkedinProfile ? 'Yes' : 'No',
-        technicalSkills: processedData.technicalSkills.length,
-        softSkills: processedData.softSkills.length,
-        interests: processedData.interests.length,
-        industries: processedData.industries.length
+      // Note: The PRD implies the assessment data is saved first, then recommendations are generated.
+      // For the MVP, we will send the assessment directly to the recommendation endpoint.
+      const response = await fetch('/api/v1/generate-recommendations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        // The backend endpoint will use the user from the token to find the latest assessment.
+        // We just need to ensure the assessment is saved before navigating.
+        // For now, we'll send the data to a save endpoint first.
+        // This is a placeholder for a proper save assessment endpoint.
+        body: JSON.stringify(processedData),
       });
-      
-      const updatedUser = {
-        ...currentUser,
-        assessmentData: processedData,
-        profileCompleted: true,
-        assessmentCompletedAt: new Date().toISOString(),
-        assessmentUpdatedAt: isEditMode ? new Date().toISOString() : undefined
-      };
 
-      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-
-      const usersData = localStorage.getItem('users');
-      if (usersData) {
-        const users = JSON.parse(usersData);
-        const userIndex = users.findIndex((u: any) => u.id === currentUser.id);
-        if (userIndex !== -1) {
-          users[userIndex] = updatedUser;
-          localStorage.setItem('users', JSON.stringify(users));
-        }
+      if (response.ok) {
+        showSuccess('Assessment submitted successfully!');
+        setAssessmentComplete(true);
+      } else {
+        const errorData = await response.json();
+        showError(errorData.detail || 'Failed to submit assessment for recommendations.');
       }
-
-      const successMessage = isEditMode 
-        ? 'Assessment updated successfully! Your career recommendations will be refreshed.' 
-        : 'Assessment completed successfully! Generating your personalized career recommendations...';
-      // Assessment completed/updated successfully
-      navigate('/dashboard');
     } catch (error) {
-      console.error('❌ Failed to save assessment:', error);
-      showError('Failed to save assessment. Please try again.');
+      showError('An error occurred while submitting the assessment.');
     }
   };
 
@@ -983,7 +924,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.workingWithData}
+                    value={[formData.workingWithData]}
                     onValueChange={(value) => handleInputChange('workingWithData', value)}
                     max={5}
                     min={1}
@@ -993,7 +934,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Not interested</span>
                     <span className="font-medium text-blue-600">
-                      Rating: {formData.workingWithData[0]}
+                      Rating: {formData.workingWithData}
                     </span>
                     <span>Love it</span>
                   </div>
@@ -1007,7 +948,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.workingWithPeople}
+                    value={[formData.workingWithPeople]}
                     onValueChange={(value) => handleInputChange('workingWithPeople', value)}
                     max={5}
                     min={1}
@@ -1017,7 +958,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Prefer solo work</span>
                     <span className="font-medium text-green-600">
-                      Rating: {formData.workingWithPeople[0]}
+                      Rating: {formData.workingWithPeople}
                     </span>
                     <span>Love teamwork</span>
                   </div>
@@ -1031,7 +972,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.creativeTasks}
+                    value={[formData.creativeTasks]}
                     onValueChange={(value) => handleInputChange('creativeTasks', value)}
                     max={5}
                     min={1}
@@ -1041,7 +982,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Not creative</span>
                     <span className="font-medium text-purple-600">
-                      Rating: {formData.creativeTasks[0]}
+                      Rating: {formData.creativeTasks}
                     </span>
                     <span>Very creative</span>
                   </div>
@@ -1055,7 +996,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.problemSolving}
+                    value={[formData.problemSolving]}
                     onValueChange={(value) => handleInputChange('problemSolving', value)}
                     max={5}
                     min={1}
@@ -1065,7 +1006,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Avoid problems</span>
                     <span className="font-medium text-orange-600">
-                      Rating: {formData.problemSolving[0]}
+                      Rating: {formData.problemSolving}
                     </span>
                     <span>Love challenges</span>
                   </div>
@@ -1079,7 +1020,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.leadership}
+                    value={[formData.leadership]}
                     onValueChange={(value) => handleInputChange('leadership', value)}
                     max={5}
                     min={1}
@@ -1089,7 +1030,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Prefer following</span>
                     <span className="font-medium text-red-600">
-                      Rating: {formData.leadership[0]}
+                      Rating: {formData.leadership}
                     </span>
                     <span>Natural leader</span>
                   </div>
@@ -1103,7 +1044,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.physicalHandsOnWork}
+                    value={[formData.physicalHandsOnWork]}
                     onValueChange={(value) => handleInputChange('physicalHandsOnWork', value)}
                     max={5}
                     min={1}
@@ -1113,7 +1054,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Prefer desk work</span>
                     <span className="font-medium text-amber-600">
-                      Rating: {formData.physicalHandsOnWork[0]}
+                      Rating: {formData.physicalHandsOnWork}
                     </span>
                     <span>Love hands-on</span>
                   </div>
@@ -1127,7 +1068,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.outdoorWork}
+                    value={[formData.outdoorWork]}
                     onValueChange={(value) => handleInputChange('outdoorWork', value)}
                     max={5}
                     min={1}
@@ -1137,7 +1078,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Indoor only</span>
                     <span className="font-medium text-emerald-600">
-                      Rating: {formData.outdoorWork[0]}
+                      Rating: {formData.outdoorWork}
                     </span>
                     <span>Love outdoors</span>
                   </div>
@@ -1151,7 +1092,7 @@ const Assessment = () => {
                 </p>
                 <div className="px-6 py-4">
                   <Slider
-                    value={formData.mechanicalAptitude}
+                    value={[formData.mechanicalAptitude]}
                     onValueChange={(value) => handleInputChange('mechanicalAptitude', value)}
                     max={5}
                     min={1}
@@ -1161,7 +1102,7 @@ const Assessment = () => {
                   <div className="flex justify-between text-sm text-gray-500 mt-3">
                     <span>Not technical</span>
                     <span className="font-medium text-indigo-600">
-                      Rating: {formData.mechanicalAptitude[0]}
+                      Rating: {formData.mechanicalAptitude}
                     </span>
                     <span>Very technical</span>
                   </div>
@@ -1320,6 +1261,10 @@ const Assessment = () => {
       default: return "";
     }
   };
+
+  if (assessmentComplete) {
+    return <PostAssessmentChat />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">

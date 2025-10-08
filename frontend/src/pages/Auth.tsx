@@ -29,115 +29,58 @@ const Auth = () => {
     });
   };
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate required fields
     if (!formData.email || !formData.password) {
       showError('Please fill in both email and password');
       return;
     }
-    
     try {
-      const usersData = localStorage.getItem('users');
-      let users = [];
-      
-      if (usersData) {
-        try {
-          users = JSON.parse(usersData);
-        } catch (parseError) {
-          showError('Authentication data corrupted. Please register again.');
-          return;
-        }
-      }
-
-      if (!Array.isArray(users)) {
-        users = [];
-      }
-
-      const user = users.find((u: any) =>
-        u.email && u.email.toLowerCase() === formData.email.toLowerCase() &&
-        u.password === formData.password
-      );
-      
-      if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        showSuccess(`Welcome back, ${user.firstName}!`);
-        
-        if (user.profileCompleted) {
-          navigate('/dashboard');
-        } else {
-          navigate('/assessment');
-        }
+      const response = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          username: formData.email,
+          password: formData.password,
+        }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.access_token);
+        showSuccess('Logged in successfully!');
+        navigate('/dashboard');
       } else {
-        showError('Invalid email or password. Please check your credentials and try again.');
+        showError('Invalid email or password.');
       }
     } catch (error) {
-      showError('An error occurred during login. Please try again.');
+      showError('An error occurred during login.');
     }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    if (formData.password !== formData.confirmPassword) {
+      showError('Passwords do not match');
+      return;
+    }
     try {
-      if (formData.password !== formData.confirmPassword) {
-        showError('Passwords do not match');
-        return;
+      const response = await fetch('/api/v1/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+      if (response.ok) {
+        showSuccess('Registration successful! Please log in.');
+        // Ideally, switch to the login tab here
+      } else {
+        const errorData = await response.json();
+        showError(errorData.detail || 'Registration failed.');
       }
-
-      if (formData.password.length < 8) {
-        showError('Password must be at least 8 characters');
-        return;
-      }
-
-      if (!formData.email || !formData.firstName || !formData.lastName) {
-        showError('Please fill in all required fields');
-        return;
-      }
-
-      const usersData = localStorage.getItem('users');
-      let users = [];
-      
-      if (usersData) {
-        try {
-          users = JSON.parse(usersData);
-        } catch (parseError) {
-          users = [];
-        }
-      }
-
-      if (!Array.isArray(users)) {
-        users = [];
-      }
-
-      const existingUser = users.find((u: any) => 
-        u.email && u.email.toLowerCase() === formData.email.toLowerCase()
-      );
-
-      if (existingUser) {
-        showError('An account with this email already exists. Please sign in instead.');
-        return;
-      }
-
-      const newUser = {
-        id: Date.now().toString(),
-        email: formData.email.toLowerCase(),
-        password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        createdAt: new Date().toISOString(),
-        profileCompleted: false
-      };
-
-      users.push(newUser);
-      localStorage.setItem('users', JSON.stringify(users));
-      localStorage.setItem('currentUser', JSON.stringify(newUser));
-      
-      showSuccess(`Account created successfully! Welcome, ${newUser.firstName}!`);
-      navigate('/assessment');
     } catch (error) {
-      showError('An error occurred during registration. Please try again.');
+      showError('An error occurred during registration.');
     }
   };
 

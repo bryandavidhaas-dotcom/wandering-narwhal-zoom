@@ -304,11 +304,11 @@ class EnhancedRecommendationEngine:
         user_field, _ = determine_enhanced_user_career_field(user_profile)
         user_seniority = self._get_user_seniority_level(user_profile)
         
-        def sort_key(rec: CareerRecommendation):
-            career_field, _ = get_enhanced_career_field(rec.career)
+        def sort_key(rec: dict):
+            career_field, _ = get_enhanced_career_field(rec['career'])
             
             # Base score
-            base_score = rec.score.total_score
+            base_score = rec['score'].total_score
             
             # Field alignment bonus
             field_bonus = 0.0
@@ -318,7 +318,7 @@ class EnhancedRecommendationEngine:
                 field_bonus = 0.05
             
             # Confidence bonus
-            confidence_bonus = rec.confidence * 0.05
+            confidence_bonus = rec['confidence'] * 0.05
             
             return base_score + field_bonus + confidence_bonus
         
@@ -409,6 +409,48 @@ class EnhancedRecommendationEngine:
             },
             "detailed_breakdown": score.breakdown
         }
+    def refine_recommendations(
+        self,
+        current_recommendations: List[CareerRecommendation],
+        prompt: str,
+        user_profile: UserProfile,
+        exploration_level: int = 3
+    ) -> List[CareerRecommendation]:
+        """
+        Refine recommendations based on user's textual prompt.
+        
+        Args:
+            current_recommendations: The current list of recommendations
+            prompt: The user's textual prompt for refinement
+            user_profile: The user's profile for context
+            exploration_level: User's exploration level (1-5)
+            
+        Returns:
+            A new list of refined career recommendations
+        """
+        logger.info(f"Starting recommendation refinement with prompt: '{prompt}'")
+
+        prompt_keywords = set(prompt.lower().split())
+        
+        refined_recommendations = []
+        for rec in current_recommendations:
+            career_text = f"{rec.career.title} {rec.career.description}".lower()
+            
+            # Simple keyword matching for boosting
+            matches = sum(1 for keyword in prompt_keywords if keyword in career_text)
+            
+            # Boost score based on matches
+            boost = matches * 0.1
+            rec.score.total_score = min(1.0, rec.score.total_score + boost)
+            
+            refined_recommendations.append(rec)
+            
+        # Re-sort recommendations based on new scores
+        refined_recommendations.sort(key=lambda x: x.score.total_score, reverse=True)
+        
+        logger.info(f"Generated {len(refined_recommendations)} refined recommendations")
+        
+        return refined_recommendations
     
     # Include all the helper methods from the original engine
     def _fallback_filtering(

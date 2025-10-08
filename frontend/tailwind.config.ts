@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 export default {
   darkMode: ["class"],
@@ -18,6 +19,11 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["DM Sans", ...fontFamily.sans],
+        serif: ["Lora", ...fontFamily.serif],
+        mono: ["IBM Plex Mono", ...fontFamily.mono],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
