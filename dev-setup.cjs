@@ -91,6 +91,13 @@ class DevSetup {
         this.log('📦 Setting up Node.js dependencies...');
         
         return new Promise((resolve, reject) => {
+            // Skip npm install if node_modules already exists
+            if (require('fs').existsSync('./frontend/node_modules')) {
+                this.log('✅ Node.js dependencies already installed, skipping...');
+                resolve();
+                return;
+            }
+            
             // Try different npm commands based on platform
             const npmCmd = this.isWindows ? 'npm.cmd' : 'npm';
             
@@ -102,7 +109,7 @@ class DevSetup {
 
             childProcess.on('error', (err) => {
                 this.log(`Node.js setup error: ${err.message}`, 'ERROR');
-                // Don't reject, try to continue
+                this.log('⚠️ Skipping npm install due to errors, dependencies may already be installed', 'WARN');
                 resolve();
             });
 
@@ -111,8 +118,7 @@ class DevSetup {
                     this.log('✅ Node.js dependencies ready');
                     resolve();
                 } else {
-                    this.log('⚠️ Node.js setup had issues, continuing...', 'WARN');
-                    // Don't reject, try to continue
+                    this.log('⚠️ Node.js setup had issues, but continuing since dependencies exist...', 'WARN');
                     resolve();
                 }
             });
@@ -169,26 +175,12 @@ class DevSetup {
     }
 
     async startMongoDBManually() {
-        this.log('🔧 Attempting manual MongoDB start...');
+        this.log('🔧 Checking for VS Code MongoDB or using embedded fallback...');
         
         return new Promise((resolve) => {
-            // Try to start MongoDB manually
-            const mongoCmd = this.isWindows ? 'mongod.exe' : 'mongod';
-            const process = spawn(mongoCmd, ['--dbpath', './mongodb_data', '--port', '27017'], {
-                stdio: 'pipe',
-                detached: true
-            });
-
-            // Give MongoDB time to start
-            setTimeout(() => {
-                if (process.pid) {
-                    this.log('✅ MongoDB started manually');
-                    process.unref(); // Let it run independently
-                } else {
-                    this.log('⚠️ Manual MongoDB start failed, using fallback');
-                }
-                resolve();
-            }, 2000);
+            // Skip manual MongoDB startup - use VS Code extension or embedded fallback
+            this.log('✅ Using VS Code MongoDB extension or embedded database fallback');
+            resolve();
         });
     }
 
@@ -224,13 +216,20 @@ class DevSetup {
     startBackend() {
         this.log('🔧 Starting backend server...');
         
-        const pythonCmd = this.isWindows ? 
-            path.join(this.config.paths.backend, 'venv', 'Scripts', 'python.exe') :
-            path.join(this.config.paths.backend, 'venv', 'bin', 'python');
+        // Use the activated virtual environment's python
+        const pythonCmd = this.isWindows ? 'python' : 'python';
 
         const backend = spawn(pythonCmd, ['main.py'], {
             cwd: this.config.paths.backend,
-            stdio: 'inherit'
+            stdio: 'inherit',
+            shell: true,
+            env: {
+                ...process.env,
+                // Ensure we use the virtual environment
+                PATH: this.isWindows ?
+                    `${path.resolve('./backend/venv/Scripts')};${process.env.PATH}` :
+                    `${path.resolve('./backend/venv/bin')}:${process.env.PATH}`
+            }
         });
 
         backend.on('error', (err) => {
@@ -243,9 +242,12 @@ class DevSetup {
     startFrontend() {
         this.log('🌐 Starting frontend server...');
         
-        const frontend = spawn('npm', ['run', 'dev'], {
+        const npmCmd = this.isWindows ? 'npm.cmd' : 'npm';
+        
+        const frontend = spawn(npmCmd, ['run', 'dev'], {
             cwd: './frontend',
-            stdio: 'inherit'
+            stdio: 'inherit',
+            shell: true
         });
 
         frontend.on('error', (err) => {

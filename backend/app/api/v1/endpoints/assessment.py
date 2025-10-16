@@ -6,6 +6,7 @@ from app.models.assessment import UserAssessment
 from app.api.v1.endpoints.auth import get_current_user
 from app.models.user import User
 from motor.motor_asyncio import AsyncIOMotorDatabase
+from bson import ObjectId
 
 router = APIRouter()
 
@@ -34,16 +35,36 @@ async def upload_resume(file: UploadFile = File(...)):
 
 @router.post("/submit-assessment", response_model=UserAssessment)
 async def submit_assessment(
-    assessment_in: UserAssessment,
+    assessment_data: dict,
     request: Request,
-    current_user: User = Depends(get_current_user)
+    current_user: dict = Depends(get_current_user)
 ):
     db: AsyncIOMotorDatabase = request.app.mongodb
-    assessment_data = assessment_in.dict()
-    assessment_data["user_id"] = current_user["_id"]
     
+    # Automatically set user_id from authenticated user
+    assessment_data["user_id"] = current_user["_id"]
+    assessment_data["_id"] = str(ObjectId()) if "_id" not in assessment_data else assessment_data["_id"]
+    
+    # Create UserAssessment object
     new_assessment = UserAssessment(**assessment_data)
     
     await db.assessments.insert_one(new_assessment.dict(by_alias=True))
     
     return new_assessment
+
+@router.get("/get-latest-assessment")
+async def get_latest_assessment(
+    request: Request,
+    current_user: dict = Depends(get_current_user)
+):
+    db: AsyncIOMotorDatabase = request.app.mongodb
+    
+    assessment = await db.assessments.find_one(
+        {"user_id": current_user["_id"]},
+        sort=[("created_at", -1)]
+    )
+    
+    if not assessment:
+        raise HTTPException(status_code=404, detail="No assessment found for the current user.")
+        
+    return assessment

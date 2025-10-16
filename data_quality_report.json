@@ -1,0 +1,662 @@
+{
+  "sqlite_db": {
+    "file_exists": true,
+    "total_records": 49,
+    "schema_info": {
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "average_salary",
+          "type": "INTEGER",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "category",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "education_level",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "required_skills",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "career_path",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "work_environment",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        },
+        {
+          "name": "outlook",
+          "type": "TEXT",
+          "not_null": false,
+          "primary_key": false
+        }
+      ],
+      "column_count": 10
+    },
+    "data_quality": {
+      "null_primary_keys": 49,
+      "critical_field_issues": {
+        "title": 0,
+        "description": 49,
+        "salaryRange": "Field not found",
+        "experienceLevel": "Field not found"
+      },
+      "duplicate_titles": 0,
+      "duplicate_examples": []
+    },
+    "placeholder_analysis": {},
+    "field_completeness": {},
+    "examples": {},
+    "error": "SQLite error: no such column: salaryRange"
+  },
+  "new_career_data": {
+    "file_exists": true,
+    "total_records": 49,
+    "data_quality": {
+      "missing_required_fields": {},
+      "duplicate_titles": 0,
+      "duplicate_examples": [],
+      "type_inconsistencies": {}
+    },
+    "placeholder_analysis": {
+      "description_placeholders": {
+        "A brief description of the .+ role": 49,
+        "Brief description": 49,
+        "Description of .+": 49
+      },
+      "total_placeholder_descriptions": 49,
+      "total_descriptions": 49,
+      "placeholder_percentage": 100.0,
+      "technical_skills_placeholders": 147,
+      "total_technical_skills": 147,
+      "salary_analysis": {
+        "most_common_salary": "85000-135000",
+        "most_common_count": 49,
+        "unique_salary_ranges": 1,
+        "total_salary_records": 49
+      }
+    },
+    "field_completeness": {
+      "salaryRange": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "maxExperienceYears": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "minExperienceYears": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "description": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "requiredSoftSkills": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "requiredTechnicalSkills": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "experienceLevel": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "maxSalary": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "title": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "careerType": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "minSalary": {
+        "non_empty_count": 49,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      }
+    },
+    "schema_consistency": {
+      "field_presence": {
+        "salaryRange": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "maxExperienceYears": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "minExperienceYears": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "description": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "requiredSoftSkills": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "requiredTechnicalSkills": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "experienceLevel": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "maxSalary": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "title": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "careerType": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        },
+        "minSalary": {
+          "present_in_records": 49,
+          "presence_percentage": 100.0
+        }
+      },
+      "type_consistency": {
+        "salaryRange": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "maxExperienceYears": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        },
+        "minExperienceYears": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        },
+        "description": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "requiredSoftSkills": {
+          "types_found": [
+            "list"
+          ],
+          "is_consistent": true
+        },
+        "requiredTechnicalSkills": {
+          "types_found": [
+            "list"
+          ],
+          "is_consistent": true
+        },
+        "experienceLevel": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "maxSalary": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        },
+        "title": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "careerType": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "minSalary": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        }
+      }
+    },
+    "examples": {
+      "placeholder_examples": [
+        {
+          "index": 0,
+          "title": "Environmental Engineer",
+          "description": "A brief description of the Environmental Engineer role.",
+          "technical_skills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+          ]
+        },
+        {
+          "index": 1,
+          "title": "Business Intelligence Analyst",
+          "description": "A brief description of the Business Intelligence Analyst role.",
+          "technical_skills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+          ]
+        },
+        {
+          "index": 2,
+          "title": "Sales Development Representative",
+          "description": "A brief description of the Sales Development Representative role.",
+          "technical_skills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+          ]
+        }
+      ],
+      "incomplete_examples": []
+    }
+  },
+  "production_career_data": {
+    "file_exists": true,
+    "total_records": 361,
+    "data_quality": {
+      "missing_required_fields": {},
+      "duplicate_titles": 12,
+      "duplicate_examples": [
+        [
+          "Product Manager",
+          2
+        ],
+        [
+          "Data Analyst",
+          2
+        ],
+        [
+          "Senior UX Designer",
+          2
+        ],
+        [
+          "UX/UI Designer",
+          2
+        ],
+        [
+          "Digital Marketing Specialist",
+          2
+        ]
+      ],
+      "type_inconsistencies": {}
+    },
+    "placeholder_analysis": {
+      "description_placeholders": {},
+      "total_placeholder_descriptions": 0,
+      "total_descriptions": 361,
+      "placeholder_percentage": 0.0,
+      "technical_skills_placeholders": 1,
+      "total_technical_skills": 1640,
+      "salary_analysis": {
+        "most_common_salary": "$65,000 - $95,000",
+        "most_common_count": 13,
+        "unique_salary_ranges": 156,
+        "total_salary_records": 361
+      }
+    },
+    "field_completeness": {
+      "salaryRange": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "maxExperienceYears": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "learningPath": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": false
+      },
+      "minExperienceYears": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "description": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "requiredSoftSkills": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "confidenceLevel": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": false
+      },
+      "requiredTechnicalSkills": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "companies": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": false
+      },
+      "experienceLevel": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "relevanceScore": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": false
+      },
+      "title": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "careerType": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "maxSalary": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      },
+      "matchReasons": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": false
+      },
+      "minSalary": {
+        "non_empty_count": 361,
+        "completeness_percentage": 100.0,
+        "is_required": true
+      }
+    },
+    "schema_consistency": {
+      "field_presence": {
+        "salaryRange": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "maxExperienceYears": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "learningPath": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "minExperienceYears": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "description": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "requiredSoftSkills": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "confidenceLevel": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "requiredTechnicalSkills": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "companies": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "experienceLevel": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "relevanceScore": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "title": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "careerType": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "maxSalary": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "matchReasons": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        },
+        "minSalary": {
+          "present_in_records": 361,
+          "presence_percentage": 100.0
+        }
+      },
+      "type_consistency": {
+        "salaryRange": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "maxExperienceYears": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        },
+        "learningPath": {
+          "types_found": [
+            "list",
+            "str"
+          ],
+          "is_consistent": false
+        },
+        "minExperienceYears": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        },
+        "description": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "requiredSoftSkills": {
+          "types_found": [
+            "list"
+          ],
+          "is_consistent": true
+        },
+        "confidenceLevel": {
+          "types_found": [
+            "int",
+            "float"
+          ],
+          "is_consistent": false
+        },
+        "requiredTechnicalSkills": {
+          "types_found": [
+            "list"
+          ],
+          "is_consistent": true
+        },
+        "companies": {
+          "types_found": [
+            "list"
+          ],
+          "is_consistent": true
+        },
+        "experienceLevel": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "relevanceScore": {
+          "types_found": [
+            "int",
+            "float"
+          ],
+          "is_consistent": false
+        },
+        "title": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "careerType": {
+          "types_found": [
+            "str"
+          ],
+          "is_consistent": true
+        },
+        "maxSalary": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        },
+        "matchReasons": {
+          "types_found": [
+            "list"
+          ],
+          "is_consistent": true
+        },
+        "minSalary": {
+          "types_found": [
+            "int"
+          ],
+          "is_consistent": true
+        }
+      }
+    },
+    "examples": {
+      "placeholder_examples": [],
+      "incomplete_examples": [
+        {
+          "index": 12,
+          "title": "Software Engineer",
+          "missing_fields": [
+            "minExperienceYears"
+          ]
+        },
+        {
+          "index": 13,
+          "title": "Data Analyst",
+          "missing_fields": [
+            "minExperienceYears"
+          ]
+        },
+        {
+          "index": 15,
+          "title": "Junior Product Manager",
+          "missing_fields": [
+            "minExperienceYears"
+          ]
+        }
+      ]
+    }
+  },
+  "summary": {
+    "analysis_timestamp": "2025-10-06T14:23:27.658146",
+    "data_sources_analyzed": 3,
+    "quality_scores": {
+      "sqlite_db": 0.0,
+      "new_career_data": 20.0,
+      "production_career_data": 85.0
+    },
+    "overall_assessment": "CRITICAL - Severe data quality issues, extensive cleanup required"
+  },
+  "recommendations": [
+    "🚨 HIGH PRIORITY: New Career Data contains 100.0% placeholder content - requires immediate data replacement",
+    "🎯 STRATEGY: Use production_career_data.json as the primary data source (highest quality)",
+    "🔄 MIGRATION: Replace careers.db content with cleaned production data",
+    "🗑️ CLEANUP: Remove or replace new_career_data.json placeholder records",
+    "✅ VALIDATION: Implement data validation rules to prevent future placeholder content",
+    "📊 MONITORING: Set up automated data quality checks for ongoing maintenance"
+  ]
+}

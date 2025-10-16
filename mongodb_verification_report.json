@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-10-15T10:46:23.843103",
+  "overall_status": "PASS",
+  "test_results": {
+    "mongodb_connection": true,
+    "recommender_database": true,
+    "mongodb_service": true,
+    "port_accessibility": true,
+    "mongodb_processes": true
+  },
+  "mongodb_version": "7.0.14",
+  "connection_string": "mongodb://localhost:27017/",
+  "database": "recommender"
+}

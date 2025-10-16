@@ -1,0 +1,33 @@
+================================================================================
+POST-RECOVERY DATABASE VALIDATION REPORT
+================================================================================
+Validation Date: 2025-10-06 16:52:03
+Database: careers.db
+
+VALIDATION SUMMARY:
+----------------------------------------
+Database Status: OPERATIONAL
+Data Quality Score: 100/100
+Total Records: 331
+
+PERFORMANCE METRICS:
+----------------------------------------
+Record count: 1.64ms (1 results)
+Experience level filter: 0.72ms (10 results)
+Salary range filter: 1.73ms (10 results)
+Career type search: 2.46ms (10 results)
+Experience level aggregation: 2.1ms (5 results)
+
+DATA QUALITY DETAILS:
+----------------------------------------
+total_records: 331
+null_primary_keys: 0
+missing_titles: 0
+missing_descriptions: 0
+missing_career_types: 0
+complete_salary_data: 331
+invalid_salary_ranges: 0
+invalid_experience_ranges: 0
+duplicate_career_types: 0
+
+Validation completed successfully at 2025-10-06 16:52:03

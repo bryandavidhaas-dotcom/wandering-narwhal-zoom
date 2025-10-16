@@ -360,27 +360,37 @@ const Assessment = () => {
     };
 
     try {
-      // Note: The PRD implies the assessment data is saved first, then recommendations are generated.
-      // For the MVP, we will send the assessment directly to the recommendation endpoint.
-      const response = await fetch('/api/v1/generate-recommendations', {
+      // Step 1: Submit assessment data first
+      const assessmentResponse = await fetch('/api/v1/assessment/submit-assessment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        // The backend endpoint will use the user from the token to find the latest assessment.
-        // We just need to ensure the assessment is saved before navigating.
-        // For now, we'll send the data to a save endpoint first.
-        // This is a placeholder for a proper save assessment endpoint.
         body: JSON.stringify(processedData),
       });
 
-      if (response.ok) {
-        showSuccess('Assessment submitted successfully!');
+      if (!assessmentResponse.ok) {
+        const errorData = await assessmentResponse.json();
+        showError(errorData.detail || 'Failed to submit assessment.');
+        return;
+      }
+
+      // Step 2: Generate recommendations based on the submitted assessment
+      const recommendationResponse = await fetch('/api/v1/recommendation/generate-recommendations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (recommendationResponse.ok) {
+        showSuccess('Assessment submitted and recommendations generated successfully!');
         setAssessmentComplete(true);
       } else {
-        const errorData = await response.json();
-        showError(errorData.detail || 'Failed to submit assessment for recommendations.');
+        const errorData = await recommendationResponse.json();
+        showError(errorData.detail || 'Assessment submitted but failed to generate recommendations.');
       }
     } catch (error) {
       showError('An error occurred while submitting the assessment.');

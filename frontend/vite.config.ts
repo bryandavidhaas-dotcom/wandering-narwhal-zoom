@@ -8,6 +8,13 @@ export default defineConfig({
     host: "0.0.0.0",
     // Development port
     port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8002',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   plugins: [dyadComponentTagger(), react()],
   resolve: {

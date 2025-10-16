@@ -1,0 +1,96 @@
+================================================================================
+EMERGENCY DATABASE RECOVERY REPORT
+================================================================================
+Recovery Date: 2025-10-06 16:36:21
+Recovery Status: COMPLETED
+
+RECOVERY SUMMARY:
+----------------------------------------
+Records Imported: 331
+Validation Errors: 30
+Database Quality Score: 100/100
+Corrupted Database Backup: careers_corrupted_backup_20251006_163621.db
+
+VALIDATION RESULTS:
+----------------------------------------
+total_records: 331
+null_primary_keys: 0
+missing_titles: 0
+missing_descriptions: 0
+missing_career_types: 0
+complete_salary_records: 331
+duplicate_career_types: 0
+quality_score: 100
+
+EXPERIENCE LEVEL DISTRIBUTION:
+----------------------------------------
+entry: 3
+executive: 36
+junior: 40
+mid: 166
+senior: 86
+
+RECOVERY LOG:
+----------------------------------------
+[2025-10-06 16:36:21] CRITICAL: 🚨 STARTING EMERGENCY DATABASE RECOVERY
+[2025-10-06 16:36:21] INFO: ============================================================
+[2025-10-06 16:36:21] CRITICAL: 🔄 STEP 1: Backing up corrupted database for forensic analysis
+[2025-10-06 16:36:21] INFO: ✅ Corrupted database backed up to: careers_corrupted_backup_20251006_163621.db
+[2025-10-06 16:36:21] INFO: 📊 Corruption Analysis: 49/49 records have NULL primary keys
+[2025-10-06 16:36:21] INFO: 🚨 CORRUPTION CONFIRMED: Complete primary key failure detected
+[2025-10-06 16:36:21] INFO: 📥 Loading production career data...
+[2025-10-06 16:36:21] INFO: ✅ Loaded 361 high-quality career records
+[2025-10-06 16:36:21] CRITICAL: 🔄 STEP 2: Creating new database with proper schema
+[2025-10-06 16:36:21] INFO: 🗑️ Removed corrupted database file
+[2025-10-06 16:36:21] INFO: ✅ New database schema created successfully
+[2025-10-06 16:36:21] INFO: ✅ Performance indexes created
+[2025-10-06 16:36:21] CRITICAL: 🔄 STEP 3: Importing production data with validation
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Biomedical Engineer': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'HVAC Engineer': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Digital Marketing Specialist': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Data Analyst': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Product Manager': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Corporate Lawyer': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Criminal Defense Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Paralegal': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Family Law Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Intellectual Property Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Legal Assistant': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Immigration Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Personal Injury Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Contract Specialist': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Legal Researcher': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Employment Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Real Estate Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Compliance Officer': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Legal Counsel': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Bankruptcy Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Environmental Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Tax Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Public Defender': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Estate Planning Attorney': Error binding parameter 9: type 'list' is not supported
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Senior UX Designer': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'UX/UI Designer': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Quality Assurance Manager': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Supply Chain Manager': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Manufacturing Engineer': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] WARNING: ⚠️ Error importing record 'Industrial Maintenance Technician': UNIQUE constraint failed: careers.careerType
+[2025-10-06 16:36:21] INFO: ✅ Successfully imported 331 career records
+[2025-10-06 16:36:21] WARNING: ⚠️ 30 records had validation errors
+[2025-10-06 16:36:21] CRITICAL: 🔄 STEP 4: Validating database integrity and completeness
+[2025-10-06 16:36:21] INFO: 📊 VALIDATION RESULTS:
+[2025-10-06 16:36:21] INFO:    Total Records: 331
+[2025-10-06 16:36:21] INFO:    NULL Primary Keys: 0 (should be 0)
+[2025-10-06 16:36:21] INFO:    Missing Titles: 0 (should be 0)
+[2025-10-06 16:36:21] INFO:    Missing Descriptions: 0 (should be 0)
+[2025-10-06 16:36:21] INFO:    Missing Career Types: 0 (should be 0)
+[2025-10-06 16:36:21] INFO:    Complete Salary Records: 331
+[2025-10-06 16:36:21] INFO:    Duplicate Career Types: 0 (should be 0)
+[2025-10-06 16:36:21] INFO:    Experience Level Distribution:
+[2025-10-06 16:36:21] INFO:      entry: 3
+[2025-10-06 16:36:21] INFO:      executive: 36
+[2025-10-06 16:36:21] INFO:      junior: 40
+[2025-10-06 16:36:21] INFO:      mid: 166
+[2025-10-06 16:36:21] INFO:      senior: 86
+[2025-10-06 16:36:21] INFO: 🎯 DATABASE QUALITY SCORE: 100/100
+[2025-10-06 16:36:21] INFO: 📋 Generating recovery report...

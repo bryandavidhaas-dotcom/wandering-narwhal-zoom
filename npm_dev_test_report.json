@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-10-15T10:49:59.653639",
+  "frontend_health": true,
+  "backend_health": false,
+  "api_endpoints": {
+    "/api/careers": false,
+    "/api/health": false,
+    "/health": false
+  },
+  "overall_success": false
+}

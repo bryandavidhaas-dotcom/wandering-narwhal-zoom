@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { showSuccess, showError } from "@/utils/toast";
 import { Logo } from "@/components/Logo";
 
@@ -19,8 +19,17 @@ const Auth = () => {
     password: '',
     confirmPassword: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
+    resetToken: '',
+    newPassword: '',
+    confirmNewPassword: ''
   });
+
+  const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot-password' | 'reset-password'>('login');
+  const [resetToken, setResetToken] = useState<string>('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -73,8 +82,30 @@ const Auth = () => {
         }),
       });
       if (response.ok) {
-        showSuccess('Registration successful! Please log in.');
-        // Ideally, switch to the login tab here
+        showSuccess('Registration successful! Logging you in...');
+        
+        // Automatically log in the user after successful registration
+        try {
+          const loginResponse = await fetch('/api/v1/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+              username: formData.email,
+              password: formData.password,
+            }),
+          });
+          
+          if (loginResponse.ok) {
+            const loginData = await loginResponse.json();
+            localStorage.setItem('token', loginData.access_token);
+            showSuccess('Welcome! Redirecting to your assessment...');
+            navigate('/assessment');
+          } else {
+            showError('Registration successful, but auto-login failed. Please log in manually.');
+          }
+        } catch (loginError) {
+          showError('Registration successful, but auto-login failed. Please log in manually.');
+        }
       } else {
         const errorData = await response.json();
         showError(errorData.detail || 'Registration failed.');
@@ -83,6 +114,437 @@ const Auth = () => {
       showError('An error occurred during registration.');
     }
   };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.email) {
+      showError('Please enter your email address');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/v1/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: formData.email,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        showSuccess('Password reset instructions sent! Check the token below.');
+        
+        // Store the reset token for testing (since no email service)
+        if (data.reset_token) {
+          setResetToken(data.reset_token);
+          setAuthMode('reset-password');
+        }
+      } else {
+        const errorData = await response.json();
+        showError(errorData.detail || 'Failed to send reset instructions');
+      }
+    } catch (error) {
+      showError('An error occurred while sending reset instructions');
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.resetToken) {
+      showError('Please enter the reset token');
+      return;
+    }
+    
+    if (!formData.newPassword) {
+      showError('Please enter a new password');
+      return;
+    }
+    
+    if (formData.newPassword !== formData.confirmNewPassword) {
+      showError('New passwords do not match');
+      return;
+    }
+
+    if (formData.newPassword.length < 8) {
+      showError('Password must be at least 8 characters long');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/v1/auth/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: formData.resetToken,
+          new_password: formData.newPassword,
+        }),
+      });
+
+      if (response.ok) {
+        showSuccess('Password reset successfully! You can now log in with your new password.');
+        setAuthMode('login');
+        setFormData({
+          email: formData.email, // Keep email for convenience
+          password: '',
+          confirmPassword: '',
+          firstName: '',
+          lastName: '',
+          resetToken: '',
+          newPassword: '',
+          confirmNewPassword: ''
+        });
+        setResetToken('');
+      } else {
+        const errorData = await response.json();
+        showError(errorData.detail || 'Failed to reset password');
+      }
+    } catch (error) {
+      showError('An error occurred while resetting password');
+    }
+  };
+
+  const renderLoginRegisterTabs = () => (
+    <Tabs defaultValue={authMode === 'register' ? 'register' : 'login'} className="w-full">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="login" onClick={() => setAuthMode('login')}>Sign In</TabsTrigger>
+        <TabsTrigger value="register" onClick={() => setAuthMode('register')}>Sign Up</TabsTrigger>
+      </TabsList>
+      
+      <TabsContent value="login">
+        <Card>
+          <CardHeader>
+            <CardTitle>Welcome Back</CardTitle>
+            <CardDescription>
+              Sign in to continue your career discovery journey
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+              
+              <Button type="submit" className="w-full">
+                Sign In
+              </Button>
+            </form>
+            
+            <div className="mt-4 text-center">
+              <Button
+                variant="link"
+                className="text-sm"
+                onClick={() => setAuthMode('forgot-password')}
+              >
+                Forgot your password?
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+      
+      <TabsContent value="register">
+        <Card>
+          <CardHeader>
+            <CardTitle>Create Account</CardTitle>
+            <CardDescription>
+              Start your personalized career discovery journey
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleRegister} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName">First Name</Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    placeholder="First name"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="lastName">Last Name</Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    placeholder="Last name"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="At least 8 characters, mix of letters and numbers"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Re-enter your password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              </div>
+              
+              <Button type="submit" className="w-full">
+                Create Account
+              </Button>
+            </form>
+            
+            <div className="mt-4 text-center text-sm text-gray-600">
+              By creating an account, you agree to our privacy policy and terms of service.
+            </div>
+          </CardContent>
+        </Card>
+      </TabsContent>
+    </Tabs>
+  );
+
+  const renderForgotPasswordForm = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Reset Password</CardTitle>
+        <CardDescription>
+          Enter your email address and we'll send you a reset token
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleForgotPassword} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Enter your email address"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          
+          <Button type="submit" className="w-full">
+            Send Reset Token
+          </Button>
+        </form>
+        
+        <div className="mt-4 text-center">
+          <Button
+            variant="link"
+            className="text-sm"
+            onClick={() => setAuthMode('login')}
+          >
+            Back to Sign In
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderResetPasswordForm = () => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Set New Password</CardTitle>
+        <CardDescription>
+          Enter the reset token and your new password
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {resetToken && (
+          <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-md">
+            <p className="text-sm font-medium text-blue-800 mb-1">Reset Token (for testing):</p>
+            <p className="text-xs font-mono text-blue-600 break-all">{resetToken}</p>
+            <p className="text-xs text-blue-600 mt-1">Copy this token to the field below</p>
+          </div>
+        )}
+        
+        <form onSubmit={handleResetPassword} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="resetToken">Reset Token</Label>
+            <Input
+              id="resetToken"
+              name="resetToken"
+              type="text"
+              placeholder="Enter the reset token"
+              value={formData.resetToken}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="newPassword">New Password</Label>
+            <div className="relative">
+              <Input
+                id="newPassword"
+                name="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                placeholder="Enter your new password (min 8 characters)"
+                value={formData.newPassword}
+                onChange={handleInputChange}
+                required
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+              >
+                {showNewPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="confirmNewPassword">Confirm New Password</Label>
+            <div className="relative">
+              <Input
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Re-enter your new password"
+                value={formData.confirmNewPassword}
+                onChange={handleInputChange}
+                required
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+          
+          <Button type="submit" className="w-full">
+            Reset Password
+          </Button>
+        </form>
+        
+        <div className="mt-4 text-center">
+          <Button
+            variant="link"
+            className="text-sm"
+            onClick={() => setAuthMode('login')}
+          >
+            Back to Sign In
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
@@ -108,149 +570,9 @@ const Auth = () => {
           </div>
         </div>
 
-        <Tabs defaultValue={defaultMode} className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="login">Sign In</TabsTrigger>
-            <TabsTrigger value="register">Sign Up</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="login">
-            <Card>
-              <CardHeader>
-                <CardTitle>Welcome Back</CardTitle>
-                <CardDescription>
-                  Sign in to continue your career discovery journey
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  
-                  <Button type="submit" className="w-full">
-                    Sign In
-                  </Button>
-                </form>
-                
-                <div className="mt-4 text-center">
-                  <Button variant="link" className="text-sm">
-                    Forgot your password?
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="register">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create Account</CardTitle>
-                <CardDescription>
-                  Start your personalized career discovery journey
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleRegister} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        placeholder="First name"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        placeholder="Last name"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input
-                      id="password"
-                      name="password"
-                      type="password"
-                      placeholder="At least 8 characters, mix of letters and numbers"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">Confirm Password</Label>
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      placeholder="Re-enter your password"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  
-                  <Button type="submit" className="w-full">
-                    Create Account
-                  </Button>
-                </form>
-                
-                <div className="mt-4 text-center text-sm text-gray-600">
-                  By creating an account, you agree to our privacy policy and terms of service.
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        {(authMode === 'login' || authMode === 'register') && renderLoginRegisterTabs()}
+        {authMode === 'forgot-password' && renderForgotPasswordForm()}
+        {authMode === 'reset-password' && renderResetPasswordForm()}
       </div>
     </div>
   );

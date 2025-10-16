@@ -10,3 +10,6 @@ beanie==1.23.6
 python-docx==1.1.2
 pypdf==4.2.0
 openai==1.35.13
+# passlib[bcrypt]==1.7.4  # Removed - using direct bcrypt instead
+python-jose[cryptography]==3.3.0
+bcrypt==3.2.2

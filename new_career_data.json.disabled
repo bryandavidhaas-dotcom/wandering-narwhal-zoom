@@ -1,0 +1,1031 @@
+[
+    {
+        "title": "Environmental Engineer",
+        "careerType": "environmental-engineer",
+        "description": "A brief description of the Environmental Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Business Intelligence Analyst",
+        "careerType": "business-intelligence-analyst",
+        "description": "A brief description of the Business Intelligence Analyst role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Sales Development Representative",
+        "careerType": "sales-development-representative",
+        "description": "A brief description of the Sales Development Representative role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Aerospace Engineer",
+        "careerType": "aerospace-engineer",
+        "description": "A brief description of the Aerospace Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Chemical Engineer",
+        "careerType": "chemical-engineer",
+        "description": "A brief description of the Chemical Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Control Systems Engineer",
+        "careerType": "control-systems-engineer",
+        "description": "A brief description of the Control Systems Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Electronics Engineer",
+        "careerType": "electronics-engineer",
+        "description": "A brief description of the Electronics Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Mechanical Design Engineer",
+        "careerType": "mechanical-design-engineer",
+        "description": "A brief description of the Mechanical Design Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Power Systems Engineer",
+        "careerType": "power-systems-engineer",
+        "description": "A brief description of the Power Systems Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Structural Engineer",
+        "careerType": "structural-engineer",
+        "description": "A brief description of the Structural Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Transportation Engineer",
+        "careerType": "transportation-engineer",
+        "description": "A brief description of the Transportation Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Backend Developer",
+        "careerType": "backend-developer",
+        "description": "A brief description of the Backend Developer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Blockchain Developer",
+        "careerType": "blockchain-developer",
+        "description": "A brief description of the Blockchain Developer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Chief Data Officer",
+        "careerType": "chief-data-officer",
+        "description": "A brief description of the Chief Data Officer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Chief Information Officer",
+        "careerType": "chief-information-officer",
+        "description": "A brief description of the Chief Information Officer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Chief Product Officer",
+        "careerType": "chief-product-officer",
+        "description": "A brief description of the Chief Product Officer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Chief Technology Officer",
+        "careerType": "chief-technology-officer",
+        "description": "A brief description of the Chief Technology Officer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Cloud Solutions Engineer",
+        "careerType": "cloud-solutions-engineer",
+        "description": "A brief description of the Cloud Solutions Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Cybersecurity Analyst",
+        "careerType": "cybersecurity-analyst",
+        "description": "A brief description of the Cybersecurity Analyst role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Data Science Manager",
+        "careerType": "data-science-manager",
+        "description": "A brief description of the Data Science Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Data Scientist",
+        "careerType": "data-scientist",
+        "description": "A brief description of the Data Scientist role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "DevOps Engineer",
+        "careerType": "devops-engineer",
+        "description": "A brief description of the DevOps Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Director of Product Management",
+        "careerType": "director-of-product-management",
+        "description": "A brief description of the Director of Product Management role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Embedded Systems Engineer",
+        "careerType": "embedded-systems-engineer",
+        "description": "A brief description of the Embedded Systems Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Engineering Manager",
+        "careerType": "engineering-manager",
+        "description": "A brief description of the Engineering Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Frontend Developer",
+        "careerType": "frontend-developer",
+        "description": "A brief description of the Frontend Developer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Full Stack Developer",
+        "careerType": "full-stack-developer",
+        "description": "A brief description of the Full Stack Developer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Game Developer",
+        "careerType": "game-developer",
+        "description": "A brief description of the Game Developer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Group Product Manager",
+        "careerType": "group-product-manager",
+        "description": "A brief description of the Group Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Growth Product Manager",
+        "careerType": "growth-product-manager",
+        "description": "A brief description of the Growth Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Head of Product",
+        "careerType": "head-of-product",
+        "description": "A brief description of the Head of Product role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Junior Product Manager",
+        "careerType": "junior-product-manager",
+        "description": "A brief description of the Junior Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Machine Learning Engineer",
+        "careerType": "machine-learning-engineer",
+        "description": "A brief description of the Machine Learning Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Mobile App Developer",
+        "careerType": "mobile-app-developer",
+        "description": "A brief description of the Mobile App Developer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Platform Product Manager",
+        "careerType": "platform-product-manager",
+        "description": "A brief description of the Platform Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Principal Product Manager",
+        "careerType": "principal-product-manager",
+        "description": "A brief description of the Principal Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Principal Software Engineer",
+        "careerType": "principal-software-engineer",
+        "description": "A brief description of the Principal Software Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Quality Assurance Engineer",
+        "careerType": "quality-assurance-engineer",
+        "description": "A brief description of the Quality Assurance Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Senior Data Scientist",
+        "careerType": "senior-data-scientist",
+        "description": "A brief description of the Senior Data Scientist role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Senior Product Manager",
+        "careerType": "senior-product-manager",
+        "description": "A brief description of the Senior Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Senior Software Architect",
+        "careerType": "senior-software-architect",
+        "description": "A brief description of the Senior Software Architect role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Software Engineer",
+        "careerType": "software-engineer",
+        "description": "A brief description of the Software Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Solutions Architect",
+        "careerType": "solutions-architect",
+        "description": "A brief description of the Solutions Architect role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Staff Software Engineer",
+        "careerType": "staff-software-engineer",
+        "description": "A brief description of the Staff Software Engineer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Technical Product Manager",
+        "careerType": "technical-product-manager",
+        "description": "A brief description of the Technical Product Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Technical Program Manager",
+        "careerType": "technical-program-manager",
+        "description": "A brief description of the Technical Program Manager role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "Technical Writer",
+        "careerType": "technical-writer",
+        "description": "A brief description of the Technical Writer role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "VP of Engineering",
+        "careerType": "vp-of-engineering",
+        "description": "A brief description of the VP of Engineering role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    },
+    {
+        "title": "VP of Product",
+        "careerType": "vp-of-product",
+        "description": "A brief description of the VP of Product role.",
+        "salaryRange": "85000-135000",
+        "experienceLevel": "Mid-Senior",
+        "requiredTechnicalSkills": [
+            "Technical Skill 1",
+            "Technical Skill 2",
+            "Technical Skill 3"
+        ],
+        "requiredSoftSkills": [
+            "Communication",
+            "Problem-Solving",
+            "Teamwork"
+        ],
+        "minExperienceYears": 3,
+        "maxExperienceYears": 8,
+        "minSalary": 85000,
+        "maxSalary": 135000
+    }
+]

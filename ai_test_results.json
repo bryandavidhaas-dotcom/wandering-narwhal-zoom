@@ -1,0 +1,107 @@
+{
+  "timestamp": "2025-10-16T09:14:57.100292",
+  "ai_client_tests": {
+    "initialization": {
+      "status": "success",
+      "timestamp": "2025-10-16T09:14:58.119503",
+      "details": {
+        "status": "success",
+        "api_key_configured": true,
+        "api_key_preview": "sk-proj-Jv..."
+      }
+    },
+    "recommendation_generation": {
+      "status": "success",
+      "timestamp": "2025-10-16T09:14:59.063079",
+      "details": {
+        "status": "success",
+        "count": 2,
+        "structure_valid": true,
+        "missing_fields": [],
+        "sample_recommendation": {
+          "job_id": "job_001",
+          "title": "Software Engineer",
+          "company": "Tech Corp",
+          "location": "San Francisco, CA",
+          "description": "Develop and maintain software applications",
+          "requirements": [
+            "Python",
+            "JavaScript",
+            "Problem solving"
+          ],
+          "seniority": "Mid-level",
+          "score": 85.5,
+          "highlights": [
+            "Strong Python skills",
+            "Full-stack experience"
+          ],
+          "role": "Software Engineer",
+          "tech": [
+            "Python",
+            "JavaScript",
+            "React"
+          ],
+          "employment_type": "Full-time",
+          "industry": "Technology"
+        },
+        "using_mock_data": true
+      }
+    },
+    "tuning": {
+      "status": "success",
+      "timestamp": "2025-10-16T09:14:59.776543",
+      "details": {
+        "status": "success",
+        "initial_count": 2,
+        "tuned_count": 2,
+        "changes_detected": false,
+        "tuning_prompt": "I want more remote opportunities and higher salary positions"
+      }
+    }
+  },
+  "api_endpoint_tests": {
+    "api_endpoints": {
+      "status": "failed",
+      "timestamp": "2025-10-16T09:15:02.530379",
+      "details": {
+        "status": "failed",
+        "error": "connection_error",
+        "recommendations_endpoint": "unreachable"
+      }
+    }
+  },
+  "configuration_tests": {
+    "configuration": {
+      "status": "success",
+      "timestamp": "2025-10-16T09:15:02.530767",
+      "details": {
+        "status": "success",
+        "ai_api_key_set": true,
+        "ai_api_key_length": 56,
+        "ai_api_key_preview": "sk-proj-Jv...",
+        "debug_mode": true,
+        "cors_origins": "http://localhost:3000,http://localhost:5173"
+      }
+    }
+  },
+  "integration_tests": {},
+  "performance_tests": {},
+  "error_handling_tests": {
+    "error_handling": {
+      "status": "success",
+      "timestamp": "2025-10-16T09:15:03.347395",
+      "details": {
+        "status": "success",
+        "invalid_api_key_fallback": true,
+        "mock_data_count": 2
+      }
+    }
+  },
+  "summary": {
+    "total_tests": 6,
+    "passed": 5,
+    "failed": 1,
+    "warnings": 0,
+    "success_rate": "83.3%"
+  }
+}
