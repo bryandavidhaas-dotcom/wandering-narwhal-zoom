@@ -10,8 +10,8 @@ class User(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
                 "email": "user@example.com",
                 "hashed_password": "a_very_strong_hashed_password",

@@ -1,0 +1,12 @@
+{
+  "timestamp": "123281.6231818",
+  "success_rate": 0.16666666666666666,
+  "results": {
+    "environment_check": true,
+    "direct_api_test": false,
+    "ai_client_test": false,
+    "assessment_generation_test": false,
+    "error_handling_test": false,
+    "response_format_test": false
+  }
+}

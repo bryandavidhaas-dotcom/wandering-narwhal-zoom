@@ -57,7 +57,14 @@ const Auth = () => {
         const data = await response.json();
         localStorage.setItem('token', data.access_token);
         showSuccess('Logged in successfully!');
-        navigate('/dashboard');
+        
+        // Check if user has completed assessment and redirect appropriately
+        if (data.assessment_completed === false) {
+          showSuccess('Please complete your assessment to get personalized recommendations.');
+          navigate('/assessment');
+        } else {
+          navigate('/dashboard');
+        }
       } else {
         showError('Invalid email or password.');
       }
@@ -82,29 +89,22 @@ const Auth = () => {
         }),
       });
       if (response.ok) {
-        showSuccess('Registration successful! Logging you in...');
+        const data = await response.json();
         
-        // Automatically log in the user after successful registration
-        try {
-          const loginResponse = await fetch('/api/v1/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: new URLSearchParams({
-              username: formData.email,
-              password: formData.password,
-            }),
-          });
+        // Registration now returns JWT tokens directly
+        if (data.access_token) {
+          localStorage.setItem('token', data.access_token);
+          showSuccess('Registration successful! Welcome! Redirecting to your assessment...');
           
-          if (loginResponse.ok) {
-            const loginData = await loginResponse.json();
-            localStorage.setItem('token', loginData.access_token);
-            showSuccess('Welcome! Redirecting to your assessment...');
+          // New users always need to complete assessment (assessment_completed should be false)
+          if (data.assessment_completed === false) {
             navigate('/assessment');
           } else {
-            showError('Registration successful, but auto-login failed. Please log in manually.');
+            // This shouldn't happen for new registrations, but handle it gracefully
+            navigate('/dashboard');
           }
-        } catch (loginError) {
-          showError('Registration successful, but auto-login failed. Please log in manually.');
+        } else {
+          showError('Registration successful, but no access token received. Please log in manually.');
         }
       } else {
         const errorData = await response.json();

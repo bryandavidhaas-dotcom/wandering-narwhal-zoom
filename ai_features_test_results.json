@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-10-16 21:16:09",
+  "tests": {
+    "User Registration": {
+      "success": false,
+      "details": {
+        "status_code": 400,
+        "error": "{\"detail\":\"Registration failed. Please try again.\"}"
+      },
+      "timestamp": "2025-10-16 21:16:11"
+    }
+  },
+  "summary": {
+    "total_tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "errors": [
+      "User Registration: {\"detail\":\"Registration failed. Please try again.\"}"
+    ]
+  }
+}

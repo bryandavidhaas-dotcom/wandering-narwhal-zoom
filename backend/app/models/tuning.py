@@ -12,8 +12,8 @@ class TuningInteraction(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
                 "recommendation_set_id": "60d5ec49e7a4b2a3b8e3f4f7",
                 "user_id": "60d5ec49e7a4b2a3b8e3f4f6",

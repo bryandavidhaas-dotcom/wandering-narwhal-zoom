@@ -56,8 +56,8 @@ class UserAssessment(BaseModel):
     created_at: datetime = Field(default_factory=datetime.utcnow)
 
     class Config:
-        allow_population_by_field_name = True
-        schema_extra = {
+        populate_by_name = True
+        json_schema_extra = {
             "example": {
                 "user_id": "user123",
                 "age": "30-35",

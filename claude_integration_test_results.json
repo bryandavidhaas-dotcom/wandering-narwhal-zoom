@@ -1,0 +1,14 @@
+{
+  "test_type": "integration_with_mock_fallback",
+  "timestamp": "123369.1004296",
+  "success_rate": 0.8333333333333334,
+  "results": {
+    "ai_client_initialization": true,
+    "mock_data_fallback": true,
+    "assessment_processing": true,
+    "response_format_validation": true,
+    "error_handling": false,
+    "tuning_functionality": true
+  },
+  "notes": "Tests system integration using mock data fallback when API is unavailable"
+}
