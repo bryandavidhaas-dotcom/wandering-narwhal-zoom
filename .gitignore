@@ -218,3 +218,52 @@ Thumbs.db
 backend/pyproject.toml
 backend/uv.lock
 frontend/package-lock.json
+
+# Large installer files and binaries
+*.msi
+*.exe
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.zip
+*.tar.gz
+*.tar.bz2
+*.7z
+*.rar
+
+# MongoDB installer files specifically
+mongodb-installer.*
+mongodb-portable.*
+mongodb-community-*
+mongodb-database-tools-*
+
+# Database files that might be large
+*.db
+*.sqlite
+*.sqlite3
+mongodb_data/
+data/
+dumps/
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+*.flv
+*.webm
+*.mp3
+*.wav
+*.flac
+*.aac
+*.ogg
+*.wma
+*.m4a
+*.iso
+*.img
+*.bin
+*.toast
+*.vcd
+*.dmg
